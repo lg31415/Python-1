@@ -1,0 +1,10 @@
+data/
+.idea/
+*.pyc
+*.csv
+*.txt
+*.gz
+*.xls
+*.bmp
+*.jpg
+*.png

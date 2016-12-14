@@ -1,0 +1,188 @@
+$def with (xx,yy)
+<header>
+    <meta charset="utf-8">
+    <!-- 引入 ECharts 文件 -->
+    <script src="js/echarts.common.min.js"></script>
+	<script type="text/javascript" src='js/jquery-1.8.3.min.js'></script>
+</header>
+
+<!--实现双数据读取分离成功 -->
+
+<body>
+    <!-- 为 ECharts 准备一个具备大小（宽高）的Dom -->
+    <div id="draw" style="width:95%;height:600px;"></div>
+	<!-- 绘图部分 -->
+	<script type="text/javascript">
+
+		// 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('draw'));
+		//myChart.showLoading();
+
+		// 设置项剥离
+		var initoption = {
+			title: {
+				text: '数据中心图形化示例'
+			},
+			xAxis:{
+						//type:'value',
+						//scale:false,
+						data: []  //如何绘制双序列图（已解决）
+				  },
+			yAxis: {},
+			tooltip: {
+				trigger : 'axis',
+				axisPointer : {
+					type : 'line',
+					lineStyle : {
+						color : '#0f0',
+						width : 2,
+						type : 'solid'
+					}
+				}
+			},
+			toolbox: {
+				show : true,
+				feature : {
+					mark : {show: true},
+					dataZoom : {show: true},
+					dataView : {show: true, readOnly: false},
+					restore : {show: true},
+					saveAsImage : {show: true}
+				}
+			},
+			dataZoom: [
+					{
+						type: 'slider',
+						xAxisIndex: 0,
+						start: 0,
+						end: 6000
+					},
+					{
+						type: 'inside',
+						xAxisIndex: 0,
+						start: 0,
+						end: 6000
+					},
+					{
+						type: 'slider',
+						yAxisIndex: 0,
+						start: 0,
+						end: 8000
+					},
+					{
+						type: 'inside',
+						yAxisIndex: 0,
+						start: 0,
+						end: 8000
+					}
+				],
+			legend: {
+				data:['价格','双坐标测试数据','原始数据','高潮数据']
+			},
+			series: [
+						{
+							name: '价格',
+							type: 'bar',
+							data: [15, 220, 216, 110, 120]
+						},
+						{
+							name: '双坐标测试数据',
+							symbolSize:4,
+							type: 'bar',
+							data: [[15, 220],[20, 120],[30, 110]]
+						},
+						{
+							name: '原始数据',
+							type: 'line',
+							data:  []   //以后重新使用的数据设置为空
+						},
+						{
+							name: '高潮数据',
+							type: 'line',
+							data:  []	//以后重新使用的数据设置为空
+						}
+					]
+		};
+
+		//首次设置绘图项
+		myChart.setOption(initoption);
+
+		//数据准备1
+		$.getJSON("data/origin.json",function(data0){
+			var origindview = [];
+			$.each(data0,function(infoIndex,origin)
+			{
+				$#//if(infoIndex === 'hot_view')
+				{
+							//创建x轴坐标
+							var xseq = [];
+							for (let i = 1; i <= origin.length; i++)
+								xseq.push(i);
+
+							//创建点对序列
+							origin.forEach(function (elem, index, array) {
+								origindview.push([index, elem])
+							});
+				}
+			});
+			//alert(origindview);
+
+			//数据准备2
+			var highdview = [];
+			//var biaoxian={xAxis:[15,30]};
+			$.getJSON("data/highdur.json",function(data1){
+				$.each(data1,function(infoIndex1,high) {
+					$#//if (infoIndex1 === 'highdur')
+					{
+						high.forEach(function (elem, index, array) {var temp=elem.split('_');highdview.push(parseInt(temp[0]),parseInt(temp[1]))});
+					}
+				});
+                //alert(highdview);
+
+			//绘图项设置
+			dataoption = {
+				xAxis: {
+					//data: xseq  //如何绘制双序列图（已解决）
+				},
+				Axis: {},
+				series: [
+					{
+						name: '原始数据',
+						type: 'line',
+						data: origindview
+					},
+					{
+						name: '高潮数据',
+						type: 'line',
+						data: highdview,
+						markLine:{
+							data:[
+								[
+									{
+										name:'高潮区间',
+										value:'highdur',
+										symbol:'circle',
+										coord:[2,100]
+									},
+									{
+										coord:[15,100]
+									}
+								]
+								//biaoxian
+							]
+						}
+					}
+
+				]//series序列数据集结束}
+			};
+
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(dataoption);
+
+			}); //数据2截止
+		}); //数据1截止
+
+    </script>
+
+</body>
+

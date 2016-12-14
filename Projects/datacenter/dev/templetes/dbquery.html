@@ -1,0 +1,82 @@
+$def with (id,info)
+<!--如果id和info是列表的形式，该如何传递(拼接成html代码传进来)，变量可以是一段html代码-->
+
+<head lang="en">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>这是标题</title>
+</head>
+
+<!-- 支持自定义样式 -->
+<style type="text/css">
+	.test{padding:10px;border-width:1px;border-style:solid;border-color:#000;width:300px;}
+	.tblp{border: 1px solid #000;border-radius:10px 20px 30px;border-collapse:collapse;margin-top:10px;padding:10px;width:300px;background-color:#ffffff;border-spacing:1px 2px;empty-cells:show;text-align:center;}
+	td{empty-cells:show;}
+
+</style>
+
+<!-- 支持js代码 -->
+<script type="text/javascript">
+	function abs(x) {
+    if (x >= 0) {
+        return x;
+    } else {
+        return -x;
+		}
+	}
+	function warning()
+	{
+		var update=true;
+		alert('功能开发中.....');
+		document.write('1');
+		return update;
+	}
+
+	var btnClick = document.getElementById('btnClick');
+    btnClick.onclick = function showMessage() { alert(this.id);}
+	}
+</script>
+
+<!-- 处理表单数据 -->
+<form method="get" action="http://127.0.0.1:8080/db/?">
+	<label>id:</label> <input type="text" name="id" id="id" />
+	<label>name:</label> <input type="text" name="name" id="name" />
+	<input type="button" value="是否更新" id="btnClick" onclick="javascript:warning()" />
+	<b><input type="submit" /></b>
+	<hr/>
+</form>
+
+
+<!-- 展示结果数据 -->
+$if info and id:
+	<!-- 列表展示 -->
+	<div>
+		<h3>fcid和filesize的查询结果如下:</h3>
+		<table border='1' class="tblp">
+			<caption>查询结果</caption>
+			<tr>
+				<th>cid</th>
+				<th>filesize</th>
+				<th>备注</th>
+			</tr>
+				$:info
+		</table>
+	</div>
+	<hr/>
+
+	<!-- 图像展示 -->
+	<div>
+	<h3>图片展示</h3>
+	<!-- <img src="hah.png" width="573" height="491" alt="" /> -->
+	<hr/>
+	</div>
+
+	<!-- 信息汇总 -->
+	<div class="test">
+		<p>信息汇总:</p>
+		<p>上次更新时间:</p>
+		<p>更新耗时:</p>
+	</div>
+
+	<!--如何将图表的内容进行显示，通过将图片的url地址传到html的模板里进行展示,交互如何处理-->
+$else:
+    <span style='color:#cc0099'>WARINING:no paras is passed!</span>

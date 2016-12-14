@@ -1,0 +1,108 @@
+$def with (title, body)
+    <h2>参数传递</h2>
+    $var title: $title
+    $var content_type: text/html
+    <p>paras1:$title&$body</p>
+
+    <hr/>
+    <h2>变量赋值和遍历</h2>
+    $ datat=[2,5,3,44]
+    <p> can you lead me $datat[2],$datat</p>
+    $for each in datat:
+        $each<br/>
+
+<hr/>
+<h2>验证python调用</h2>
+$code:
+    datat=[1111,1111]
+    da=[123,32344]
+    def changedata(datat):
+            datat.append(122)
+            return da,datat
+
+<p>origin datat is:$changedata(datat)[1]</p>
+<p>now datat is: $changedata(datat)</p>
+
+<p>遍历:</p>
+$for each in changedata(datat):
+    like $each
+<p>重新赋值:</p>
+$ datax = changedata(datat)
+$datax
+
+<hr/>
+<h2>js调用和处理</h2>
+    <head>
+        <meta charset="utf-8"/>
+        <script type="text/javascript" src='file://E:\\Code\\SVN\\trunk\\Python\\Projects\\datacenter\\dev\\templetes\\js\\jquery-1.8.3.min.js'></script>
+    </head>
+    <body>
+        <div id="hah">
+            <p>这是id为hah的内容</p>
+        </div>
+
+        <div id="body">
+            $body
+            <script>
+                var a=$datax;
+                //alert(a);
+                $#//$.each(function(elem,index,array){
+                    alert("[ais:]"+a[1]);
+                     var xx=document.getElementById("hah");
+                     xx.innerHTML=a[1];
+                $#//});
+            </script>
+
+            <h4>在html中赋值变量和调用循环</h4>
+            $ a =['xiaming','zhangsan','李四'];
+            $for each in a:
+              alert($each);
+        </div>
+
+    </body>
+
+<hr/>
+<h2>函数和调用</h2>
+$def say_hello(name='world'):
+    Hello $name!
+
+$def say_hi(name='world'):
+    Hi $name!,datat[1]
+
+$say_hello('web.py')
+$say_hi('web.py')
+
+<hr/>
+<h2>赋值:函数和调用</h2>
+$def tr(values):
+    <tr>
+    $for v in values:
+        <td>$v</td>
+    </tr>
+
+$def table(rows):
+    <table>
+    $for row in rows:
+        $:row
+    </table>
+
+$ data = [['a', 'b', 'c'], [1, 2, 3], [2, 4, 6], [3, 6, 9] ]
+$:table([tr(d) for d in data])  $#以html的形式显示
+
+<hr/>
+<h2>纯Python代码和调用</h2>
+$code:
+    x = "you can write any python code here"
+    y = x.title()
+    z = len(x + y)
+
+    def limit(s, width=10):
+        """limits a string to the given width"""
+        if len(s) >= width:
+            return s[:width] + "..."
+        else:
+            return s
+
+<p>And we are back to template.
+The variables defined in the code block can be used here.
+For example, $limit(x)</p>

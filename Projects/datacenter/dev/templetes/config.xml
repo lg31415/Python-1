@@ -1,0 +1,7 @@
+<xml>
+<ToUserName>yanxingyang</ToUserName>
+<FromUserName>study_python</FromUserName>
+<CreateTime>123456</CreateTime>
+<MsgType>text</MsgType>
+<Content>Just a test</Content>
+</xml>
