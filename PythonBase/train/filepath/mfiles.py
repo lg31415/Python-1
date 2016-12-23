@@ -117,16 +117,14 @@ def fileWrite():
 	f.close()
 
 
-# 中文文件读写
+'''
+	中文文件读写
+'''
 def fileReadWriteCN():
 	with open(r"../../data/write_cn.txt",'r') as f:
 		for line in f:
 			lres=line.decode('utf8').strip('\t').strip('\n').split("\t")
 			print lres[2]
-
-
-
-
 
 
 
@@ -145,6 +143,7 @@ def fileProperty():
 	t=os.stat(filep)[8]
 	fmkdate=time.strftime('%Y%m%d',time.localtime(t))
 
+
 '''
 	同时打开多个文件进行并行操作
 	参考：http://blog.csdn.net/lanchunhui/article/details/50130175
@@ -159,12 +158,23 @@ def mutifileOper(filename1,filename2,filename3):
 		#使用zip函数
 		for i, j, k in zip(fp1,fp2,fp3):
 			print(i,j,k)
-		#
+
+
+'''
+	文件重定向
+	参考：http://www.cnblogs.com/clover-toeic/p/5491073.html
+'''
+
+
+def file_redirect():
+	savedStdout = sys.stdout  # 保存标准输出流
+	with open('out.txt', 'w+') as file:
+		sys.stdout = file  # 标准输出重定向至文件
+		print 'This message is for file!'
+
+	sys.stdout = savedStdout  # 恢复标准输出流
+	print 'This message is for screen!'
+
 
 if __name__ == '__main__':
-	#walkfile()
-	#fileWrite()
-	fileReadWriteCN()
-	#getfileext()
-	#fileRead()
-	#fileProperty()
+	file_redirect()

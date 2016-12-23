@@ -1,0 +1,163 @@
+#!/usr/local/bin/python2.7
+# -*- coding: utf-8 -*-
+'''
+	Fun:弹幕数据统计
+	Ref:
+	State：
+	Date:2016/12/21
+	Author:tuling56
+'''
+import os, sys
+from datetime import date, datetime, timedelta
+import pandas as pd
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+file_path = os.getcwd()
+
+if len(sys.argv) <= 2:
+	calcday = date.today() - timedelta(days=1)
+	calcday = calcday.strftime("%Y%m%d")
+	outdata = os.path.join(file_path, "barrage_stat_" + calcday)
+elif len(sys.argv) == 3:
+	calcday = sys.argv[1]
+	outdata = sys.argv[2]
+else:
+	print '\033[1;31merror params num wrong,please use date as the paras\033[0m'
+	exit()
+
+log_path = "/usr/local/nginx/logs/bak"
+log = os.path.join(log_path, "barrage_acc_" + calcday)
+log = "hest11.log"
+
+### 信息汇总
+print "  InLog:%s" % (log)
+print "Outdata:%s" % (outdata)
+
+'''
+	日志分割并构建pandas数据结构保存(tw07143端处理）
+'''
+
+
+def log_split():
+	category_num = {}
+	fout_stat = open(outdata, 'w')
+	print >> fout_stat, ','.join(
+		["category", "groupID", "type", "key", "subkey", "peerid", "userid", "action", "title"])
+	with open(log, "r") as f:
+		for line in f:
+			data_set = {"category": "", "groupID": "", "type": "", "key": "", "subkey": "", "peerid": "", "userid": "",
+						"action": "", "title": ""}  # 每一行都要创建新字典
+			try:
+				line = line.strip().split('\"')
+				if not line: continue
+				category, info = line[1].split('?')
+				category = category.split()[1].replace('/', '')
+				data_set["category"] = category
+				# 类别汇总
+				try:
+					category_num[category] = category_num[category] + 1
+				except:
+					category_num[category] = 0
+
+				if not info: continue
+				infolist = info.split("&")
+				for i in range(0, len(infolist)):
+					if (len(infolist[i]) > 0) and infolist[i].find('=') != -1:
+						key, value = infolist[i].split("=")
+						if key in data_set:
+							data_set[key] = value
+				list_res = [data_set["category"], data_set["groupID"], data_set["type"], data_set["key"],
+							data_set["subkey"], data_set["peerid"], data_set["userid"], data_set["action"],
+							data_set["title"]]
+				print >> fout_stat, ','.join(list(map(lambda x: str(x), list_res)))
+			except Exception, e:
+				# t,value,traceback = sys.exc_info()
+				#print str(e)
+				print "\033[1;31m%s\033[0m" % (line)
+	print category_num
+
+
+'''
+	数据统计（对pandas数据结构进行汇总,利用pandassql实现）【tw07562端处理】
+	输入：同步过来处理之后的csv文件
+	输出：数据统计的结果Execl
+'''
+from pandasql import sqldf, load_meat, load_births
+
+pysqldf = lambda q: sqldf(q, globals())
+
+
+def data_stat(fout_stat):
+	pdata = pd.read_csv(fout_stat)
+	print pdata
+
+	return 0
+
+	# 此处需要一个apply函数实现
+	#pdata['dkey']=pdata['key']+pdata['subkey']   #组合新key，若有groupID则groupID为key，若没有则key+subkey为key
+	pdata['dkey'] = pdata.apply(lambda x: x['groupID'] if x['groupID'] else x['key'] + x['subkey'], axis=1)
+
+	# 获取弹幕ID
+	print "GetID:"
+	getID_stat = pysqldf(
+		"select \"%s\" ,\"getID\",type,count(*) ,count(DISTINCT dkey)  from pdata where category=\"getID\";" % (
+		calcday))
+
+	# 统计下载弹幕次数和影片数
+	print "下载:"
+	down_stat = pysqldf(
+		"select \"%s\" ,\"download\",type,count(*) ,count(DISTINCT dkey)  from pdata where category=\"info\";" % (
+		calcday))
+
+	# 统计上报弹幕的次数，人数，影片数
+	print "上报:"
+	upload_stat = pysqldf(
+		"select \"%s\",\"upload\",type,count(*),count(distinct peerid),count(DISTINCT dkey) from pdata where category=\"upload\" GROUP by category,type;" % (
+		calcday))
+
+	# 统计点评弹幕的次数，影片数,（细分点赞和举报）
+	print "点评:"
+	remark_stat = pysqldf(
+		"select \"%s\",\"remark\",action,count(*),count(DISTINCT dkey) from pdata where category=\"remark\" GROUP by category,action;" % (
+		calcday))
+
+	# 统计搜索的次数,搜索的影片数
+	print "搜索:"
+	search_stat = pysqldf(
+		"select \"%s\",\"search\",count(*),count(DISTINCT title) from pdata where category=\"search\" GROUP by category;" % (
+		calcday))
+
+	#### 结果数据保存Excel
+	writer = pd.ExcelWriter(outdata)
+	if not getID_stat.empty:
+		getID_stat.columns = [u"日期", u"行为", u"影片类型", u"次数", u"影片数"]
+		getID_stat.to_excel(writer, u'getID', index=False)
+	#print down_stat
+	if not down_stat.empty:
+		down_stat.columns = [u"日期", u"行为", u"影片类型", u"次数", u"影片数"]
+		down_stat.to_excel(writer, u'下载', index=False)
+	#print down_stat
+	if not upload_stat.empty:
+		upload_stat.columns = [u"日期", u"行为", u"影片类型", u"次数", u"人数", u"影片数"]
+		upload_stat.to_excel(writer, u'上报', index=False)
+	#print upload_stat
+	if not remark_stat.empty:
+		remark_stat.columns = [u"日期", u"行为", u"动作", u"次数", u"影片数"]
+		remark_stat.to_excel(writer, u'评论', index=False)
+	#print remark_stat
+	if not search_stat.empty:
+		search_stat.columns = [u"日期", u"行为", u"影片类型", u"次数", u"影片数"]
+		search_stat.to_excel(writer, u'搜索', index=False)
+	#print search_stat
+	writer.save()
+
+#### 结果数据保存(csv测试)
+# down_stat.to_csv("hahh.csv",mode='a+',index=False,encoding='utf8')
+
+
+if __name__ == "__main__":
+	pdata = log_split()
+	data_stat('barrage_stat_20161222')
+
