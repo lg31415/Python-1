@@ -129,7 +129,7 @@ def dataStat():
     #print pdata.groupby('datec').sum()
     '''
 
-    # pandas按指定条件进行分组汇总：http://toutiao.com/i6321318705200366081/
+    # pandas按指定条件进行分组汇总(这里主要是日期)：http://toutiao.com/i6321318705200366081/
     pdata = pdata.set_index('datec')
     groupd1=pdata.resample('M',how=sum).fillna(0)
     print groupd1
