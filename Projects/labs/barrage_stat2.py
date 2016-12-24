@@ -16,30 +16,9 @@ sys.setdefaultencoding('utf-8')
 
 file_path = os.getcwd()
 
-if len(sys.argv) <= 2:
-	calcday = date.today() - timedelta(days=1)
-	calcday = calcday.strftime("%Y%m%d")
-	outdata = os.path.join(file_path, "barrage_stat_" + calcday)
-elif len(sys.argv) == 3:
-	calcday = sys.argv[1]
-	outdata = sys.argv[2]
-else:
-	print '\033[1;31merror params num wrong,please use date as the paras\033[0m'
-	exit()
-
-log_path = "/usr/local/nginx/logs/bak"
-log = os.path.join(log_path, "barrage_acc_" + calcday)
-log = "hest11.log"
-
-### 信息汇总
-print "  InLog:%s" % (log)
-print "Outdata:%s" % (outdata)
-
 '''
 	日志分割并构建pandas数据结构保存(tw07143端处理）
 '''
-
-
 def log_split():
 	category_num = {}
 	fout_stat = open(outdata, 'w')
@@ -84,20 +63,15 @@ def log_split():
 	输入：同步过来处理之后的csv文件
 	输出：数据统计的结果Execl
 '''
-from pandasql import sqldf, load_meat, load_births
-
+from pandasql import sqldf
 pysqldf = lambda q: sqldf(q, globals())
-
-
-def data_stat(fout_stat):
-	pdata = pd.read_csv(fout_stat)
-	print pdata
-
-	return 0
-
+def data_stat_pandassql(fout_stat):
+	pdata = pd.read_csv(fout_stat,header=0)
+	#pdata.columns=["category", "groupID", "type", "key", "subkey", "peerid", "userid", "action", "title"]
 	# 此处需要一个apply函数实现
 	#pdata['dkey']=pdata['key']+pdata['subkey']   #组合新key，若有groupID则groupID为key，若没有则key+subkey为key
 	pdata['dkey'] = pdata.apply(lambda x: x['groupID'] if x['groupID'] else x['key'] + x['subkey'], axis=1)
+	print pdata['dkey']
 
 	# 获取弹幕ID
 	print "GetID:"
@@ -129,6 +103,9 @@ def data_stat(fout_stat):
 		"select \"%s\",\"search\",count(*),count(DISTINCT title) from pdata where category=\"search\" GROUP by category;" % (
 		calcday))
 
+	#### 结果数据保存(csv测试)
+	# down_stat.to_csv("hahh.csv",mode='a+',index=False,encoding='utf8')
+
 	#### 结果数据保存Excel
 	writer = pd.ExcelWriter(outdata)
 	if not getID_stat.empty:
@@ -153,11 +130,91 @@ def data_stat(fout_stat):
 	#print search_stat
 	writer.save()
 
-#### 结果数据保存(csv测试)
-# down_stat.to_csv("hahh.csv",mode='a+',index=False,encoding='utf8')
 
+'''
+	数据统计（利用mysql）
+	输入：同步过来处理之后的csv文件
+	输出：数据统计的结果Execl
+'''
+import MySQLdb
+def data_stat_mysql(fout_stat):
+	conn=MySQLdb.connect(host='127.0.0.1',user='root',passwd='root',db='test')
+	cur=conn.cursor()
+	# 创建表和加载数据
+	csql="use test;create table barrage_stat(category varchar(10), groupID varchar(30), type varchar(10), key varchar(100), subkey varchar(30), peerid varchar(20), userid varchar(30), action varchar(10), title varhcar(50))"
+	cur.execute(csql)
+	lsql="use test;load data local infile '%s' into table barrage_stat;" %(fout_stat)
+	cur.execute(lsql)
+	conn.commit()
 
+	#　利用mysql进行数据统计
+	## 获取弹幕ID
+	print "GetID:"
+	qsql="select \"%s\" ,\"getID\",type,count(*) ,count(DISTINCT groupID)+count(DISTINCT conncat(key,subkey)) from test.barrage_stat where category=\"getID\";" % (calcday)
+	print qsql
+	cur.execute(qsql)
+	data=cur.fetchall()
+	for d in data:
+		print ','.join(list(map(lambda x: str(x), d)))
+
+	## 统计下载弹幕次数和影片数
+	print "下载:"
+	qsql="select \"%s\" ,\"download\",type,count(*) ,count(DISTINCT groupID)+count(DISTINCT conncat(key,subkey))  from test.barrage_stat where category=\"info\";" % (calcday)
+	print qsql
+	cur.execute(qsql)
+	data=cur.fetchall()
+	for d in data:
+		print ','.join(list(map(lambda x: str(x), d)))
+
+	## 统计上报弹幕的次数，人数，影片数
+	print "上报:"
+	qsql="select \"%s\",\"upload\",type,count(*),count(distinct peerid),count(DISTINCT groupID)+count(DISTINCT conncat(key,subkey)) from test.barrage_stat where category=\"upload\" GROUP by category,type;" % (calcday)
+	print qsql
+	cur.execute(qsql)
+	data=cur.fetchall()
+	for d in data:
+		print ','.join(list(map(lambda x: str(x), d)))
+
+	## 统计点评弹幕的次数，影片数,（细分点赞和举报）
+	print "点评:"
+	qsql="select \"%s\",\"remark\",action,count(*),count(DISTINCT groupID)+count(DISTINCT conncat(key,subkey)) from test.barrage_stat where category=\"remark\" GROUP by category,action;" % (calcday)
+	print qsql
+	cur.execute(qsql)
+	data=cur.fetchall()
+	for d in data:
+		print ','.join(list(map(lambda x: str(x), d)))
+
+	## 统计搜索的次数,搜索的影片数
+	print "搜索:"
+	qsql="select \"%s\",\"search\",count(*),count(DISTINCT title) from test.barrage_stat where category=\"search\" GROUP by category;" % (calcday)
+	print qsql
+	cur.execute(qsql)
+	data=cur.fetchall()
+	for d in data:
+		print ','.join(list(map(lambda x: str(x), d)))
+
+	conn.close()
+
+# 主体统计程序
 if __name__ == "__main__":
-	pdata = log_split()
-	data_stat('barrage_stat_20161222')
+	if len(sys.argv) <= 2:
+		calcday = date.today() - timedelta(days=1)
+		calcday = calcday.strftime("%Y%m%d")
+		outdata = os.path.join(file_path, "barrage_stat_" + calcday)
+	elif len(sys.argv) == 3:
+		calcday = sys.argv[1]
+		outdata = sys.argv[2]
+	else:
+		print '\033[1;31merror params num wrong,please use date as the paras\033[0m'
+		exit()
+
+	log_path = "/usr/local/nginx/logs/bak"
+	log = os.path.join(log_path, "barrage_acc_" + calcday)
+	log = "barrage_acc_20161222.log"
+
+	### 信息汇总
+	print "[  InLog]:%s" % (log)
+	print "[Outdata]:%s" % (outdata)
+	log_split()
+	data_stat_pandassql('barrage_stat_20161222')
 
