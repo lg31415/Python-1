@@ -48,13 +48,17 @@ class Img2Vec(object):
 
     # 对每个训练样本进行矩阵化;返回：训练矩阵和样本标签矩阵
     def processpic(self,picname):
-        img=cv2.imread(picname,0)
+        src=cv2.imread(picname,0)
+        #print src
+        # 此处要进行二值化
+        ret,img=cv2.threshold(src,150,255,cv2.THRESH_BINARY_INV)
         rzimg=cv2.resize(img,(28,28))
-        #cv2.imshow("X",img)
-        #cv2.waitKey()
+        #print rzimg
+        cv2.imshow("X",rzimg)
+        cv2.waitKey()
         ndimg=np.array(rzimg)
-        fndimg=ndimg.astype(float)
-        norm_ndimg=(fndimg-fndimg.min())/(fndimg.max()-fndimg.min())  # 归一化
+        #fndimg=ndimg.astype(float)
+        norm_ndimg=ndimg #(fndimg-fndimg.min())/(fndimg.max()-fndimg.min())  # 归一化
         fname=os.path.split(picname)[1]
         label=fname[0].upper()
         if label not in self.whatlist:
@@ -70,7 +74,7 @@ class Img2Vec(object):
     # 保存训练数据
     def savetrdata(self):
         #是否保存样本矩阵
-        np.savetxt(os.path.join(self.wheretosave,'samples'),np.array(self.train_samples),delimiter=',',fmt='%5.4f')  # 保留4位小数
+        np.savetxt(os.path.join(self.wheretosave,'samples'),np.array(self.train_samples),delimiter=',',fmt='%d') #fmt='%5.4f')  # 保留4位小数
         # 标签字母保存
         '''
         lables=pd.DataFrame(self.train_labels)
