@@ -56,34 +56,8 @@ def log_split():
 				print str(e)
 				print t,value
 		pdata=pd.DataFrame(lists,columns=["category","groupID","type","key","subkey","peerid","userid","action","title"])
-
+		# 数据在保存的时候空值的处理
 		return pdata
-
-'''
-	数据统计（对pandas数据结构进行汇总,利用pandas自带的函数实现）
-'''
-def data_stat_groupby(pdata):
-	#### 下载数据
-	down_data=pdata[(pdata["category"]=="info")]
-	# 多少部影片弹幕被下载
-	down_data #并按key+subkey去重，并加上groupID去重的结果
-	down_data.groupby([down_data['key'],down_data['subkey']])
-
-	# 多少人使用弹幕
-	down_data # 并按peerid去重
-
-	#### 上报数据
-	upload_data=pdata[(pdata["category"]=="upload")]
-	# 上报弹幕条数
-	upload_data
-	# 上报多少部影片
-	upload_data #并按key+subkey去重，并加上groupID去重的
-	# 多少人上报
-	upload_data #并按peerid去重
-
-	#### 点评数据
-	remark_data=pdata[(pdata["category"]=="remark")]
-	# 按影片去重
 
 
 
@@ -132,12 +106,6 @@ def data_stat_sql(pdata):
 
 	#csv 测试（可以追加内容，也可以覆盖，使用ascii码可保证在windows上打开的时候没有乱码）
 	down_stat.to_csv("hahh.csv",mode='a+',index=False,encoding='ascii')
-
-'''
-	数据统计（对pandas数据结构进行汇总,利用自带的sqllit3数据库）
-'''
-def data_stat_sqllit3(pdata):
-	pass
 
 
 if __name__ == "__main__":

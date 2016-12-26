@@ -10,6 +10,7 @@
 import os, sys
 from datetime import date, datetime, timedelta
 import pandas as pd
+import numpy as np
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -18,16 +19,15 @@ file_path = os.getcwd()
 
 '''
 	日志分割并构建pandas数据结构保存(tw07143端处理）
+	注意这里采用了文件的方式进行保存，而不是pd自带的保存函数
 '''
-def log_split():
+def log_split(log,proc_log):
 	category_num = {}
-	fout_stat = open(outdata, 'w')
-	print >> fout_stat, ','.join(
-		["category", "groupID", "type", "key", "subkey", "peerid", "userid", "action", "title"])
+	flog_proc = open(proc_log, 'w')
+	print >> flog_proc, ','.join(["category", "groupID", "type", "key", "subkey", "peerid", "userid", "action", "title"])
 	with open(log, "r") as f:
 		for line in f:
-			data_set = {"category": "", "groupID": "", "type": "", "key": "", "subkey": "", "peerid": "", "userid": "",
-						"action": "", "title": ""}  # 每一行都要创建新字典
+			data_set = {"category": "", "groupID": "", "type": "", "key": "", "subkey": "", "peerid": "", "userid": "","action": "", "title": ""}  # 每一行都要创建新字典
 			try:
 				line = line.strip().split('\"')
 				if not line: continue
@@ -50,12 +50,24 @@ def log_split():
 				list_res = [data_set["category"], data_set["groupID"], data_set["type"], data_set["key"],
 							data_set["subkey"], data_set["peerid"], data_set["userid"], data_set["action"],
 							data_set["title"]]
-				print >> fout_stat, ','.join(list(map(lambda x: str(x), list_res)))
+				print >> flog_proc, ','.join(list(map(lambda x: str(x), list_res)))
 			except Exception, e:
 				# t,value,traceback = sys.exc_info()
 				#print str(e)
 				print "\033[1;31m%s\033[0m" % (line)
 	print category_num
+
+
+
+
+'''
+	数据统计（利用pandas自带的groupby函数）
+	输入：同步过来处理之后的csv文件
+	输出：数据统计的结果Execl
+'''
+def data_stat_pandasby(flog_proc,outstat):
+	pass
+
 
 
 '''
@@ -65,49 +77,41 @@ def log_split():
 '''
 from pandasql import sqldf
 pysqldf = lambda q: sqldf(q, globals())
-def data_stat_pandassql(fout_stat):
-	pdata = pd.read_csv(fout_stat,header=0)
+def data_stat_pandasql(flog_proc):
+	pdata = pd.read_csv(flog_proc,header=0,dtype=[''])
 	#pdata.columns=["category", "groupID", "type", "key", "subkey", "peerid", "userid", "action", "title"]
 	# 此处需要一个apply函数实现
 	#pdata['dkey']=pdata['key']+pdata['subkey']   #组合新key，若有groupID则groupID为key，若没有则key+subkey为key
-	pdata['dkey'] = pdata.apply(lambda x: x['groupID'] if x['groupID'] else x['key'] + x['subkey'], axis=1)
+	pdata['dkey'] = pdata.apply(lambda x: x['groupID']+"1" if x['groupID'] else x['key'] + x['subkey'], axis=1)
 	print pdata['dkey']
+	print pdata
+	return  0
 
 	# 获取弹幕ID
 	print "GetID:"
-	getID_stat = pysqldf(
-		"select \"%s\" ,\"getID\",type,count(*) ,count(DISTINCT dkey)  from pdata where category=\"getID\";" % (
-		calcday))
+	getID_stat = pysqldf("select \"%s\" ,\"getID\",type,count(*) ,count(DISTINCT dkey)  from pdata where category=\"getID\";" % (calcday))
 
 	# 统计下载弹幕次数和影片数
 	print "下载:"
-	down_stat = pysqldf(
-		"select \"%s\" ,\"download\",type,count(*) ,count(DISTINCT dkey)  from pdata where category=\"info\";" % (
-		calcday))
+	down_stat = pysqldf("select \"%s\" ,\"download\",type,count(*) ,count(DISTINCT dkey)  from pdata where category=\"info\";" % (calcday))
 
 	# 统计上报弹幕的次数，人数，影片数
 	print "上报:"
-	upload_stat = pysqldf(
-		"select \"%s\",\"upload\",type,count(*),count(distinct peerid),count(DISTINCT dkey) from pdata where category=\"upload\" GROUP by category,type;" % (
-		calcday))
+	upload_stat = pysqldf("select \"%s\",\"upload\",type,count(*),count(distinct peerid),count(DISTINCT dkey) from pdata where category=\"upload\" GROUP by category,type;" % (calcday))
 
 	# 统计点评弹幕的次数，影片数,（细分点赞和举报）
 	print "点评:"
-	remark_stat = pysqldf(
-		"select \"%s\",\"remark\",action,count(*),count(DISTINCT dkey) from pdata where category=\"remark\" GROUP by category,action;" % (
-		calcday))
+	remark_stat = pysqldf("select \"%s\",\"remark\",action,count(*),count(DISTINCT dkey) from pdata where category=\"remark\" GROUP by category,action;" % (calcday))
 
 	# 统计搜索的次数,搜索的影片数
 	print "搜索:"
-	search_stat = pysqldf(
-		"select \"%s\",\"search\",count(*),count(DISTINCT title) from pdata where category=\"search\" GROUP by category;" % (
-		calcday))
+	search_stat = pysqldf("select \"%s\",\"search\",count(*),count(DISTINCT title) from pdata where category=\"search\" GROUP by category;" % (calcday))
 
 	#### 结果数据保存(csv测试)
 	# down_stat.to_csv("hahh.csv",mode='a+',index=False,encoding='utf8')
 
 	#### 结果数据保存Excel
-	writer = pd.ExcelWriter(outdata)
+	writer = pd.ExcelWriter(outstat)
 	if not getID_stat.empty:
 		getID_stat.columns = [u"日期", u"行为", u"影片类型", u"次数", u"影片数"]
 		getID_stat.to_excel(writer, u'getID', index=False)
@@ -137,13 +141,13 @@ def data_stat_pandassql(fout_stat):
 	输出：数据统计的结果Execl
 '''
 import MySQLdb
-def data_stat_mysql(fout_stat):
+def data_stat_mysql(flog_proc):
 	conn=MySQLdb.connect(host='127.0.0.1',user='root',passwd='root',db='test')
 	cur=conn.cursor()
 	# 创建表和加载数据
 	csql="use test;create table barrage_stat(category varchar(10), groupID varchar(30), type varchar(10), key varchar(100), subkey varchar(30), peerid varchar(20), userid varchar(30), action varchar(10), title varhcar(50))"
 	cur.execute(csql)
-	lsql="use test;load data local infile '%s' into table barrage_stat;" %(fout_stat)
+	lsql="use test;load data local infile '%s' into table barrage_stat;" %(flog_proc)
 	cur.execute(lsql)
 	conn.commit()
 
@@ -195,15 +199,25 @@ def data_stat_mysql(fout_stat):
 
 	conn.close()
 
-# 主体统计程序
+
+'''
+	数据统计（利用sqlite3）
+	输入：同步过来处理之后的csv文件
+	输出：数据统计的结果Execl
+'''
+def data_stat_sqlite3(flog_proc):
+	pass
+
+
+'''主体统计程序'''
 if __name__ == "__main__":
 	if len(sys.argv) <= 2:
 		calcday = date.today() - timedelta(days=1)
 		calcday = calcday.strftime("%Y%m%d")
-		outdata = os.path.join(file_path, "barrage_stat_" + calcday)
+		outstat = os.path.join(file_path, "barrage_stat_" + calcday)
 	elif len(sys.argv) == 3:
 		calcday = sys.argv[1]
-		outdata = sys.argv[2]
+		outstat = sys.argv[2]
 	else:
 		print '\033[1;31merror params num wrong,please use date as the paras\033[0m'
 		exit()
@@ -211,10 +225,13 @@ if __name__ == "__main__":
 	log_path = "/usr/local/nginx/logs/bak"
 	log = os.path.join(log_path, "barrage_acc_" + calcday)
 	log = "barrage_acc_20161222.log"
+	proc_log="barrage_acc_20161222.proc.log"
 
 	### 信息汇总
 	print "[  InLog]:%s" % (log)
-	print "[Outdata]:%s" % (outdata)
-	log_split()
-	data_stat_pandassql('barrage_stat_20161222')
+	print "[ProcLog]:%s" % (proc_log)
+	print "[outstat]:%s" % (outstat)
+
+	log_split(log,proc_log)
+	data_stat_pandasql(proc_log)
 
