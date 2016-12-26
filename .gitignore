@@ -1,4 +1,6 @@
 data/
+trash/
+dev/
 .idea/
 *.pyc
 *.csv
@@ -11,4 +13,6 @@ data/
 *.docx
 *.xls
 *.xlsx
+*.log
+*.html
 
