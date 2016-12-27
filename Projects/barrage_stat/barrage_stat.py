@@ -18,45 +18,79 @@ sys.setdefaultencoding('utf-8')
 
 file_path = os.getcwd()
 
+if len(sys.argv) <= 2:
+	calcday = date.today() - timedelta(days=1)
+	calcday = calcday.strftime("%Y%m%d")
+	proc_log= os.path.join(file_path,"data","barrage_proc_"+calcday)
+	stat_res=os.path.join(file_path,"data","barrage_stat.txt")
+elif len(sys.argv) == 3:
+	calcday = sys.argv[1]
+	proc_log= sys.argv[2]
+	stat_res= sys.argv[3]
+else:
+	print '\033[1;31merror params num wrong,please use date as the paras\033[0m'
+	sys.exit()
+
+log_path="/usr/local/nginx/logs/bak"
+log=os.path.join(log_path,"barrage_acc_"+calcday)
+
+print "\033[1;31m[  InLog]:%s\033[0m" % (log)
+print "\033[1;31m[ProcLog]:%s\033[0m" % (proc_log)
+print "\033[1;31m[StatRes]:%s\033[0m" % (stat_res)	#粗略的日志分析程序
+
 '''
 	日志分割并构建pandas数据结构保存(tw07143端处理）
 	注意这里采用了文件的方式进行保存，而不是pd自带的保存函数
 '''
 def log_split(log,proc_log):
 	category_num = {}
-	flog_proc = open(proc_log, 'w')
-	print >> flog_proc, ','.join(["category", "groupID", "type", "key", "subkey", "peerid", "userid", "action", "title"])
-	with open(log, "r") as f:
+	fout_stat=open(proc_log,'w')
+	print >>fout_stat,','.join(["category","groupID","type","key","subkey","peerid","userid","action","title"])
+	with open(log,"r") as f:
 		for line in f:
-			data_set = {"category": "", "groupID": "", "type": "", "key": "", "subkey": "", "peerid": "", "userid": "","action": "", "title": ""}  # 每一行都要创建新字典
+			data_set={"category":"","groupID":"","type":"","key":"","subkey":"","peerid":"","userid":"","action":"","title":""}
 			try:
-				line = line.strip().split('\"')
-				if not line: continue
-				category, info = line[1].split('?')
+				line=line.strip().split('\"')
+				category,info=line[1].split('?')
 				category = category.split()[1].replace('/', '')
 				data_set["category"] = category
+
 				# 类别汇总
 				try:
 					category_num[category] = category_num[category] + 1
 				except:
 					category_num[category] = 0
 
-				if not info: continue
-				infolist = info.split("&")
-				for i in range(0, len(infolist)):
-					if (len(infolist[i]) > 0) and infolist[i].find('=') != -1:
-						key, value = infolist[i].split("=")
+				if not info:continue
+				infolist=info.split("&")
+				for i in range(0,len(infolist)):
+					if(len(infolist[i])>0) and infolist[i].find('=')!=-1:
+						key,value=infolist[i].split("=")
 						if key in data_set:
-							data_set[key] = value
-				list_res = [data_set["category"], data_set["groupID"], data_set["type"], data_set["key"],
-							data_set["subkey"], data_set["peerid"], data_set["userid"], data_set["action"],
-							data_set["title"]]
-				print >> flog_proc, ','.join(list(map(lambda x: str(x), list_res)))
-			except Exception, e:
-				# t,value,traceback = sys.exc_info()
-				#print str(e)
-				print "\033[1;31m%s\033[0m" % (line)
-	print category_num
+							data_set[key]=value
+
+				list_res=[data_set["category"],data_set["groupID"],data_set["type"],data_set["key"],data_set["subkey"],data_set["peerid"],data_set["userid"],data_set["action"],data_set["title"]]
+				print >> fout_stat, ','.join(list(map(lambda x : str(x),list_res)))
+			except Exception,e:
+				#t,value,traceback = sys.exc_info()
+				print "\033[1;31m%s\033[0m" %(line)
+				if line[2].find('404')!=-1:
+					try:
+						category_num['Error404']=category_num['Error404']+1
+					except:
+						category_num['Error404']=0
+			del data_set
+	fout_stat.close()
+
+	#统计结果
+	fres=open(stat_res,'a+')
+	if not os.path.getsize(stat_res):
+		title="%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\r\n" %('date','getID','info','upload','remark','search','Error404')
+		fres.write(title)
+	result="%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\r\n" %(calcday,str(category_num.get('getID','0')),str(category_num.get('info','0')),str(category_num.get('upload','0')),str(category_num.get('remark','0')),str(category_num.get('search',0)),str(category_num.get('Error404','0')))
+
+	fres.write(result)
+	fres.close()
 
 
 
@@ -216,27 +250,6 @@ def data_stat_sqlite3(flog_proc):
 
 '''主体统计程序'''
 if __name__ == "__main__":
-	if len(sys.argv) <= 2:
-		calcday = date.today() - timedelta(days=1)
-		calcday = calcday.strftime("%Y%m%d")
-		outstat = os.path.join(file_path, "barrage_stat_" + calcday)
-	elif len(sys.argv) == 3:
-		calcday = sys.argv[1]
-		outstat = sys.argv[2]
-	else:
-		print '\033[1;31merror params num wrong,please use date as the paras\033[0m'
-		exit()
-
-	log_path = "/usr/local/nginx/logs/bak"
-	log = os.path.join(log_path, "barrage_acc_" + calcday)
-	log = "barrage_acc_20161222.log"
-	proc_log="barrage_acc_20161222.proc.log"
-
-	### 信息汇总
-	print "[  InLog]:%s" % (log)
-	print "[ProcLog]:%s" % (proc_log)
-	print "[outstat]:%s" % (outstat)
-
 	log_split(log,proc_log)
-	data_stat_pandasql(proc_log)
+	#data_stat_pandasql(proc_log)
 

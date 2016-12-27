@@ -15,4 +15,7 @@ dev/
 *.xlsx
 *.log
 *.html
+*.zip
+*.xml
+*.json
 
