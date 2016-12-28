@@ -31,9 +31,67 @@ else:
 	print '\033[1;31merror params num wrong,please use date as the paras\033[0m'
 	sys.exit()
 
+log_path="/usr/local/nginx/logs/bak"
+log=os.path.join(log_path,"barrage_acc_"+calcday)
 
+print "\033[1;31m[  InLog]:%s\033[0m" % (log)
 print "\033[1;31m[ProcLog]:%s\033[0m" % (proc_log)
 print "\033[1;31m[StatRes]:%s\033[0m" % (stat_res)	#粗略的日志分析程序
+
+'''
+	日志分割并构建pandas数据结构保存(tw07143端处理）
+	注意这里采用了文件的方式进行保存，而不是pd自带的保存函数
+'''
+def log_split(log,proc_log):
+	category_num = {}
+	fout_stat=open(proc_log,'w')
+	print >>fout_stat,','.join(["category","groupID","type","key","subkey","peerid","userid","action","title"])
+	with open(log,"r") as f:
+		for line in f:
+			data_set={"category":"","groupID":"","type":"","key":"","subkey":"","peerid":"","userid":"","action":"","title":""}
+			try:
+				line=line.strip().split('\"')
+				category,info=line[1].split('?')
+				category = category.split()[1].replace('/', '')
+				data_set["category"] = category
+
+				# 类别汇总
+				try:
+					category_num[category] = category_num[category] + 1
+				except:
+					category_num[category] = 0
+
+				if not info:continue
+				infolist=info.split("&")
+				for i in range(0,len(infolist)):
+					if(len(infolist[i])>0) and infolist[i].find('=')!=-1:
+						key,value=infolist[i].split("=")
+						if key in data_set:
+							data_set[key]=value
+
+				list_res=[data_set["category"],data_set["groupID"],data_set["type"],data_set["key"],data_set["subkey"],data_set["peerid"],data_set["userid"],data_set["action"],data_set["title"]]
+				print >> fout_stat, ','.join(list(map(lambda x : str(x),list_res)))
+			except Exception,e:
+				#t,value,traceback = sys.exc_info()
+				print "\033[1;31m%s\033[0m" %(line)
+				if line[2].find('404')!=-1:
+					try:
+						category_num['Error404']=category_num['Error404']+1
+					except:
+						category_num['Error404']=0
+			del data_set
+	fout_stat.close()
+
+	#统计结果
+	fres=open(stat_res,'a+')
+	if not os.path.getsize(stat_res):
+		title="%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\r\n" %('date','getID','info','upload','remark','search','Error404')
+		fres.write(title)
+	result="%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\t%-10s\r\n" %(calcday,str(category_num.get('getID','0')),str(category_num.get('info','0')),str(category_num.get('upload','0')),str(category_num.get('remark','0')),str(category_num.get('search',0)),str(category_num.get('Error404','0')))
+
+	fres.write(result)
+	fres.close()
+
 
 
 
@@ -119,16 +177,16 @@ def data_stat_pandasql(flog_proc):
 '''
 import MySQLdb
 def data_stat_mysql(flog_proc):
-	detail_stat=os.path.join(file_path,"barrage_stat_detail_"+calcday)
+	detail_stat=os.path.join(file_path,"data","barrage_stat_detail_"+calcday)
 	f=open(detail_stat,'w')
 	try:
-		conn=MySQLdb.connect(host='127.0.0.1',user='root',passwd='root',db='task')
+		conn=MySQLdb.connect(host='127.0.0.1',user='root',passwd='sd-9898w',db='test')
 		cur=conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
 		# 创建表和加载数据
-		#csql="use test;create table if not exists barrage_stat(category varchar(10), groupID varchar(30), type varchar(10), \`key\` varchar(100), subkey varchar(30), peerid varchar(20), userid varchar(30), action varchar(10), title varchar(50))ENGINE=MyISAM DEFAULT CHARSET=utf8;;"
-		#cur.execute(csql)
-		#lsql="use test;delete from barrage_stat;load data local infile '%s' into table barrage_stat fields terminated by ',';" %(flog_proc)
-		#cur.execute(lsql)
+		csql="use test;create table if not exists barrage_stat(category varchar(10), groupID varchar(30), type varchar(10), \`key\` varchar(100), subkey varchar(30), peerid varchar(20), userid varchar(30), action varchar(10), title varchar(50))ENGINE=MyISAM DEFAULT CHARSET=utf8;;"
+		cur.execute(csql)
+		lsql="use test;delete from barrage_stat;load data local infile '%s' into table barrage_stat fields terminated by ',';" %(flog_proc)
+		cur.execute(lsql)
 		conn.commit()
 	except Exception,e:
 		t,value,traceback = sys.exc_info()
@@ -137,7 +195,7 @@ def data_stat_mysql(flog_proc):
 	#　利用mysql进行数据统计
 	## 获取弹幕ID
 	print "GetID:"
-	qsql="select \"%s\" ,\"getID\",type,count(*) as '次数',count(DISTINCT groupID)+count(DISTINCT concat(`key`,subkey)) as '影片数' from barrage_stat where category=\"getID\";" % (calcday)
+	qsql="select \"%s\" ,\"getID\",type,count(*) as '次数',count(DISTINCT groupID)+count(DISTINCT concat(`key`,subkey)) as '影片数' from test.barrage_stat where category=\"getID\";" % (calcday)
 	print qsql
 	cur.execute(qsql)
 	data=cur.fetchall()
@@ -145,7 +203,7 @@ def data_stat_mysql(flog_proc):
 
 	## 统计下载弹幕次数和影片数
 	print "下载:"
-	qsql="select \"%s\" ,\"download\",type,count(*) as '次数',count(DISTINCT groupID)+count(DISTINCT concat(`key`,subkey)) as '影片数'  from barrage_stat where category=\"info\";" % (calcday)
+	qsql="select \"%s\" ,\"download\",type,count(*) as '次数',count(DISTINCT groupID)+count(DISTINCT concat(`key`,subkey)) as '影片数'  from test.barrage_stat where category=\"info\";" % (calcday)
 	print qsql
 	cur.execute(qsql)
 	data=cur.fetchall()
@@ -153,7 +211,7 @@ def data_stat_mysql(flog_proc):
 
 	## 统计上报弹幕的次数，人数，影片数
 	print "上报:"
-	qsql="select \"%s\",\"upload\",type,count(*) as '次数',count(distinct peerid) as '人数',count(DISTINCT groupID)+count(DISTINCT concat(`key`,subkey)) as '影片数' from barrage_stat where category=\"upload\" GROUP by category,type;" % (calcday)
+	qsql="select \"%s\",\"upload\",type,count(*) as '次数',count(distinct peerid) as '人数',count(DISTINCT groupID)+count(DISTINCT concat(`key`,subkey)) as '影片数' from test.barrage_stat where category=\"upload\" GROUP by category,type;" % (calcday)
 	print qsql
 	cur.execute(qsql)
 	data=cur.fetchall()
@@ -161,7 +219,7 @@ def data_stat_mysql(flog_proc):
 
 	## 统计点评弹幕的次数，影片数,（细分点赞和举报）
 	print "点评:"
-	qsql="select \"%s\",\"remark\",action,count(*) as '次数',count(DISTINCT groupID)+count(DISTINCT concat(`key`,subkey)) as '影片数' from barrage_stat where category=\"remark\" GROUP by category,action;" % (calcday)
+	qsql="select \"%s\",\"remark\",action,count(*) as '次数',count(DISTINCT groupID)+count(DISTINCT concat(`key`,subkey)) as '影片数' from test.barrage_stat where category=\"remark\" GROUP by category,action;" % (calcday)
 	print qsql
 	cur.execute(qsql)
 	data=cur.fetchall()
@@ -169,13 +227,13 @@ def data_stat_mysql(flog_proc):
 
 	## 统计搜索的次数,搜索的影片数
 	print "搜索:"
-	qsql="select \"%s\",\"search\",count(*),count(DISTINCT title) from barrage_stat where category=\"search\" GROUP by category;" % (calcday)
+	qsql="select \"%s\",\"search\",count(*),count(DISTINCT title) from test.barrage_stat where category=\"search\" GROUP by category;" % (calcday)
 	print qsql
 	cur.execute(qsql)
 	data=cur.fetchall()
-	#json.dump(data,f)
+	json.dump(data,f)
 	#写入中文的时候用下面的方法
-	f.write(json.dumps(data,ensure_ascii=False)+"\n")
+	#f.write(json.dumps(data,ensure_ascii=False)+"\n")
 
 	conn.close()
 	f.close()
@@ -192,6 +250,6 @@ def data_stat_sqlite3(flog_proc):
 
 '''主体统计程序'''
 if __name__ == "__main__":
-	data_stat_mysql(proc_log)
+	log_split(log,proc_log)
 	#data_stat_pandasql(proc_log)
 
