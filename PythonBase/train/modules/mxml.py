@@ -19,11 +19,11 @@ from xml.etree import ElementTree
 def print_node(node):
 	'''''打印结点基本信息'''
 	print "=============================================="
-	print "node.attrib:%s" % node.attrib
+	print "node.attrib:%s" % node.attrib  # 属性字典
 	if node.attrib.has_key("age") > 0 :
 		print "node.attrib['age']:%s" % node.attrib['age']
 	print "node.tag:%s" % node.tag
-	print "node.text:%s" % node.text
+	print "node.text:%s" % node.text      # 这个是什么意义
 
 
 def mxml(text="xxx"):
@@ -49,6 +49,7 @@ def mxml(text="xxx"):
 	#4. findall方法
 	node_findall = root.findall("person/name")[1]
 	print_node(node_findall)
+
 
 
 if __name__ == "__main__":
