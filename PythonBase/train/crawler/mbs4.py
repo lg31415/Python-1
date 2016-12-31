@@ -139,7 +139,6 @@ class mBS4Ex():
 
 
 if __name__ == "__main__":
-
     mbs4=mBS4(htmlcontent)
     mbs4.psdemo()
 

@@ -12,7 +12,7 @@ import urllib,urllib2
     首先获取全部的url
 '''
 entry_url="http://www.tingshuge.com/Book/2379.html"
-def getAllURL(entry_url):
+def getAllURL_api(entry_url):
     regex=re.compile(r'/down/\?2379-\d{1,3}\.html')
     user_agent = "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)"
     headers = {'User-Agent' : user_agent}
@@ -28,7 +28,7 @@ def getAllURL(entry_url):
 '''
     对每个url进行处理
 '''
-def getMp3(iurl):
+def getMp3_api(iurl):
     url = "http://www.tingshuge.com"+iurl;
     numr=re.search(r'(?<=-)\d{1,3}(?=\.html)',iurl)
     if numr:
@@ -53,17 +53,17 @@ def getMp3(iurl):
 '''
     入口：下载音频
 '''
-def down_mp3():
-    allurl=getAllURL(entry_url)
+def down_mp3_entry():
+    allurl=getAllURL_api(entry_url)
     for url in allurl:
-        getMp3(url)
+        getMp3_api(url)
 
 
 '''
-    构造post请求
+    构造post请求(在请求的时候传送body体)
 '''
 from collections import OrderedDict
-def usepost():
+def buildpost():
     data={'username':'zawe','password':'12342'}
     data={'u':'mediaso','u1':'click','u2':'search','u3':'thisu3','u4':'AWFEWKEDWDWDWEWLDW','u5':'jjwewew','rd':12243543544}
     data=OrderedDict([('u','mediaso'),('u1','click'),('u2','search'),('u3','thisu3'),('u4','AWFEWKEDWDWDWEWLDW'),('u5','jjwewew'),('rd',12243543544)])
@@ -79,7 +79,7 @@ def usepost():
 
 # 测试
 if __name__ == "__main__":
-    #down_mp3()
-    usepost()
+    #down_mp3_entry()
+    buildpost()
 
 
