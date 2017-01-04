@@ -66,6 +66,14 @@ def insertMuti():
     except Exception,e:
         print('Fail to insert values',e)
 
+    '''
+        参考2：
+        sql = "insert into test(name, age) value(%s, %s);"
+        cursor = db.cursor()
+        cursor.executemany(sql,[('Joe', '28'),('xxtime', '15')])
+        db.commit()
+    '''
+
 
 #Select Data
 '''

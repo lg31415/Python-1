@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:
+	Fun:xmp bug数据统计
 	Ref:http://blog.csdn.net/yueguanghaidao/article/details/7265246
-	State：
+	State：完成（2017年1月4日）
 	Date:2016/12/27
 	Author:tuling56
 '''
 import re, os, sys
-import hues
 
 from datetime import date, datetime, timedelta
 import zipfile
@@ -18,7 +17,7 @@ import MySQLdb
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-src_root_path="./data" #"存放推送文件父目录"
+src_root_path="/data4/xmp_bug_data"
 
 file_path=os.getcwd()
 data_path=file_path.replace("/bin","/data")
@@ -31,8 +30,12 @@ elif len(sys.argv) == 3:
 	calcday = sys.argv[1]
 	src_path= sys.argv[2]
 
-src_path="./data"
 loaddata= os.path.join(data_path,"bug_stat_"+calcday)
+
+
+print "\033[1;31msrc_path:\033[0m",src_path
+print "\033[1;31mload_data:\033[0m",loaddata
+
 
 '''
 	解析汇总文件
@@ -49,10 +52,9 @@ def parse_total():
 				code_addr=err_count.split(',')[0].strip()
 				count=err_count.split(':')[1].strip()
 			except Exception,e:
-				print "\033[1;31mError:\033[0m:",str(e)
+				print "\033[1;31mParseError:\033[0m:",str(e)
 			bug_file=os.path.join(xmp_version,code_addr+".zip")
-			bug_files[bug_file]=[xmp_version,code_addr,count]
-			print bug_file,bug_files[bug_file]
+			bug_files[bug_file]=[calcday,xmp_version,code_addr,count]
 	print "bug汇总文件解析完成"
 	return  bug_files
 
@@ -65,26 +67,34 @@ def parse_total():
 class BugStat():
 	def __init__(self,bugfile):
 		self.bug_file=bugfile
-		self.xmlcontent=None
+		self.xmlcontent=""
 		self.bug_dict={}
 
 	'''
 		解析zip文件内容
 	'''
 	def extract_zip(self):
-		zipFile = zipfile.ZipFile(self.bug_file)
+		zipFile = zipfile.ZipFile(os.path.join(src_path,self.bug_file))
 		try:
 			bugdata = zipFile.read('BugReport.xml')
 			self.xmlcontent=bugdata
 		except Exception,e:
-			print "\033[1;31mError:\033[0m:",str(e)
-		zipFile.close()
+			print "\033[1;31mZipError:\033[0m:",str(e)
+			print "\033[1;31mProblemFile:\033[0m",os.path.join(src_path,self.bug_file)
+			return ""
+		finally:
+			zipFile.close()
+
+		return 1
 
 	'''
 		解析xml文件，构造bug字典
 	'''
 	def extract_xml(self):
-		root = ElementTree.fromstring(self.xmlcontent)
+		if self.xmlcontent:
+			root = ElementTree.fromstring(self.xmlcontent)
+		else:
+			return ""
 
 		# 获取modulelist(构造模块字典)
 		mode_dict={}
@@ -116,7 +126,7 @@ class BugStat():
 					self.bug_dict[self.bug_file]=[code_reason,mode,values['version']]
 					break
 
-
+		return 1
 
 '''
 	结果文件存储(列表存储的常见形式)
@@ -127,20 +137,28 @@ def result_write(bug_info):
 			print >>f,'\t'.join(list(map(lambda v:str(v),values)))
 
 
+
 '''
 	结果文件入库（将结果文件存入mysql）[这部分放在shell里也行，python只负责运算]
 '''
-def resutl_staged(calcday,loaddata):
-	csql="use pgv_stat_yingyin;create table if not exists xmp_bug_stat(date varchar(10),version varchar(20),code_addr varchar(50),code_reason varchar(255),module varchar(20),module_version varchar(20),num int)ENGINE=MyISAM DEFAULT CHARSET=utf8;"
+def result_staged(calcday,loaddata):
+	#csql="use pgv_stat_yingyin;create table if not exists xmp_bug_stat(date varchar(10),version varchar(20),code_addr varchar(50),code_reason varchar(255),module varchar(20),module_version varchar(20),num int)ENGINE=MyISAM DEFAULT CHARSET=utf8;"
 	try:
 		conn=MySQLdb.connect(host='127.0.0.1',user='root',passwd='hive',db='pgv_stat_yingyin')
 		cur=conn.cursor()
 	except Exception,e:
 		print "open connection error:\n",str(e)
 		sys.exit()
-
-	lsql="use pgv_stat_yingyin;delete from xmp_bug_stat where ds='%s';load data local infile '%s' into table xmp_bug_stat fields terminated by '\t';" %(calcday,loaddata)
-	cur.execute(lsql)
+	
+	#cur.execute(csql)
+	lsql1="delete from pgv_stat_yingyin.xmp_bug_stat where date='%s';" %(calcday)
+	print(lsql1)
+	cur.execute(lsql1)
+	conn.commit()
+	
+	lsql2="load data local infile '%s' into table pgv_stat_yingyin.xmp_bug_stat(date,version,code_addr,num,code_reason,module,module_version);" %(loaddata)
+	print(lsql2)
+	cur.execute(lsql2)
 	conn.commit()
 
 	conn.close()
@@ -150,15 +168,23 @@ def resutl_staged(calcday,loaddata):
 
 # 程序主入口
 if __name__ == "__main__":
+	# step1:汇总解析
 	bug_info=parse_total()
-	sys.exit()
+	# step2:崩溃原因查询
 	for key,value in bug_info.items():
-		bgstat=BugStat(key)
-		bgstat.extract_zip()
-		bgstat.extract_xml()
-		bug_info[key].extend(bgstat.bug_dict[key])
-
+		try:
+			bgstat=BugStat(key)
+			bgstat.extract_zip()
+			if bgstat.extract_xml():
+				bug_info[key].extend(bgstat.bug_dict[key])
+				#print key,bug_info[key]
+		except Exception,e:
+			print "\033[1;31mZipXmlError\033[0m",str(e)
+			
+	# step3:结果写入
 	result_write(bug_info)
+	# step4:结果入库
+	result_staged(calcday,loaddata)
 
 
 
