@@ -10,3 +10,13 @@
 | web.py   |      |      |      |
 | bottle   |      |      |      |
 
+---
+
+## flask
+
+### 参考
+
+[Python Flask静态目录](http://www.tuicool.com/articles/VFRnmm)
+
+
+
