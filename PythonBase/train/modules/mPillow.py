@@ -3,6 +3,7 @@
 '''
 	Fun:Pillow库基本使用
 	Ref:http://www.cnblogs.com/apexchu/p/4231041.html
+		http://www.th7.cn/Program/Python/201404/193000.shtml
 	Date:2016/10/11
 	Author:tuling56
 '''
@@ -47,8 +48,19 @@ def fun():
 	'''
 
 
+from PIL import  ImageDraw
+def draw():
+   points=[(65.0, 112.0), (383.0, 255.0)]
+   ltp=points[0]
+   rdp=points[0]
+   im=Image.open('D:\\samples.bmp')
+   dr=ImageDraw.Draw(im)
+   dr.rectangle(points,outline=(255,0,0),fill=(0,255,0))
+   #im.show()
+   im.save("D:\\xx.bmp")
 
 
 if __name__ == "__main__":
-	fun()
+	#fun()
+	draw()
 

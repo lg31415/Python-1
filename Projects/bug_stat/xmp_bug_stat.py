@@ -70,26 +70,22 @@ class BugStat():
 		self.xmlcontent=""
 		self.bug_dict={}
 
-	'''
-		解析zip文件内容
-	'''
+	#解析zip文件内容
 	def extract_zip(self):
-		zipFile = zipfile.ZipFile(os.path.join(src_path,self.bug_file))
+		zipFile = zipfile.ZipFile(self.bug_file)
 		try:
 			bugdata = zipFile.read('BugReport.xml')
 			self.xmlcontent=bugdata
 		except Exception,e:
 			print "\033[1;31mZipError:\033[0m:",str(e)
-			print "\033[1;31mProblemFile:\033[0m",os.path.join(src_path,self.bug_file)
+			print "\033[1;31mProblemFile:\033[0m",self.bug_file
 			return ""
 		finally:
 			zipFile.close()
 
 		return 1
 
-	'''
-		解析xml文件，构造bug字典
-	'''
+	#解析xml文件，构造bug字典
 	def extract_xml(self):
 		if self.xmlcontent:
 			root = ElementTree.fromstring(self.xmlcontent)
@@ -118,12 +114,19 @@ class BugStat():
 		exception_node = root.find('Exception')
 		code_reason=exception_node.attrib['code']
 		stack_nodes=exception_node.getiterator("Frame")
+
+		isfind=False;
 		for stack_node in stack_nodes:
+			if isfind:
+				break
 			addr_hex=stack_node.attrib['address']			# 调用崩溃堆栈的地址
 			addr=eval('0x'+addr_hex)
 			for mode,values in mode_dict.items():
+				print "now:\t",addr,"module: ",mode,"addrdur: [ ",values['addr_dur'][0],values['addr_dur'][1]," ]"
 				if(not values['issystem'] and addr>values['addr_dur'][0] and addr<values['addr_dur'][1]):	#该模块的崩溃原因找到
 					self.bug_dict[self.bug_file]=[code_reason,mode,values['version']]
+					print "\033[1;31mhit:\033[0m:\t", "now:\t",addr,"module: ",mode,"addrdur: [ ",values['addr_dur'][0],values['addr_dur'][1]," ]"
+					isfind=True
 					break
 
 		return 1
@@ -165,9 +168,22 @@ def result_staged(calcday,loaddata):
 
 
 
+'''
+	测试接口
+'''
+def test_api():
+	bgstat=BugStat('./data/C5-00DE6BFD-00075A4D-070D9F2D.zip')
+	bgstat.extract_zip()
+	bgstat.extract_xml()
+	print bgstat.bug_dict
+
+
 
 # 程序主入口
 if __name__ == "__main__":
+	test_api()
+	sys.exit(0)
+
 	# step1:汇总解析
 	bug_info=parse_total()
 	# step2:崩溃原因查询
