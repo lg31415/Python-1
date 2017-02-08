@@ -6,6 +6,10 @@
 
   存放数据文件
 
+- docs
+
+  存放Python学习比较，按专题分
+
 - tools
 
   编写的python实用工具模块
