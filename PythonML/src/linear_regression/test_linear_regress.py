@@ -39,7 +39,7 @@ def loadDataSet_mul(fileName):      #general function to parse tab -delimited fl
     return dataMat,labelMat
 
 def test_singleFeture():
-    xArray, yArray,xList = loadDataSet('ex0.txt')
+    xArray, yArray,xList = loadDataSet('data/ex0.txt')
     testLR = linearRegress()
     
     testLR.regress(xArray, yArray, solver = 'OLS')
@@ -92,7 +92,7 @@ def rssError(yArr,yHatArr): #yArr and yHatArr both need to be arrays
     return ((yArr-yHatArr)**2).sum()
 
 def test_mutipleFeture():
-    xArray, yArray = loadDataSet_mul('abalone.txt')
+    xArray, yArray = loadDataSet_mul('data/abalone.txt')
     testLR = linearRegress()
     
     testLR.regress(xArray[0:99], yArray[0:99], solver = 'OLS')

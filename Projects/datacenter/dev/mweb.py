@@ -18,7 +18,7 @@ urls = (
 app = web.application(urls)
 
 '''
-    基本操作
+    基本操作：
     1,Get方法参数是如何传输进去的,url匹配到的部分都被捕捉了到Get的参数中
     2.Post方法的网页的表单数据是如何传递到服务器中，然后是怎样被解析的
 '''
@@ -45,6 +45,7 @@ class BASIC:
 '''
     模板操作:
     1,传递的参数渲染到html模板中去，实现html操作python的功能
+    2,本身自带的html模板功能太弱，建议使用JinJa2模板
 '''
 render = web.template.render('templetes/')
 
@@ -72,6 +73,8 @@ class RENDER:
         finally:
             rfb.close()
         return  view
+
+
 
 '''
     数据库操作:
@@ -168,7 +171,8 @@ class DBO:
         plt.savefig(fname,dpi = 300)
         plt.close()
 
+
+
+# 程序入口
 if __name__ == "__main__":
     app.run()
-    #dbx=DBO()
-    #dbx.GET()
