@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 '''
 	Fun:python实现行转列
-	Ref:
-	State：
+	Ref:http://blog.csdn.net/jackfrued/article/details/45021897?ref=myread
+	State：开发中
 	Date:2017/2/13
 	Author:tuling56
 '''
@@ -12,7 +12,6 @@ import hues
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
 
 
 '''
@@ -25,7 +24,7 @@ sys.setdefaultencoding('utf-8')
 	20160219        201607  Fri     44190928
 	20160221        201607  Sun     46551557
 
-	目标数据格式：
+	目标数据格式（注意剔除了日期这列）：
 	周别		Mon Tue Wed Thu Fri Sat Sun
 	201607	xx	xx	xx	xx	xx	xx	xx
 	201608	xx	xx	xx	xx	xx	xx	xx
@@ -34,21 +33,39 @@ sys.setdefaultencoding('utf-8')
 from collections import OrderedDict
 
 
-#vvdict=OrderedDict({"Mon":0,"Tue":0,"Wed":0,"Thu":0,"Fri":0,"Sat":0,"Sun":0}) 使用这种方式不能保证有序
-vvdict=OrderedDict([("Mon",0),("Tue",0),("Wed",0),("Thu",0),("Fri",0),("Sat",0),("Sun",0)])
-
+#vvdict=OrderedDict({"Mon":0,"Tue":0,"Wed":0,"Thu":0,"Fri":0,"Sat":0,"Sun":0}) 使用这种方式不能保证key有序
+vvdict=OrderedDict([("Mon",-1),("Tue",-1),("Wed",-1),("Thu",-1),("Fri",-1),("Sat",-1),("Sun",-1)])
 datadict={}
+
+
+# 辅助函数：重置字典的默认值
+def resetdict():
+	for k in vvdict.keys():
+		vvdict[k]=-1
+
+'''
+	行转列（长格式转宽格式）
+'''
 def row2col():
 	with open(u'E:\\XMP\\Record\\Problems\\xmp数据预测\local_vod_year_v2','r') as f:
 		for line in f:
 			date,week,weekday,vv=line.strip().split('\t')
-			vvdict[weekday]=vv
-			if week not in datadict and week=="Sun":  #每周一清空下字典
-				datadict[week]=vvdict
-				vvdict.clear()
+			if week in datadict:
+				vvdict[weekday]=vv
+			else:
+				if len(datadict.keys())==0:
+					vvdict[weekday]=vv
+					datadict[week]=vvdict
+				else:
+					datadict[week]=vvdict
+					resetdict()			  # 重置字典
 
-			print vvdict
+			#print vvdict
 
+'''
+	转换后的信息导出
+'''
+def writeio():
 	# 打印头
 	for key in vvdict.keys():
 		print key+"\t",
@@ -61,6 +78,8 @@ def row2col():
 			print vv,
 		print
 
+
 if __name__ == "__main__":
 	row2col()
+	writeio()
 
