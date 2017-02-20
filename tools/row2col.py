@@ -48,19 +48,15 @@ def resetdict():
 '''
 def row2col():
 	with open(u'E:\\XMP\\Record\\Problems\\xmp数据预测\local_vod_year_v2','r') as f:
+		preweek=""               # 判断周别转换标志
 		for line in f:
 			date,week,weekday,vv=line.strip().split('\t')
-			if week in datadict:
+			if week==preweek:
 				vvdict[weekday]=vv
 			else:
-				if len(datadict.keys())==0:
-					vvdict[weekday]=vv
-					datadict[week]=vvdict
-				else:
-					datadict[week]=vvdict
-					resetdict()			  # 重置字典
-
-			#print vvdict
+				datadict[preweek]=vvdict
+				preweek=week
+				resetdict()
 
 '''
 	转换后的信息导出
