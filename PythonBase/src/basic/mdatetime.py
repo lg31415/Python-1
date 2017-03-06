@@ -76,7 +76,7 @@ def dataOper():
     stadate_date=date(stadate_struct.tm_year,stadate_struct.tm_mon,stadate_struct.tm_mday)  #datetime.date
     print stadate_date  #2015-09-23
     #转日期后再计算
-    calcdate=stadate_date-timedelta(days=1)  #datetime.date类型
+    calcdate=stadate_date-timedelta(month=12,days=1)  #datetime.date类型
     calcdate_str = '%04d%02d%02d' %(calcdate.year, calcdate.month, calcdate.day)
     #yesdate_str=time.strftime('%Y%m%d',yesdate.timetuple())        #20150922
     print calcdate_str
@@ -140,14 +140,61 @@ def cmpdate():
         print "file %s has deleted!!!" % file
 
 
+
+'''
+    绝对时间
+'''
+def absolutetime():
+    #方案0
+    lt=time.localtime()  #time.struct_time,获取当前时间的年月日时分秒等信息
+    print lt.tm_year, lt.tm_mon, lt.tm_mday, lt.tm_hour, lt.tm_min, lt.tm_sec,lt.tm_wday,lt.tm_yday,lt.tm_isdst
+    t = (2009, 2, 17, 17, 3, 38, 1, 48, 0)  #年月日时分秒等信息
+    time.mktime(t)      #得到时间戳
+
+    #时间戳转日期datetime.fromtimestamp(time.time())
+
+    #方案1
+    curtime=datetime.now()
+    dt=datetime.datetime(2010,11,12,13,14,15,16)  #datetime.datetime
+    print dt.year, dt.month, dt.day,dt.hour,dt.minute,dt.second,dt.microsecond
+    dtdur=dt-timedelta(days=1,seconds=1)
+    durst = (2009, 2, 17, 17, 3, 38, 1, 48, 0)
+    dtdur.timetuple()    # 将datetime类型转换位time.struct_time
+    time.mktime(durst)
+
+
+    #测试
+    curtime=datetime.now()
+    diff_time=curtime-timedelta(minutes=1)
+    diff_time_start=(diff_time.year,diff_time.month,diff_time.day,diff_time.hour,diff_time.minute,0,0,0,-1)
+    diff_time_end=(diff_time.year,diff_time.month,diff_time.day,diff_time.hour,diff_time.minute,59,0,0,-1)
+    diff_time_start_stamp=int(time.mktime(diff_time_start))
+    diff_time_end_stamp=int(time.mktime(diff_time_end))
+    print "diff_time_start_stamp:",diff_time_start_stamp
+    print "diff_time_end_stamp:",diff_time_end_stamp
+
+    print "curtime:",curtime
+    print "diff_time_start_stamp:",datetime.fromtimestamp(diff_time_start_stamp)
+    print "diff_time_end_stamp:",datetime.fromtimestamp(diff_time_end_stamp)
+
+
+
+
+
+
+
+
+
+
+
 # 主测试函数
 if __name__=='__main__':
     #str2date()
     #timeStamp2date()
     #formatTrans()
-    #dataOper()
+    dataOper()
     #mdateutil()
-    cmpdate()
+    #cmpdate()
 
 
 
