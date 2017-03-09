@@ -1,5 +1,7 @@
 ## Python学习笔记
 
+[TOC]
+
 **目录介绍**
 
 - data
@@ -30,8 +32,19 @@
 
   scikit-learn,tensorflow等机器学习模块
 
-### 待完成
+### 新工具
 
-### 有趣
+#### 工具列表
 
-### 参考
+python代码的自动格式化
+
+谷歌开源Python Fire: 自动生成命令行接口
+
+#### 参考
+
+[Google的Python代码格式化工具:YAPF](http://www.toutiao.com/i6393821455200551425/)
+
+[Python Fire:自动生成命令行接口](http://www.toutiao.com/i6393135654800212482/)
+
+[Python Prompt Toolkit：构建强大交互式命令行的 Python 工具库](http://hao.jobbole.com/python-prompt-toolkit/?utm_source=python.jobbole.com&utm_medium=sidebar-resources)  [参考2](http://www.toutiao.com/i6391957455407940098/)
+

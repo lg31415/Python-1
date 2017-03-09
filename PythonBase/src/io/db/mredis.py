@@ -87,10 +87,10 @@ def rsync_to_mysql():
 
 '''
     同步mysql数据到redis
+    将mysql数据封装，然后以命令行的方式导入到redis中
 '''
 def rsync_to_redis():
     pass
-
 
 
 '''
