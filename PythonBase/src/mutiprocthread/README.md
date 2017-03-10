@@ -22,3 +22,5 @@
 
 [趣文:以生活例子来说明多进程和多线程](http://mp.weixin.qq.com/s?__biz=MjM5OTMxMzA4NQ==&mid=2655932144&idx=1&sn=2f6a122d5e0363f2dbb85fc2b7e406cd&scene=0#rd)（推荐）
 
+[Python使用Pipe和Queue进程间通信](https://segmentfault.com/a/1190000008122273)
+
