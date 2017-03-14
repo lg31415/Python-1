@@ -18,12 +18,11 @@ import socket
 '''
     BS4基本使用
 '''
-htmlcontent =open('../../data/bs4html.html')
 class mBS4():
-    def __init__(self,html):
-        self.url=None
-        self.html=html
-        self.soup=BeautifulSoup(self.html)
+    def __init__(self):
+        self.soup=BeautifulSoup(open('../../data/bs4html.html'))
+
+    # 基础演示
     def bsdemo(self):
         #print self.soup.prettify() #,soup.html
         #获取所有内容
@@ -33,17 +32,23 @@ class mBS4():
         print ps
         print '---',self.soup.p
 
-    def modfiy(self):
+    # 添加元素和设置元素属性
+    def add_elem(self):
         p = self.soup.find('p')
         tag =self.soup.new_tag("span")
         tag['style']="position: absolute;  background-color:#888888;top: 0; z-index:9999999999999;right: 0;color:red"
         tag.string = 'pv:{pv} uv{uv}'.format(pv=12,uv=3)
         p.insert_after(tag)
-        #print self.soup.prettify()
+        #print self.soup.prettify().decode('utf8')
+
+        # 结果保存
         f=open('new.html','w')
-        f.write(self.soup.prettify())
+        f.write(self.soup.prettify().decode('utf8'))
         f.close()
 
+    # 高级查找
+    def search_elem(self):
+        pass
 
 
 
@@ -159,138 +164,12 @@ class mBS4Ex():
 
 
 '''
-    测试案例
-'''
-class MapHot():
-    def __init__(self):
-        response=urllib2.urlopen('http://v.xunlei.com')
-        self.posnum={}
-        self.html=response.read().decode('utf8')
-        self.soup=BeautifulSoup(self.html)
-
-    # _展示函数
-    def _add_display(self,obj,pv,uv):
-        tag =self.soup.new_tag("span")
-        tag['style']="position: absolute;  background-color:#888888;top: 0; z-index:9999999999999;right: 0;color:red"
-        tag.string = 'pv:{pv} uv{uv}'.format(pv=pv,uv=uv)
-        obj.insert_after(tag)
-
-    # _获取lisitid
-    def _getlistid(self,pos):
-        list_regrex=re.compile('.*list_[0-9]?')
-        listmatch=re.match(list_regrex,pos)
-        if listmatch is not None:
-            listid=listmatch.group(0)
-            listid=listid.strip('_')
-            return  listid
-        else:
-            return ""
-
-
-    # step1:解析地址和数量(这个解析的还有问题)
-    def posnum_parse(self):
-        list_regrex=re.compile('.*list_[0-9]?')
-        ul_regrex=re.compile('(?<=UL\[)[0-9]{1,2}(?=\])')
-        div_regrex=re.compile('(?<=DIV\[)[0-9]{1,2}(?=\])')
-        li_regrex=re.compile(('(?<=LI\[)[0-9]{1,2}(?=\])'))
-        p_regrex=re.compile(('(?<=P\[)[0-9]{1,2}(?=\])'))
-        with open('C:\\Users\\xl\\PhpstormProjects\\Maphot\\pianku_part','r') as f:
-            for line in f:
-                pos_detail={}
-                pos,pv,uv=line.strip().split()
-                pos_detail['PV']=pv
-                pos_detail['UV']=uv
-                listmatch=re.match(list_regrex,pos)
-                if listmatch is not None:
-                    listid=listmatch.group(0)
-                    listid=listid.strip('_')
-
-                    divmatch=re.search(div_regrex,pos)
-                    if divmatch is not None:
-                        divid=divmatch.group(0)
-                        pos_detail['DIV']=divid
-
-                    ulsearch=re.search(ul_regrex,pos)
-                    if ulsearch is not None:
-                        ulid=ulsearch.group(0),
-                        pos_detail['UL']=ulid[0]
-
-                    lisearch=re.search(li_regrex,pos)
-                    if lisearch is not None:
-                        liid=lisearch.group(0)
-                        pos_detail["LI"]=liid
-                self.posnum.setdefault(listid,[]).append(pos_detail)
-        print u"解析位置完成"
-        print self.posnum
-
-
-    '''
-        要解析成有序字典，这样才能代表其原来的位置
-    '''
-    def posnum_parse_impl(self):
-        pass
-
-
-    # step2:修改网页内容
-    def modfiy_parse(self):
-        # 解析每个列表区域
-        for listid in self.posnum.keys():
-            obj_list = self.soup.select('#'+listid)[0]
-            poss=self.posnum[listid]
-            for pos in poss:
-                divid=int(pos.get('DIV',-1))
-                ulid=int(pos.get('UL',-1))
-                liid=int(pos.get('LI',-1))
-                pid=int(pos.get('P',-1))
-                uv=int(pos.get('UV',-1))
-                pv=int(pos.get('PV',-1))
-
-                if divid!=-1:
-                    obj_list_div=obj_list.select('div')[divid]
-                if ulid!=-1:
-                    obj_list_ul=obj_list.select('ul')[ulid]
-                if liid!=-1:
-                    obj_list_li=obj_list.select('li')[liid]
-
-                obj=obj_list_li.select('a > img')[0]
-                self._add_display(obj,pv,uv)            # 直接调用展示函数
-
-        # 最后结果保存
-        res=self.soup.prettify().encode('utf8')
-        f=open('new.html','w')
-        f.write(res)
-        f.close()
-
-
-    # 直接解析原始位置focus_list_0_UL[0]_LI[0]_A[0]，继承该id的元素都进行计算
-    def direct_parse(self):
-        with open('C:\\Users\\xl\\PhpstormProjects\\Maphot\\pianku_part','r') as f:
-            for line in f:
-                pos,pv,uv=line.strip().split()
-                listid=self._getlistid(pos)
-                obj_list=self.soup.find(id=listid)
-                print str(obj_list).decode('utf8')   #怎么将这个数字体现出来
-
-                # 要返回
-                ppds=['ul','li','a']
-
-                for ppd in ppds:
-                    ppd1=obj_list.find_all(ppd)
-
-
-
-'''
     程序入口
 '''
 if __name__ == "__main__":
-    #mbs4=mBS4(htmlcontent)
+    mbs4=mBS4()
     #mbs4.bsdemo()
-    #mbs4.modfiy()
+    mbs4.modfiy()
 
     #mex=mBS4Ex()
     #mex.getmovied()
-
-    #测试案例
-    mhot=MapHot()
-    #mhot.possplit()
-    mhot.modfiy_list()
