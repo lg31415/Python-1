@@ -46,7 +46,7 @@ class CTxt2XlS():
 
 
 '''
-    邮件发送1
+    邮件发送
 '''
 import smtplib
 from email.mime.text import MIMEText
@@ -105,7 +105,6 @@ class CSendMail():
 class CPathFile(object):
     def __init__(self,path):
         self.path=path
-
     #递归获取所有全路径文件
     def getFilelist(self):
         classes={}
@@ -119,11 +118,9 @@ class CPathFile(object):
             if len(files)!=0:
                 classes[mclass]=len(files)
         print classes,"total:",len(self.filelist)
-
     #获取路径，文件名，文件扩展
     def getPathNameExt(self):
        pass
-
     #切换路径
     def chndir(self,n):
         npath=self.path.count(os.sep)
@@ -137,5 +134,21 @@ class CPathFile(object):
             print "you input a path"
             return self.path.rsplit(os.sep,n+1)
 
+
+'''
+    系统基本信息
+'''
+class CSysInfo():
+    def __init__(self):
+        pass
+    # 系统平台判定
+    def judge_platform(self):
+        pass
+
+
+
+'''
+    测试入口
+'''
 if __name__ == "__main__":
     pass

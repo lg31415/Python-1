@@ -7,8 +7,10 @@ __author__ = 'yjm'
 '''
 
 
+
 from bs4 import BeautifulSoup    #html
 from bs4 import BeautifulStoneSoup  #xml
+from bs4 import Tag,NavigableString
 import urllib
 import urllib2
 import os,re
@@ -46,9 +48,21 @@ class mBS4():
         f.write(self.soup.prettify().decode('utf8'))
         f.close()
 
-    # 高级查找
+    # 高级查找（查找div#id2下的第一个p标签）
     def search_elem(self):
-        pass
+        obj=self.soup.find(id="id2")
+        #print obj.text   # 输出该标签下所有的文本内容
+        #for cc in obj.strings:
+        #    print cc
+        for par in obj.next_elements:
+            if isinstance(par,Tag):
+                if par.has_attr('id') and par['id']=='id3':
+                    par['class']='cluce'
+                print par.prettify()
+            #else:
+            #    print par.string
+
+
 
 
 
@@ -169,7 +183,8 @@ class mBS4Ex():
 if __name__ == "__main__":
     mbs4=mBS4()
     #mbs4.bsdemo()
-    mbs4.modfiy()
+    #mbs4.modfiy()
+    mbs4.search_elem()
 
     #mex=mBS4Ex()
     #mex.getmovied()

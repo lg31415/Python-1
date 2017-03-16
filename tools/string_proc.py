@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:字符串处理，剔除异常字符
+	Fun:字符串处理类
 	Ref:
 	Date:2016/10/19
 	Author:tuling56
@@ -14,7 +14,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-#################### 功能函数部分 #################
+#################### 判断 #################
 #判断单个字符是否是中文
 def is_cn_char(i):
 	return 0x4e00<=ord(i)<0x9fa6
@@ -36,6 +36,8 @@ def isJapan(s):
 	#return re.search(ur"[\u3040-\u309f]+",unicode(s,"utf-8",'ignore')) is not None or re.search(ur"[\u30a0-\u30ff]+",unicode(s,"utf-8",'ignore')) is not None
 	return re.search(ur"[\u3040-\u309f]+",s) is not None or re.search(ur'[\u30a0-\u30ff]+',s) is not None
 
+
+#################### 操作 #################
 # 去除标点符号和无效字符
 def remove_comm(s):
 	patern=re.compile(r'[\r\n\t\s【】;:,：，；*?\]\[]?')
@@ -43,8 +45,7 @@ def remove_comm(s):
 	print(sr)
 	return sr
 
-##################### 应用部分  ####################
-# 替换用函数处理
+# 替换字符（用函数来判断规则）
 def resub():
 	s = 'i say, hello world!'
 	pattern = re.compile(r'(\w+) (\w+)')
@@ -59,9 +60,9 @@ def resub():
 
 
 
-##################### 实战部分 #####################
+############## 实战部分 #####################
 ntitle="【资源公众号-影视资源狗】【电影-www.】.2016.HD720P.影视资源狗.mp4"
-#ntitle="zhan\t zhv33 【 zhjang ] * whwr】: ：，;；\r [鸟哥的\n\t"
+ntitle="zhan\t zhv33 【 zhjang ] * whwr】: ：，;；\r [鸟哥的\n\t"
 ntitle=u"[BuRongYi.com]盗墓笔记.HD1280高清国语中英双字.mp4"
 ntitle="【欧美短片】（骚女和黑屌14.20分钟）.mp4"
 

@@ -17,8 +17,12 @@ class MutiText2XLS(object):
 		self.filelist=[]
 		self.outputexcel='.'
 
-	#获取文件列表
-	def getfilelist():
+	# 大文件分割
+	def splitbigf(self):
+		pass
+
+	# 获取目录中的文件列表
+	def getfilelist(self):
 		global filelist
 		for root, dirs, files in os.walk(self.datapath):
 			for file in files:
@@ -28,10 +32,8 @@ class MutiText2XLS(object):
 					self.filelist.append(readfile)
 		return filelist
 
-	'''
-		将文件列表里的每个文件添加到工作簿的工作表
-	'''
-	def txt2xls():
+	# 将文件列表里的每个文件添加到工作簿的工作表
+	def txt2xls(self):
 		self.getfilelist()
 		xlsdata=xlwt.Workbook()
 		for inputfile in self.filelist:

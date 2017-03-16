@@ -24,6 +24,7 @@ for filename in os.listdir(file_path):
 #print file_list
 
 
+## 计算过期日期
 today=time.strftime('%Y%m%d',time.localtime(time.time()))
 end_day=date(int(today[0:4]),int(today[4:6]),int(today[-2:]))-timedelta(days=30)
 

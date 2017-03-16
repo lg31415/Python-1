@@ -36,33 +36,14 @@ from collections import OrderedDict
 
 #vvdict=OrderedDict({"Mon":0,"Tue":0,"Wed":0,"Thu":0,"Fri":0,"Sat":0,"Sun":0}) 使用这种方式不能保证key有序
 vvdict=OrderedDict([("Mon",-1),("Tue",-1),("Wed",-1),("Thu",-1),("Fri",-1),("Sat",-1),("Sun",-1)])
-datadict={}
-
 
 # 辅助函数：重置字典的默认值
-def resetdict():
+def reset_dict():
 	for k in vvdict.keys():
 		vvdict[k]=-1
 
-'''
-	行转列（长格式转宽格式）
-'''
-def row2col():
-	with open(u'E:\\XMP\\Record\\Problems\\xmp数据预测\local_vod_year_v2','r') as f:
-		preweek=""               # 判断周别转换标志
-		for line in f:
-			date,week,weekday,vv=line.strip().split('\t')
-			if week==preweek:
-				vvdict[weekday]=vv
-			else:
-				datadict[preweek]=vvdict
-				preweek=week
-				resetdict()
-
-'''
-	转换后的信息导出
-'''
-def writeio():
+# 辅助函数：转换后的信息导出
+def export_result():
 	# 打印头
 	for key in vvdict.keys():
 		print key+"\t",
@@ -76,7 +57,26 @@ def writeio():
 		print
 
 
+
+'''
+	行转列（长格式转宽格式）
+'''
+datadict={}  # 最终的数据结构字典
+def row2col():
+	with open(u'E:\\XMP\\Record\\Problems\\xmp数据预测\local_vod_year_v2','r') as f:
+		preweek=""               # 判断周别转换标志
+		for line in f:
+			date,week,weekday,vv=line.strip().split('\t')
+			if week==preweek:
+				vvdict[weekday]=vv
+			else:
+				datadict[preweek]=vvdict
+				preweek=week
+				reset_dict()
+
+
+
 if __name__ == "__main__":
 	row2col()
-	writeio()
+
 

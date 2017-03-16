@@ -2,8 +2,8 @@
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-  功能注释：Python操作Excel
-           利用到xlrd和xlwt库
+  功能注释：不同文件类型和数据源之间的转换
+           （xls部分利用到xlrd和xlwt库）
   参考链接：http://www.cnblogs.com/lhj588/archive/2012/01/06/2314181.html
 '''
 
@@ -13,7 +13,7 @@ import sys
 import MySQLdb
 
 '''
-	xls read & write
+	Part: xls read & write
 '''
 #xls的读
 def mxlsread():
@@ -39,7 +39,7 @@ def mxlswrite():
 
 
 '''
-	MySQL<->Excel
+	Part: MySQL<->Excel
 '''
 # 读取mysql的数据并保持成excel文件
 def msql2xls():
@@ -71,7 +71,7 @@ def msql2xls():
 
 
 '''
-	txt<->xls
+	Part: txt<->xls
 '''
 #从格式化txt文件读取数据转为xls
 def mtxt2xls():
@@ -107,7 +107,7 @@ def xlsaddpic():
 
 
 '''
-	csv<->xls
+	Part: csv<->xls
 '''
 #csv文件的写入（生成）
 import csv
@@ -137,8 +137,9 @@ def mcsvread():
     csvfile.close()
 
 
-
-
+'''
+    测试入口
+'''
 if __name__ == "__main__":
     #mxlsread()
     #mxlswrite()

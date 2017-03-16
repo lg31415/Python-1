@@ -56,6 +56,17 @@ Comment
 # 一个特殊的NavigableString对象，输出的内容不包括注释符号
 ```
 
+判读当前节点的对象是什么
+
+```python
+import bs4 # 或者
+from bs4 import Tag,NavigableString
+if isinstance(par,bs4.element.Tag): #或者if isinstance(par,Tag)
+	print 'now is Tag'
+```
+
+
+
 ##### 查找
 
 ###### 遍历文档树
@@ -76,62 +87,62 @@ for child in  soup.body.children:
 .descendants对所有子孙节点进行递归循环，返回可迭代对象
 for child in soup.descendants:
     print child
-
 ```
 
-节点内容
+单个节点内容
 
 ```
 .string属性
 如果一个标签里面没有标签了，那么 .string 就会返回标签里面的内容。如果标签里面只有唯一的一个标签了，那么 .string 也会返回最里面的内容。
 ```
 
-多个内容
+所有节点内容
 
-```
-.strings和.stripped_strings返回文档所有节点的内容，后者去除了多余的空白内容
+```python
+# .strings和.stripped_strings返回文档所有节点的内容可迭代对象，后者去除了多余的空白内容
+for cc in tag.stripped_string:
+	print cc
+    
+# 类似的还有.text属性，该属性直接返回unicode格式的节点内容（带格式）
 ```
 
 父节点
 
-```
-.parent属性
+```python
+# .parent属性,返回的是父节点的tag对象
 ```
 
 全部父节点
 
-```
-.parents属性
+```python
+# .parents属性,返回的是全部父节点可迭代对象，从内层到外层逐层迭代，每层都是个tag对象
 ```
 
 兄弟节点
 
-```
-兄弟节点是和本节点处于同一级的节点
-next_sibling获取下一个，.previous_sibling 则与之相反，如果节点不存在，则返回 None
-
+```python
+# 兄弟节点是和本节点处于同一级的节点
+# next_sibling获取下一个，.previous_sibling 则与之相反，如果节点不存在，则返回 None,注意该返回值通常是\n等换行符，这是排版html格式的时候引起的
 ```
 
 全部兄弟节点
 
-```
-.next_siblings  .previous_siblings 属性
+```python
+# .next_siblings  .previous_siblings 属性
 ```
 
 前后节点
 
-```
-# 不针对于兄弟节点，而是在所有节点，不分层次
-.next_element  .previous_element 属性
+```python
+# 不针对于兄弟节点，而是在所有节点
+# .next_element  .previous_element 属性,其等同于.next和.previous
 ```
 
 所有前后节点
 
+```python
+# .next_elements  .previous_elements 属性,逐层解析到最后
 ```
-.next_elements  .previous_elements 属性
-```
-
-
 
 ###### 依据DOM查找
 
@@ -204,6 +215,72 @@ find_all_previous() 和 find_previous()
 ###### 依据CSS查找
 
 soup.select(),返回类型是list
+
+##### 修改
+
+###### 修改已有的
+
+修改tag的名称和属性
+
+```
+tag['id']=xxx
+tag['class']=xxx
+tag['style']="position: absolute;  background-color:yellow;top: 0;right: 0;color:red"
+del tag['id']
+```
+
+修改tag的内容
+
+```
+.string 方法
+# 如果当前的tag包含了其它tag,那么给它的 .string 属性赋值会覆盖掉原有的所有内容包括子tag
+```
+
+向tag内添加新内容
+
+```
+.append()
+```
+
+###### 增加新的
+
+> 方法汇总：
+>
+> - append
+> - insert
+> - insert_before()和insert_after()
+> - clear() # 移除当前tag的内容
+> - extract() #移除tag节点  
+
+添加文本内容
+
+```python
+soup = BeautifulSoup("<b></b>")
+tag = soup.b
+tag.append("Hello")
+new_string = soup.new_string(" there")
+tag.append(new_string)
+tag
+# <b>Hello there.</b>
+tag.contents
+# [u'Hello', u' there']
+```
+
+添加新节点
+
+```python
+soup = BeautifulSoup("<b></b>")
+original_tag = soup.b
+
+new_tag = soup.new_tag("a", href="http://www.example.com")
+original_tag.append(new_tag)
+original_tag
+# <b><a href="http://www.example.com"></a></b>
+
+new_tag.string = "Link text."
+original_tag
+# <b><a href="http://www.example.com">Link text.</a></b>
+```
 
 
 
