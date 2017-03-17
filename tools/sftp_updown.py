@@ -22,20 +22,31 @@ sys.setdefaultencoding('utf-8')
 class SFTP_LAB():
 	def __init__(self):
 		pass
+
+	# sftp demo
 	def demo(self):
-		scp=paramiko.Transport(('192.168.0.102',22))
+		scp=paramiko.Transport(('127.0.0.1',122))
+
 		#建立连接
-		scp.connect(username='root',password='361way')
+		scp.connect(username='root',password='123')
+
 		#建立一个sftp客户端对象，通过ssh transport操作远程文件
 		sftp=paramiko.SFTPClient.from_transport(scp)
-		#Copy a remote file (remotepath) from the SFTP server to the local host
-		sftp.get('/root/testfile','/tmp/361way')
-		#Copy a local file (localpath) to the SFTP server as remotepath
-		sftp.put('/root/crash-6.1.6.tar.gz','/tmp/crash-6.1.6.tar.gz')
+
+		#Copy a remote file (remotepath) from the SFTP server to the local host(要求两端都必须是文件，但可以修改文件名)
+		sftp.get('/tmp/logrotate.log',r'D:\\xxx.log')
+
+		#Copy a local file (localpath) to the SFTP server as remotepath(要求两端都必须是文件，但可以修改文件名)
+		#sftp.put(r'E:\XMP\Record\Problems\calc_active_newinstall_overlap.sh','/tmp/overlap.sh')
+
 		scp.close()
 		sftp.close()
+
+	# sftp上传
 	def sftp_upload(self):
 		pass
+
+	# sftp下载
 	def sftp_download(self):
 		pass
 
@@ -84,7 +95,18 @@ class SFTP_TOOL():
 	def sftp_test(self):
 		print self.sftp
 
+
+
+'''
+	测试入口
+'''
 if __name__ == "__main__":
+	# 测试
+	sdemo=SFTP_LAB()
+	sdemo.demo()
+	sys.exit()
+
+	# 上线
 	sftp_tool=SFTP_TOOL('127.0.0.1',122,'root','123')
 	#sftp_tool.sftp_test()
 	sftp_tool.sftp_download('/usr/local/nginx/conf/vhosts','D:\\')

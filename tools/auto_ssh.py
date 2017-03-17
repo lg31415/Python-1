@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:ssh自动链接和远程执行
+	Fun:ssh自动链接和远程执行命令
 	Ref:http://mp.weixin.qq.com/s/2P2IyrF8aCsUnsXsaNWuZA
 	State：
 	Date:2017/3/16
