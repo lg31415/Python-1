@@ -25,15 +25,22 @@ def ssh_connect(ip,username,passwd,cmd):
 		ssh.connect(ip,122,username,passwd,timeout=5)
 		stdin,stdout,stderr = ssh.exec_command(cmd)
 #		stdin.write("Y")   #简单交互，输入 ‘Y’
-		print stdout.read()
+		#print "[stdout]:",stdout.read()
+		#print "stdin:",stdin.read()
+		#print "[stderr]:",stderr.read()
 		for x in  stdout.readlines():
-			print x.strip("n")
-		print '%stOKn'%(ip)
+			print x.strip("\n")
+		#print '%stOKn'%(ip)
 		ssh.close()
 	except :
-		print '%stErrorn'%(ip)
+		print '[Error from]:%s'%(ip)
 
 
 if __name__ == "__main__":
-	ssh_connect("127.0.0.1","root","123","hostname;ifconfig")
+	#ssh_connect("127.0.0.1","root","123","hostname;ifconfig")
+	#ssh_connect("127.0.0.1","root","123","1if [ -d /var/spool ] ;then echo 1;else echo 0; fi")
+	#ssh_connect("127.0.0.1","root","123","mkdir /home/yjm/xxwe&&echo 1||echo 0")
+	ssh_connect("127.0.0.1","root","123","cd /home/yjm/Projects/ml && find .  -type f")
+
+
 
