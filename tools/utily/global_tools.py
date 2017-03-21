@@ -140,15 +140,23 @@ class CPathFile(object):
 
 
 '''
-    系统基本信息
+    系统基本信息:
+    Ref:http://www.cnblogs.com/snow-backup/p/4151276.html
 '''
+import platform
 class CSysInfo():
     def __init__(self):
         pass
+
     # 系统平台判定
     def judge_platform(self):
-        pass
-
+        systr=platform.system()
+        if systr=="Windows":
+            return "Windows"
+        elif systr=="Linux":
+            return "Linux"
+        else:
+            return "Other"
 
 
 '''
