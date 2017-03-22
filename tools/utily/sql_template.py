@@ -128,7 +128,7 @@ def select_each_data():
     #conn.commit()
 
 '''
-	数据导出
+	数据导出(mysql)
 '''
 def export_data(conn,cur):
 	sql="select * from xmp_pianku_part where date='%s' order by date desc, part asc" %(stadate)
@@ -138,6 +138,18 @@ def export_data(conn,cur):
     jsdata='var click_data='+str(list(qresutls));
     with open(datapath+'click_data.js','w') as f:
     	f.write(jsdata)	
+
+
+'''
+	数据导出(hive)
+'''
+g_tool_hive="/usr/local/complat/complat_clients/cli_bin/hive"
+def export_data_hive():
+	hsql='%s -e "use xmp_odl; select c1,c2 from tbl where ds=%s and  install in (\"2408\",\"2608\",\"3088\")" > %s' % (g_tool_hive,yestoday,file_name)
+	print hsql
+    if os.system(hsql) != 0:
+        print "get %s data from t_stat_url_upload_split failed" % (yestoday)
+        exit()
 
 '''
 	关闭连接
