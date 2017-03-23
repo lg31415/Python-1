@@ -159,6 +159,26 @@ class CSysInfo():
             return "Other"
 
 
+
+'''
+    数据统计
+'''
+class CPyStat():
+    def __init__(self):
+        pass
+
+    # 实现groupby,(此处指sum)
+    def groupby(self):
+         with open(self.src_data,'r') as f:
+            for line in f:
+                pos,pv,uv=line.strip('\n').split()
+                if self.posnum.has_key(pos):
+                    self.posnum[pos][1]+=int(pv)
+                    self.posnum[pos][2]+=int(uv)
+                else:
+                    self.posnum[pos]=[int(pv),int(uv)]
+
+
 '''
     测试入口
 '''

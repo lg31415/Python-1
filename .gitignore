@@ -2,6 +2,8 @@
 data/
 trash/
 dev/
+software/
+
 
 *.pyc
 *.csv
