@@ -62,6 +62,7 @@ def create_tbl():
 	cur.execute(sql)
 	conn.commit()
 
+# 数据插入
 def insert_data():
 	load_sql="load data local infile '%s' into table task1_tbl(s_key,t_time,vv);" %('redis_export.txt')  #fields terminated by '\t'
 	#insert muti
@@ -73,9 +74,7 @@ def insert_data():
     sql="insert into persons(Id_P,LastName) VALUES (%s,'%s')" % (16,'yjm')  #按转换类型插入,整型当成字符型输入
 	cur.execute(sql)	
 
-'''
-	一次性取完
-'''
+# 数据查询(一次性取完)
 def select_all_data():
 	#测试1
     sql="select Id_P,LastName from persons ORDER BY Id_P"
@@ -109,9 +108,7 @@ def select_all_data():
     res=cur.fetchall()
     print res
 
-'''
-	取单个数据
-'''
+# 数据查询(取单个数据)
 def select_each_data():
 	sql="use mjoin;select Id_P,LastName from persons ORDER BY Id_P"
     try:
@@ -127,22 +124,29 @@ def select_each_data():
         onedata=cur.fetchone()
     #conn.commit()
 
-'''
-	数据导出(mysql)
-'''
+
+# 数据导入
+def inport_data(conn,cur):
+	load_sql="use db1;load data local infile '%s' into table db1.tb1 character set utf8 fields terminated by ',';"
+	try:
+        cur.execute(load_sql)
+    except Exception,e:
+        print(e)
+
+
+# 数据导出(mysql)
 def export_data(conn,cur):
 	sql="select * from xmp_pianku_part where date='%s' order by date desc, part asc" %(stadate)
-	cur.execute(load_sql)
+	cur.execute(sql)
     conn.commit()
     qresutls=cur.fetchall()
+    
+    # 导出成js对象的文本文件
     jsdata='var click_data='+str(list(qresutls));
     with open(datapath+'click_data.js','w') as f:
     	f.write(jsdata)	
 
-
-'''
-	数据导出(hive)
-'''
+# 数据导出(hive)
 g_tool_hive="/usr/local/complat/complat_clients/cli_bin/hive"
 def export_data_hive():
 	hsql='%s -e "use xmp_odl; select c1,c2 from tbl where ds=%s and  install in (\"2408\",\"2608\",\"3088\")" > %s' % (g_tool_hive,yestoday,file_name)
@@ -151,9 +155,7 @@ def export_data_hive():
         print "get %s data from t_stat_url_upload_split failed" % (yestoday)
         exit()
 
-'''
-	关闭连接
-'''
+# 关闭连接
 def close_down(conn,cur):
 	cur.close()
     conn.close()
@@ -167,7 +169,6 @@ if __name__ == "__main__":
         #stadate = '%04d%02d%02d' %(stadate.year, stadate.month, stadate.day)
     else:
         stadate=sys.argv[1]
-
    
  	readData()
 
