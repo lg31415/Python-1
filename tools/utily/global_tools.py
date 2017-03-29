@@ -10,16 +10,20 @@ import sys
 import re
 
 '''
-    txt2xls
+    txt-->xls
 '''
 import xlwt
-class CTxt2XlS():
+class CTxt2Xls():
     def __init__(self,input):
         self.input=input
         self.output=os.path.splitext(input)[0]+'.xls'
         self.workbook=xlwt.Workbook()
+
+    # 设置输出
     def setoutput(self,output):
         self.output=output
+
+    # 添加图片
     def addpic(self):
         table=self.workbook.add_sheet('T1')
         title="合并标题".decode('utf8')
@@ -27,6 +31,8 @@ class CTxt2XlS():
         table.write_merge(0,1,0,1,title)
         table.write(3,0,'hahh')
         table.insert_bitmap('../data/test.bmp',5,1,4,4,0.5,0.5)
+
+    # 添加文本
     def addtxt(self):
         table=self.data.add_sheet('T2')
         f=open(self.input,'r')
@@ -40,7 +46,9 @@ class CTxt2XlS():
                 else:
                     table.write(i,j,vv)
         f.close()
-    def convert(self):
+
+    # 程序入口
+    def txt2xls(self):
         self.addtxt()
         self.workbook.save(self.output)
 

@@ -60,7 +60,7 @@ def msql2xls():
     print('type<fetchall>',type(alldata),alldata)
     if 0==len(alldata):
         print('error happen')
-        exit()
+        sys.exit()
     #Excel
     data=xlwt.Workbook()                  #创建一个工作簿
     table=data.add_sheet('ResutlTable')   #创建一个工作表
@@ -68,6 +68,10 @@ def msql2xls():
         for j,vv in enumerate(v):
             table.write(i,j,vv)
     data.save('../data/sqlxls.xls')
+
+# 读取excel的数据并保存到mysql
+def xls2mysql():
+    pass
 
 
 '''
@@ -135,6 +139,7 @@ def mcsvread():
         for field in line:
             print '-',field
     csvfile.close()
+
 
 
 '''

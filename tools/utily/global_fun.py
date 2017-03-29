@@ -126,10 +126,7 @@ def unhex(s):
 	print unhex
 	return  unhex
 
-
-'''
-	去除url中的%符号
-'''
+# 去除url中的%符号
 def uri2hex(s):
 	ret = ""
 	length = len(s)
@@ -363,7 +360,7 @@ def regex_editdistance(stringA,stringB):
 
 	return ''.join([item for item in l])
 
-###################### format convert ########################
+###################### file format convert ########################
 def txt2xls(inputfile):
 	import xlwt
 	#Excel
@@ -384,6 +381,29 @@ def txt2xls(inputfile):
 	outputexcel=os.path.splitext(inputfile)[0]+'.xls'
 	data.save(outputexcel)
 	
+
+# 字典文件写入行数据
+def dict2tbl():
+	category_num={'a':1,'b':2,'c':3}
+	stat_res='outrow.log'
+	fres=open(stat_res,'a+')
+
+	# 写头
+	if not os.path.getsize(stat_res):
+		colnames=['date']
+		colnames.extend(category_num.keys())
+		sformat="%-10s\t"*(len(colnames)-1)+"%-10s\r\n"
+		title=sformat %tuple(colnames)
+		fres.write(title)
+
+	# 写数据
+	colvalues=['20170329']
+	colvalues.extend(category_num.values())
+	sformat="%-10s\t"*(len(colvalues)-1)+"%-10s\r\n"
+	result=sformat  %tuple(colvalues)
+	fres.write(result)
+	fres.close()
+
 
 #######################主测试入口
 if __name__ == "__main__":
