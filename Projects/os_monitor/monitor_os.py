@@ -165,9 +165,15 @@ class MonitorOS():
 		print(diskinfo)
 
 
-# 功能测试区
+'''
+	测试入口
+'''
 if __name__ == "__main__":
 	mos=MonitorOS()
-	#mos.get_cpu()
+	mos.get_cpu()
 	mos.get_mem()
+	mos.get_net()
+	mos.get_disk()
+	mos.get_proc()
+	mos.get_user()
 
