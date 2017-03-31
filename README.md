@@ -34,7 +34,7 @@
 
 ### 新工具
 
-#### 工具列表
+#### 列表
 
 python代码的自动格式化
 
@@ -46,5 +46,8 @@ python代码的自动格式化
 
 [Python Fire:自动生成命令行接口](http://www.toutiao.com/i6393135654800212482/)
 
-[Python Prompt Toolkit：构建强大交互式命令行的 Python 工具库](http://hao.jobbole.com/python-prompt-toolkit/?utm_source=python.jobbole.com&utm_medium=sidebar-resources)  [参考2](http://www.toutiao.com/i6391957455407940098/)
+[Python Prompt Toolkit：构建强大交互式命令行的 Python 工具库](http://hao.jobbole.com/python-prompt-toolkit/?utm_source=python.jobbole.com&utm_medium=sidebar-resources)  [(参考2)](http://www.toutiao.com/i6391957455407940098/)
 
+### 感兴趣
+
+[Python+OpenCV实现相似图片搜索](http://python.jobbole.com/80860/)
