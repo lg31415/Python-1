@@ -19,9 +19,12 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+'''
+	glances xml-rpc接口调用实例
+'''
 def mglances():
 	s = xmlrpclib.ServerProxy('http://10.10.160.11:61209')
-	print s.getSystem()    #怎么知道s有哪些方法
+	print s.getSystem()    #怎么知道s有哪些方法，对于glances自带的可以参考对应的api，自写的参考对应的程序
 
 
 
