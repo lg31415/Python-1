@@ -13,7 +13,7 @@
 import re, os, sys
 import hues
 import glances
-import xmlrpclib   #这个库的作用是什么？？
+import xmlrpclib
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
