@@ -3,7 +3,7 @@
 '''
 	Fun:SNH48日志数据统计
 	Ref:
-	State：进行中
+	State：进行中，如何将日志分割部分泛化，是一个需要好好想的问题
 	Date:2016/12/21
 	Author:tuling56
 '''
@@ -167,7 +167,7 @@ def iptime_split(log):
 	print sorted(reqfre.iteritems(),key=lambda asd:asd[1],reverse=True)
 
 
-# 泛化提取IP，域名和时间
+# 【增强版】泛化提取IP，域名和时间
 def general_extract_info(log):
 	with open(log,"r") as f:
 		for line in f:
@@ -198,11 +198,6 @@ def general_extract_info(log):
 					print hourminsearch.group(0),hourminsearch.group(1)
 			except Exception,e:
 				print(str(e))
-
-
-
-
-
 
 
 '''
