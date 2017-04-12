@@ -18,11 +18,12 @@ def raiseException(n):
         s=sys.exc_info()
         print "error-->%s,line:%s" % (s[1],s[2].tb_lineno)
 
-    return 0;
+    return 0
 
-# try...except...else..finally
+
 '''
-else 则用于处理没有出现错误的情况；finally 负责 try 语句的”善后工作“ ，无论如何都会执行
+  try...except...else..finally
+  else 则用于处理没有出现错误的情况；finally 负责 try 语句的”善后工作“ ，无论如何都会执行
 '''
 def divide(x, y):
     try:
@@ -35,6 +36,7 @@ def divide(x, y):
         print("result = {}".format(result))
     finally:
         print("divide finished!")
+
 
 # 程序主体
 if __name__ == "__main__":
