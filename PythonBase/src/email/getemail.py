@@ -14,13 +14,41 @@ import base64
 from datetime import datetime,timedelta,date
 import shutil
 
-class CPOP:
+class CGetMail:
     def __init__(self):
         self.usename='yuanjunmiao'
         self.password='XLyjm7654'
+        self._ready_dir()
+
+    # 目录准备
+    def _ready_dir(self):
+        yestoday = date.today() - timedelta(days=1)
+        yestoday = yestoday.strftime("%Y%m%d")
+        today=date.today()
+        today=today.strftime("%Y%m%d")
+        self.todaydir=os.path.join("C:\\Users\\xl\\Desktop",today)
+        self.yestodaydir=os.path.join("C:\\Users\\xl\\Desktop",yestoday)
+        rootdir="E:\\XMP\\Record"
+        monthdir=yestoday[0:6]
+        dstdir=os.path.join(rootdir,monthdir)
+
+        # 创建当天的目录
+        if not os.path.exists(self.todaydir):
+            os.mkdir(self.todaydir)
+        else:
+            print self.todaydir+"  exists"
+
+        # 创建目的目录
+        if not os.path.exists(dstdir):
+            os.mkdir(dstdir)
+        try:
+            shutil.move(self.yestodaydir,dstdir)
+        except Exception,e:
+            s=sys.exc_info()
+            print str(e)
 
     # 测试还有问题
-    def mpop3_1(self):
+    def getm_1(self):
         msever=poplib.POP3('mail.cc.sandai.net')
         msever.user(self.usename)
         msever.pass_(self.password)
@@ -44,8 +72,8 @@ class CPOP:
         msever.quit()
 
     # 测试成功
-    def mpop3_2(self):
-        todaydir=self.dirclear()
+    def getm_2(self):
+        todaydir=self._ready_dir()
 
         msever=poplib.POP3('mail.cc.sandai.net')
         msever.user(self.usename)
@@ -59,13 +87,14 @@ class CPOP:
         #Parse message into an email object:（邮件内容解析后存储）
         messages = [Parser().parsestr(mssg) for mssg in messages]
 
-        i = 0
+        mailnum = 0
         for message in messages:
-            mailName = "mail%d.%s" % (i, message["Subject"])
+            mailName = "%s/mail_%d.%s" % (self.todaydir,mailnum, message["Subject"])
+            f = open(mailName + '.log', 'w')
+
             # 保存每封邮件邮件头
-            f = open(mailName + '.log', 'w');
             if True:
-                i = i + 1
+                mailnum = mailnum + 1
                 print >> f, "Date: ", message["Date"]
                 print >> f, "From: ", message["From"]
                 print >> f, "To: ", message["To"]
@@ -73,53 +102,29 @@ class CPOP:
                 print >> f, "Data: "
 
             # 保存邮件附件(一个邮件可以有多个附件)
-            j = 0
+            attachnum = 0
             for part in message.walk():
-                j = j + 1
+                attachnum = attachnum + 1
                 fileName = part.get_filename()  #获取附件名字
                 contentType = part.get_content_type()
                 # 保存附件(对每封)
                 if fileName:
                     data = part.get_payload(decode=True)
-                    fileName = "%s.%d.%s" % (todaydir+'\\Attach', j, fileName)
+                    fileName = "%s.%d.%s" % (self.todaydir+'\\Attach', mailnum, fileName)
                     fEx = open(fileName, 'wb')
                     fEx.write(data)
                     fEx.close()
-                #保存正文
+                # 保存邮件的正文
                 elif contentType == 'text/plain' or contentType == 'text/html':
                     data = part.get_payload(decode=True)
                     print >> f, data
             f.close()
         msever.quit()
 
-    # 目录清理
-    def dirclear(self):
-        yestoday = date.today() - timedelta(days=1)
-        yestoday = yestoday.strftime("%Y%m%d")
-        today=date.today()
-        today=today.strftime("%Y%m%d")
-        todaydir=os.path.join("C:\\Users\\yjm\\Desktop",today)
-        yestodaydir=os.path.join("C:\\Users\\yjm\\Desktop",yestoday)
-        rootdir="E:\\XMP\\Record"
-        monthdir=yestoday[0:6]
-        dstdir=os.path.join(rootdir,monthdir)
-        if not os.path.exists(todaydir):
-            os.mkdir(todaydir)
-        else:
-            print todaydir+"  exists"
-        if not os.path.exists(dstdir):
-            os.mkdir(dstdir)
-        try:
-            shutil.move(yestodaydir,dstdir)
-        except Exception,e:
-            s=sys.exc_info()
-            print "\033[1;31m[error]:{}\n[line]:{}\033[0m".format(s[1],s[2].tblineno)
 
-        return todaydir;
-
-
+#  测试入口
 if __name__ == "__main__":
-    mpop=CPOP()
-    mpop.mpop3_2()
+    mpop=CGetMail()
+    mpop.getm_2()
 
 

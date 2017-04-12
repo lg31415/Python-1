@@ -10,7 +10,7 @@ import sys
 
 mailhost="mail.cc.sandai.net"    #邮件服务器
 mailname="monitor@cc.sandai.net" #用户名
-mailpass="121212"                #密码
+mailpass="xxxx"                #密码
 
 '''
 mailto="xiabin@xunlei.com"
