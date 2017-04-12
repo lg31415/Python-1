@@ -26,7 +26,7 @@ def msearch():
 	schema = Schema(title=TEXT(stored=True, analyzer=analyzer), path=ID(stored=False),content=TEXT(stored=True, analyzer=analyzer))
 
 	# 存储schema信息至'indexdir'目录下
-	indexdir = 'indexdir/'
+	indexdir = 'data/'
 	if not os.path.exists(indexdir):
 		os.mkdir(indexdir)
 	ix = create_in(indexdir, schema)

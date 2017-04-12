@@ -121,10 +121,10 @@ class LoadData(object):
 if __name__ == "__main__":
     #图片向量化
     srcpath_ABCD="E:\\CV\\paperocr\\data\\train_ABCD"
-    dstpath_ABCD="./vecdata/abcd"
+    dstpath_ABCD="./data/abcd"
 
     srcpath_Num="E:\\CV\\paperocr\\data\\train_num_2530"
-    dstpath_Num="./vecdata/num_own"
+    dstpath_Num="./data/num_own"
 
     Cimgvec=Img2Vec(srcpath_Num,list('0123456789'),dstpath_Num)
     Cimgvec.img2vec()
