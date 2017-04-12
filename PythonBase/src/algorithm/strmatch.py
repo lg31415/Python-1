@@ -111,7 +111,7 @@ class StringPatternt(object):
                 i=1;
         return 0;
 
-    '''sunday'''
+    '''Sunday'''
     def __check_bad_shift__(self,p):
         i=0;
         while i<self.p_len:

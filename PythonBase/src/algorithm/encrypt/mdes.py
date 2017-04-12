@@ -246,6 +246,8 @@ def _fulltest_():
 	print ("")
 	print ("Total time taken: %f" % (time() - t))
 
+
+# 测试入口
 if __name__ == '__main__':
 	#_example_des_()
 	#_example_triple_des_()

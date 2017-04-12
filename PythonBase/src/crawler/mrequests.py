@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-  功能注释：request库的使用
+  功能注释：requests库的使用
   参考：https://funhacks.net/explore-python/HTTP/Requests.html
   状态：未完成
 '''
@@ -30,12 +30,13 @@ def mrequests():
         "t":1482302070
     }
 
-    r = requests.post(url, data=postbody)           # 发数编码为表单形式的数据
-    #r = requests.post(url,data=json.dumps(postbody))#发送编码为string形式的数据
-    #r = requests.post(url,json=postbody)            #等同于上个
+    r = requests.post(url, data=postbody)            # 发数编码为表单形式的数据
+    #r = requests.post(url,data=json.dumps(postbody))# 发送编码为string形式的数据
+    #r = requests.post(url,json=postbody)            # 等同于上个
 
     print r.text
 
 
+# 测试入口
 if __name__ == "__main__":
     mrequests()

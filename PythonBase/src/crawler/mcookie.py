@@ -117,6 +117,8 @@ class mDinner(mCookie):
         f.close()
 
 
+
+# 测试入口
 if __name__ == "__main__":
     mcookie=mCookie()
     #mcookie.savecookie()

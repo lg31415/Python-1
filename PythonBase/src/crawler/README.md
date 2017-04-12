@@ -282,8 +282,6 @@ original_tag
 # <b><a href="http://www.example.com">Link text.</a></b>
 ```
 
-
-
 #### urllib2
 
 #### requests

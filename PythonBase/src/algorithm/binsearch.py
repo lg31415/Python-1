@@ -6,6 +6,7 @@ __author__ = 'yjm'
 '''
 
 import sys
+import re
 
 all=range(1,101) # 查找范围[1,100]
 
@@ -34,8 +35,7 @@ def search2(a,m):
 '''
     闲家策略：找出闲家首猜数
 '''
-# 闲家博弈
-# 在all中首猜guessv找到setv的次数和路径
+# 闲家博弈:在all中首猜guessv找到setv的次数和路径
 def xianboyi(firstguessv,setv):
     times,pay=0,0
     lowpos,highpos=0,len(all)-1  # 默认的高低界

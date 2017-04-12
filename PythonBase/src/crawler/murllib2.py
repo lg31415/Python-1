@@ -77,7 +77,7 @@ def buildpost():
 
 
 
-# 测试
+# 测试入口
 if __name__ == "__main__":
     #down_mp3_entry()
     buildpost()
