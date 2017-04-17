@@ -61,18 +61,22 @@ def export_result():
 '''
 	行转列（长格式转宽格式）
 '''
-datadict={}  # 最终的数据结构字典
+#datadict={}  # 最终的数据结构字典
 def row2col():
+	datadict={}  # 最终的数据结构字典
 	with open(u'E:\\XMP\\Record\\Problems\\xmp数据预测\local_vod_year_v2','r') as f:
 		preweek=""               # 判断周别转换标志
 		for line in f:
 			date,week,weekday,vv=line.strip().split('\t')
-			if week==preweek:
+			if preweek=='':
 				vvdict[weekday]=vv
-			else:
-				datadict[preweek]=vvdict
 				preweek=week
+			elif week==preweek or week in datadict.keys():
+				vvdict[week]=vv
+			else:
+				datadict[preweek]='\t'.join([str(v) for v in vvdict.values()])
 				reset_dict()
+				vvdict[week]=vv
 
 
 
