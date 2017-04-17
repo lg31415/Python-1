@@ -64,7 +64,7 @@ def export_result():
 #datadict={}  # 最终的数据结构字典
 def row2col():
 	datadict={}  # 最终的数据结构字典
-	with open(u'E:\\XMP\\Record\\Problems\\xmp数据预测\local_vod_year_v2','r') as f:
+    with open(u'row2col.data', 'r') as f:
 		preweek=""               # 判断周别转换标志
 		for line in f:
 			date,week,weekday,vv=line.strip().split('\t')
@@ -77,7 +77,7 @@ def row2col():
 				datadict[preweek]='\t'.join([str(v) for v in vvdict.values()])
 				reset_dict()
 				vvdict[week]=vv
-
+    print datadict
 
 
 if __name__ == "__main__":
