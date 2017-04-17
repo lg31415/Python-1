@@ -31,8 +31,20 @@
 
 [Flask快速入门](http://www.pythondoc.com/flask/quickstart.html#web)(推荐)
 
+[Flask官方参考](http://docs.jinkan.org/docs/flask/)
+
 [Flask数据库操作](http://flask-sqlalchemy.pocoo.org/2.1/)
 
 [Flask和Nginx的对接](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-14-04)
 
 [知乎的Flask专栏](https://zhuanlan.zhihu.com/flask)
+
+[Python Flask静态目录](http://www.tuicool.com/articles/VFRnmm)
+
+
+
+书籍参考：
+
+Flask Web开发：基于Python的Web应用开发实战.pdf
+
+head-first-flask.pdf

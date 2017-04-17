@@ -1,6 +1,8 @@
-# Python Web开发综述
+## Python Web开发综述
 
-## 开发框架
+[TOC]
+
+### 开发框架
 
 | 框架       | 简介   | 优点   | 缺点   |
 | -------- | ---- | ---- | ---- |
@@ -10,13 +12,27 @@
 | web.py   |      |      |      |
 | bottle   |      |      |      |
 
----
+### flask
 
-## flask
+轻量级，但功能强大，开发方便
 
-### 参考
+进度：
 
-[Python Flask静态目录](http://www.tuicool.com/articles/VFRnmm)
+> 2017年4月17日
+
+开始准备学习
+
+### django
+
+功能全面
+
+### web.py
+
+轻量级，正在使用
+
+进度
+
+### bottle
 
 
 
