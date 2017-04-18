@@ -5,6 +5,8 @@ trash/
 dev/
 res/
 software/
+samples/
+demos/
 
 
 *.pyc
