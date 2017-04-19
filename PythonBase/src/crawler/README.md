@@ -310,3 +310,6 @@ original_tag
 
 [BeautifulSoup官方文档](https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html#insert)
 
+书籍
+
+Python 网络数据采集
