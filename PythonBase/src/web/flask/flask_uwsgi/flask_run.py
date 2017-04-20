@@ -1,22 +1,24 @@
 #!/usr/bin/env python
 # encoding: utf-8
 from flask import Flask,render_template
+from app_book import book_bp
+#from app_movie import movive_bp
+
 application = Flask(__name__)
+application.secret_key='this is sercry code'
 
+#注册蓝图
+application.register_blueprint(book_bp)
 
+'''
 @application.route('/')
 def hello_world():
     return "hello flask,this is flask world"
+'''
 
-@application.route("/<dy_route>")
-def dy_route(dy_route):
-    # 不使用模板的方法
-    #return '<h3>Hello,%s,this is dy_route;</h3>'  %dy_route
-
-    # 使用模板的方法
-    #return render_template('index.html',name=dy_route)
-    return render_template('base_son.html')
-
+@application.errorhandler(404)
+def page_not_find(error):
+    return render_template('404.html'),404
 
 
 # 测试入口
