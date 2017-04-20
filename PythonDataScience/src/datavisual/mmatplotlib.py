@@ -1,8 +1,10 @@
+#!/usr/bin/env python
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-  功能注释：Python数据可视化：matplotlib实现
+  功能：Python数据可视化：matplotlib实现
   参考：http://www.shareditor.com/blogshow/?blogId=55
+       http://www.toutiao.com/i6410597836664078849/
 '''
 
 import pandas as pd
@@ -12,7 +14,7 @@ import matplotlib.pyplot as plt
 '''
     基本使用
 '''
-def mplot():
+def basic_plot():
     ldata=[1,2,7,3,8,4,5,5,6,10]
     ndata=np.array(ldata)
     plt.plot(ndata,np.sin(ndata),'--',linewidth=2,color='red')
@@ -26,6 +28,7 @@ def mplot():
 
 '''
     绘图和标注
+    注释：需要做一个可演示版本的
 '''
 #smdata,onediff都是OrderDict
 def drawhigh(view,onediff,smdata,peeks,high,cid,filesize,flag):
@@ -104,5 +107,7 @@ def drawhigh(view,onediff,smdata,peeks,high,cid,filesize,flag):
 
     return 0
 
+
+# 测试入口
 if __name__ == "__main__":
-    mplot()
+    basic_plot()

@@ -1,6 +1,6 @@
 .idea/
 data/
-*data*/
+!data/git_data/*
 trash/
 dev/
 res/
