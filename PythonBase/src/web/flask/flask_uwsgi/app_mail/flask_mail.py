@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 '''
 	Fun:flask邮件发送
-	Ref:
+	Ref:https://funhacks.gitbooks.io/head-first-flask/content/chapter03/section3.01.html
 	State：
 	Date:2017/4/21
 	Author:tuling56
@@ -22,8 +22,8 @@ app = Flask(__name__)
 app.config['MAIL_SERVER'] = 'smtp.163.com'  # 邮件服务器地址
 app.config['MAIL_PORT'] = 25 			    # 邮件服务器端口
 app.config['MAIL_USE_TLS'] = True 			# 启用 TLS
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME') or 'yueqiulaishu@163.com'
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD') or 'yjm112233'
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME') or 'username@163.com'
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD') or 'mpassword'
 mail = Mail(app)
 
 
@@ -37,7 +37,7 @@ def index():
 #同步发送邮件
 @app.route('/sync')
 def send_mail_sync():
-	msg = Message('这是邮件的标题', sender='yueqiulaishu@163.com', recipients=['yuanjunmiao@xunlei.com'])
+	msg = Message('这是邮件的标题', sender='username@163.com', recipients=['xxxx@126.com'])
 	# 富文本邮件
 	msg.html = '<h2>这是邮件的大纲标题</h2><p>这是邮件的正文</p>'
 	# 好像不支持表单数据
@@ -67,7 +67,7 @@ def send_async(app,msg):
 
 @app.route('/async')
 def send_mail_async():
-	msg = Message('这是异步发送邮件的标题', sender='yueqiulaishu@163.com', recipients=['yuanjunmiao@xunlei.com'])
+	msg = Message('这是异步发送邮件的标题', sender='username@163.com', recipients=['xxxx@126.com'])
 	# 富文本邮件
 	msg.html = '''<h2>大纲标题1</h2>
 				 	<p>邮件正文1</p>
