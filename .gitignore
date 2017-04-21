@@ -9,6 +9,7 @@ samples/
 demos/
 log/
 logs/
+static/
 
 
 *.pyc

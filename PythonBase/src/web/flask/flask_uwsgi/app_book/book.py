@@ -17,22 +17,18 @@ sys.setdefaultencoding('utf-8')
 from flask import Blueprint, url_for, render_template, request,flash, redirect
 # 创建一个蓝图对象
 book_bp = Blueprint('book',	__name__,template_folder='../templates',)
-books = ['The Name of the Rose', 'The Historian', 'Rebecca']
-
-@book_bp.route('/', methods=['GET'])
-def index():
-	return '<h2>Hello World,this is flask book blueprint</h2>'
+books = ['book1', 'book2', 'book3']
 
 
 # 添加数据和获取书籍列表
 @book_bp.route('/book', methods=['GET', 'POST'])
-def handle_book():
+def show_book():
 	_form = request.form
 	if request.method == 'POST':
 		title = _form["title"]
 		books.append(title)
 		flash("add book successfully!")
-		return redirect(url_for('book.handle_book'))
+		return redirect(url_for('book.show_book'))
 	return render_template('book.html',books=books)
 
 

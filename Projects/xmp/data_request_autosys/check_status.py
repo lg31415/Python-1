@@ -70,6 +70,8 @@ def check_status():
 				invalidtask[taskid]="业务:%s 即将到期自动关闭!!!\r\n详细信息如下：\r\n%s%s" %(desccriptor,status_head,invalidtask[taskid])
 			else:
 				print "wrong task_config"
+
+
 '''
 	生成有效任务的运行脚本
 '''
