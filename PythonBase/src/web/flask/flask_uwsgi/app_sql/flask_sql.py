@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 '''
 	Fun:flask关系数据库操作
-	Ref:head-first-flask
+	Ref:https://funhacks.gitbooks.io/head-first-flask/content/chapter03/section3.02.html
 	State：
 	Date:2017/4/21
 	Author:tuling56
