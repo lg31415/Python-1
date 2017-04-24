@@ -75,7 +75,7 @@ def signup():
             reg_user = User(username=username, email=email, password=password)
             db.session.add(reg_user)
             db.session.commit()
-            login_user(reg_user)
+            login_user(reg_user)   # 标示用户登录了
 
             return redirect(url_for('user.signin'))
 

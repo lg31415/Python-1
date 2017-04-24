@@ -6,12 +6,13 @@ from configs import config
 from extensions import db, login_manager
 
 
+# 在app的create_app中进行数据库的初始化，登录的验证、蓝图的注册
 def create_app(config_name=None):
     if config_name is None:
-        config_name = 'default'
+        config_name = 'default'  #默认开发配置
 
     app = Flask(__name__)
-    app.config.from_object(config[config_name])
+    app.config.from_object(config[config_name])  # 读取配置文件
 
     # db
     db.init_app(app)
@@ -23,6 +24,7 @@ def create_app(config_name=None):
     for bp in blueprints:
         app.register_blueprint(bp)
 
+	# //该app的handle_error处理
     handle_errors(app)
 
     return app

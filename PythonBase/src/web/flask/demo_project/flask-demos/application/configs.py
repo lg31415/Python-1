@@ -23,11 +23,12 @@ class Config(object):
     BABEL_DEFAULT_TIMEZONE = 'CST'
 
 
+# 开发配置（默认）,继承自Config基类
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')  # NOQA
 
-
+# 线上配置，继承自Config基类
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')  # NOQA
 

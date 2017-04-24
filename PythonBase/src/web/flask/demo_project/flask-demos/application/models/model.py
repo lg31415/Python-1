@@ -9,6 +9,7 @@ from application.extensions import db, login_manager
 __all__ = ['Book', 'User']
 
 
+# 用户信息表
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
@@ -39,6 +40,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
+# 书籍表
 class Book(db.Model):
     """data model"""
     __tablename__ = 'book'
