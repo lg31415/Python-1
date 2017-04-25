@@ -68,9 +68,13 @@ def basic_use():
 	高级查询
 '''
 def medium_use():
+	print "待和mongodb进行整合后实现"
 	pass
 
+
+# 测试入口
 if __name__=="__main__":
 	basic_use()
+	medium_use()
 
 
