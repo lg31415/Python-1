@@ -1,14 +1,2 @@
-#!/usr/bin/env python
-# -*- coding: utf8 -*-
-__author__ = 'yjm'
-'''
-  功能注释：
-'''
+from diff_tstamp import XMPDateStamp
 
-
-def run():
-    print("hello")
-
-
-if __name__ == "__main__":
-    run()
