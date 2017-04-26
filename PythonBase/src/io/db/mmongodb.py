@@ -2,7 +2,8 @@
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-  功能注释：mongodb基础学习
+  功能：mongodb基础学习
+  Ref:http://www.runoob.com/mongodb/mongodb-tutorial.html
 '''
 
 import pymongo
@@ -25,7 +26,6 @@ def mpymogo():
     for data in collection.find():
         print data
 
-
     # 简单参数查询
     for data in collection.find({"name":"cui"}):
         print  '---',data
@@ -35,5 +35,6 @@ def mpymogo():
         print data
 
 
+# 测试入口
 if __name__ == "__main__":
     mpymogo()
