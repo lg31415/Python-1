@@ -2,12 +2,40 @@
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-  功能注释：合并列表中的元素
+  功能注释：合并列表中的相邻元素
 '''
 import sys
 
-# 根据指定的条件合并列表中的元素
+'''
+    根据指定的条件合并列表中的元素
+    规则描述：从左至右合并，若右边元素的最小值大于左边元素的最大值，则合并，直到合并到不能合并为止
+'''
 inlist=[(1,4),(6,10),(14,25),(31,55),(78,243)]
+
+
+# 原始版
+def mergelist_origin(inlist):
+    mergel=[]
+    mergelast=False
+    try:
+        for n in range(0,len(inlist)-1):
+            if inlist[n+1][0]-inlist[n][-1]<5:
+                mdur=(inlist[n][0],inlist[n+1][-1])
+                mergel.append(mdur)
+                if n==len(inlist)-2:
+                    mergelast=True
+            else:
+                mergel.append(inlist[n])
+        if not mergelast:                       # 将最后未合并的末尾区间统计进来
+            mergel.append(inlist[-1])
+    except Exception,e:
+        s=sys.exc_info()
+        print "\033[1;31mError: '%s' happened on line %d\033[0m" % (s[1],s[2].tb_lineno)
+
+    return mergel;
+
+
+# 增强版
 def mergelist_impl(inlist):
      mergel=[]
      mergeing=True     # 默认是合并中
@@ -41,28 +69,7 @@ def mergelist_impl(inlist):
          s=sys.exc_info()
          print "\033[1;31mError: '%s' happened on line %d\033[0m" % (s[1],s[2].tb_lineno)
 
-     return mergel;
-    
-
-def mergelist_origin(inlist):
-    mergel=[]
-    mergelast=False
-    try:
-        for n in range(0,len(inlist)-1):
-            if inlist[n+1][0]-inlist[n][-1]<5:
-                mdur=(inlist[n][0],inlist[n+1][-1])
-                mergel.append(mdur)
-                if n==len(inlist)-2:
-                    mergelast=True
-            else:
-                mergel.append(inlist[n])
-        if not mergelast:                       # 将最后未合并的末尾区间统计进来
-            mergel.append(inlist[-1])
-    except Exception,e:
-        s=sys.exc_info()
-        print "\033[1;31mError: '%s' happened on line %d\033[0m" % (s[1],s[2].tb_lineno)
-
-    return mergel;
+     return mergel
 
 
 if __name__ == "__main__":
