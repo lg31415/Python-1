@@ -13,16 +13,32 @@ mynumlist=range(5)
 
 
 # 列表基本操作
-def mlist():
-    dl=mylist*2
-    dl+=('nww','xw4r3')
-    print dl
+class LISTBASIC():
+    def __init__(self):
+        pass
+    def list_basic(self):
+        dl=mylist*2
+        dl+=('nww','xw4r3')
+        print dl
 
-    #列表和索引的快速组合
-    for index, item in enumerate(mylist):
-        print(index, item)
+    # 列表遍历的四种方法
+    def visit_list(self):
+        for index, item in enumerate(mylist):
+            print(index, item)
 
-# 部分列表操作
+        for index in range(len(mylist)):
+            print index,mylist[index]
+
+        for item in mylist:
+            print item
+
+        for item in iter(mylist):
+            print item
+
+
+
+
+# 部分列表操作map
 def fmap(x):
     x=x+1
     return  x
@@ -34,10 +50,10 @@ def partlistOper():
     print mynumlist
 
 
-#列表计数
+# 列表计数
 from  collections import Counter
 from  random import  randrange
-def listcount():
+def listcount1():
     mycounter1={}
     mycounter=Counter()
     for i in range(100):
@@ -47,6 +63,18 @@ def listcount():
     for i in range(10):
         print(i,mycounter[i])
         print(i,mycounter1[i])
+
+# 统计list中所有元素和每个元素的个数
+from operator import itemgetter
+def listcount2():
+    l=list('abcddwadekadewdadwerjjnweretraawwer')
+    lcount={}
+    for i in l:
+        try:
+            lcount[i]+=1
+        except Exception:
+            lcount[i]=1
+    print  sorted(lcount.iteritems(), key=itemgetter(1), reverse=True)  # 返回排序后的结果
 
 #并行遍历
 '''
@@ -73,7 +101,6 @@ def getKey(item):
     img=item.split('.')[0]
     pos=img.split('_')[-1]
     return  img,pos
-
 def list_sort():
     print('-------列表排序-----')
     '''
@@ -96,7 +123,6 @@ def list_sort():
     llist=sorted(llist, key=itemgetter(0,3))
     llist=map(lambda x:x[0]+"."+x[1]+"_"+x[2]+"_"+str(x[3]),llist)
     print(llist)
-
 
 
 #列表推导式子 [表达式 for 变量 in 列表 if 条件]
@@ -126,19 +152,6 @@ def listGrow():
         results[index].append(title)
     print 'res:\n',res
     print 'results:\n',results
-
-
-# 统计list中所有元素和每个元素的个数
-from operator import itemgetter
-def listcount():
-    l=list('abcddwadekadewdadwerjjnweretraawwer')
-    lcount={}
-    for i in l:
-        try:
-            lcount[i]+=1
-        except Exception:
-            lcount[i]=1
-    print  sorted(lcount.iteritems(), key=itemgetter(1), reverse=True)  # 返回排序后的结果
 
 
 #列表去重复元素
