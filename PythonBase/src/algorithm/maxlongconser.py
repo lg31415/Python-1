@@ -14,18 +14,22 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
+'''
+    最长连续子序列
+    输入：排序好的不重复的数字序列（严格注意这个要求）
+    输出：所有子序列和最长的子序列
+'''
 def fun():
-    inputl = [1, 2, 4, 5, 7, 9, 12, 13, 14]
+    inputl = [1, 2, 4, 5,6,7,8,9, 12, 13, 15]
     startpos = 0
     endpos = 0
     end = False
 
     # 先求所有的子序列
     allser = []
-    for pos in range(len(inputl)):
+    for pos,value in enumerate(inputl):
         if pos != len(inputl) - 1:
-            nowv = inputl[pos]
-            if inputl[pos + 1] - inputl[pos] == 1:
+            if abs(inputl[pos + 1] - inputl[pos]) == 1:
                 end = False
                 endpos = pos + 1
             else:
@@ -37,6 +41,9 @@ def fun():
                 allser.append(inputl[startpos:endpos + 1])
                 startpos = pos + 1  # 更新子序列的起始位置
                 endpos = startpos
+        else:
+            print u'当前最长连续子序列为：', inputl[startpos:]
+            allser.append(inputl[startpos:])
 
     # 子序列长度列表
     lenl = map(lambda x: len(x), allser)
