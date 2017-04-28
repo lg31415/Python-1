@@ -284,9 +284,31 @@ original_tag
 
 #### urllib2
 
+和urllib的关系
+
 #### requests
 
 怎样配合cookie等访问使用
+
+#### selenium
+
+web自动化测试工具，的Webdriver操作浏览器。Selenium可以操作大多数主流浏览器（可能需要相应的驱动），当然也可以操作无界面的浏览器PhantomJS
+
+selenium操作Phantomjs
+
+```python
+from selenium import webdriver
+
+driver = webdriver.PhantomJS()    # 获取浏览器对象
+driver.get('http://www.baidu.com/')
+print driver.page_source
+```
+
+#### PhantomJS
+
+无界面浏览器，提供了js接口
+
+windows平台的phantom.js接口可执行的exe,
 
 ### 优化
 
@@ -310,6 +332,8 @@ original_tag
 
 [BeautifulSoup官方文档](https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html#insert)
 
-书籍
+[书籍:Python 网络数据采集]()
 
-Python 网络数据采集
+ [Scrapy+PhantomJS+Selenium动态爬虫](http://blog.csdn.net/qq_30242609/article/details/70859891)
+
+[Python爬虫爬取动态页面思路+实例（一）](http://blog.csdn.net/qq_30242609/article/details/53788228)
