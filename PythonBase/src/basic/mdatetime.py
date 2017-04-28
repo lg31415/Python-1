@@ -181,12 +181,6 @@ def absolutetime():
 
 
 
-
-
-
-
-
-
 # 主测试函数
 if __name__=='__main__':
     #str2date()

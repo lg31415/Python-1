@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-  功能注释：
+  功能注释：python字符串处理
 '''
 import os
 
@@ -22,8 +22,8 @@ def mstrbasic():
 
 #字符串查找
 '''
-Python字符串查找的四个方法：find(),index(),rfind(),rindex()
-source:http://outofmemory.cn/code-snippet/6682/python-string-find-or-index
+    Python字符串查找的四个方法：find(),index(),rfind(),rindex()
+    source:http://outofmemory.cn/code-snippet/6682/python-string-find-or-index
 '''
 def mstrfind():
     mstr='bnawer4 wewr4w'

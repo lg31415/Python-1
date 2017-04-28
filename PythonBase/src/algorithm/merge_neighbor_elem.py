@@ -72,6 +72,7 @@ def mergelist_impl(inlist):
      return mergel
 
 
+# 测试入口
 if __name__ == "__main__":
     print "Inlist:",inlist
     print "OrginMerge:",mergelist_origin(inlist)
