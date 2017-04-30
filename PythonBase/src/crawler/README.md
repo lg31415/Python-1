@@ -294,7 +294,11 @@ original_tag
 
 web自动化测试工具，的Webdriver操作浏览器。Selenium可以操作大多数主流浏览器（可能需要相应的驱动），当然也可以操作无界面的浏览器PhantomJS
 
-selenium操作Phantomjs
+##### PhantomJS
+
+无界面浏览器，提供了js接口，windows平台的phantom.js接口可执行的exe，下载phantomJS并将其执行文件路径添加到PATH环境变量里
+
+selenium操作PhantomJS
 
 ```python
 from selenium import webdriver
@@ -304,11 +308,27 @@ driver.get('http://www.baidu.com/')
 print driver.page_source
 ```
 
-#### PhantomJS
+##### chrome
 
-无界面浏览器，提供了js接口
+selenium操作chrome浏览器，需要chromedriver.exe,将该可执行文件放到PATH环境变量里即可，注意和chrome的版本对应关系。
 
-windows平台的phantom.js接口可执行的exe,
+selenium操作Chrome
+
+```python
+from selenium import webdriver
+
+def sel_chrome():
+	driver=webdriver.Chrome()
+	driver.get('http://www.baidu.com')
+	print driver.title
+	print 'return'
+```
+
+
+
+参考：
+
+[chromedriver.exe与chrome的对应关系和下载](http://blog.csdn.net/huilan_same/article/details/51896672)
 
 ### 优化
 
