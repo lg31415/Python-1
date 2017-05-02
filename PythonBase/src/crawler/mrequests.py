@@ -8,35 +8,68 @@ __author__ = 'yjm'
 '''
 
 import json
+import sys
 import requests
 
 
-def mrequests():
-    url='http://longtail.v.xunlei.com/readnotice?userid=123456&sessionid=xxx&bussinessid=-1'
-    url="http://longtail.v.xunlei.com/setuser?userid=123456&sessionid=xxx&bussinessid=-1"
-    url="http://testlua.com/lua_file"
+class MCRequest():
+    def __init__(self):
+        pass
 
-    #postbody = {'id': 1, 't': 123232320}
-    postbody={
-        "info":{
-            "nickname":"user",
-            "sign":"hahahahahaha",
-            "sex":0,
-            "phone_num":"13800000000",
-            "email":"xxx@qq.com",
-            "birth_day":"1988-11-11",
-            "image":"http://image.jpg"
-        },
-        "t":1482302070
-    }
+    def req_post(self):
+        url='http://longtail.v.xunlei.com/readnotice?userid=123456&sessionid=xxx&bussinessid=-1'
+        url="http://longtail.v.xunlei.com/setuser?userid=123456&sessionid=xxx&bussinessid=-1"
+        url="http://testlua.com/lua_file"
 
-    r = requests.post(url, data=postbody)            # 发数编码为表单形式的数据
-    #r = requests.post(url,data=json.dumps(postbody))# 发送编码为string形式的数据
-    #r = requests.post(url,json=postbody)            # 等同于上个
+        #postbody = {'id': 1, 't': 123232320}
+        postbody={
+            "info":{
+                "nickname":"user",
+                "sign":"hahahahahaha",
+                "sex":0,
+                "phone_num":"13800000000",
+                "email":"xxx@qq.com",
+                "birth_day":"1988-11-11",
+                "image":"http://image.jpg"
+            },
+            "t":1482302070
+        }
 
-    print r.text
+        r = requests.post(url, data=postbody)            # 发数编码为表单形式的数据（直接传递字典）
+        #r = requests.post(url,data=json.dumps(postbody))# 发送编码为string形式的数据（json数据）
+        #r = requests.post(url,json=postbody)            # 等同于上个（这种方式等价于使用 json 参数，而给它传递 dict）
+
+        print r.text
+
+    def req_get(self):
+        payload = {'page': '1', 'per_page': '10','Name':None}
+        #headers = {'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'}
+        r = requests.get("http://httpbin.org/get", params=payload)#,headers=headers)
+        print r.url
+        print r.request.headers  # 查看发送的请求头
+
+        # 查看返回
+        print 'response_headers',r.headers          # 服务器返回给我们的响应头部信息可以通过 r.headers
+        print 'response_cookies',r.cookies
+        sys.exit(0)
+        print r.status_code
+        print 'text:',r.text
+        print 'json',r.json()
+        print '二进制',r.content
+        print '原始响应',r.raw
+
+    # 请求数据的时候发送cookie
+    def req_get_cookie(self):
+        mcookie=dict(key1='value1')
+        r=requests.get('http://testuwsgi.com/',cookies=mcookie)
+        print r.cookies
+
+
+
 
 
 # 测试入口
 if __name__ == "__main__":
-    mrequests()
+    mreq=MCRequest()
+    #mreq.req_post()
+    mreq.req_get()

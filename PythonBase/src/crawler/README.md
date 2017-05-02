@@ -288,7 +288,7 @@ original_tag
 
 #### requests
 
-怎样配合cookie等访问使用
+怎样配合cookie等访问使用，
 
 #### selenium
 
@@ -310,7 +310,7 @@ print driver.page_source
 
 ##### chrome
 
-selenium操作chrome浏览器，需要chromedriver.exe,将该可执行文件放到PATH环境变量里即可，注意和chrome的版本对应关系。
+selenium操作chrome浏览器，需要chromedriver.exe,将该可执行文件放到PATH环境变量里即可，注意和chrome的版本对应关系,如何退出程序后，清退所有的后台程序
 
 selenium操作Chrome
 
@@ -357,3 +357,5 @@ def sel_chrome():
  [Scrapy+PhantomJS+Selenium动态爬虫](http://blog.csdn.net/qq_30242609/article/details/70859891)
 
 [Python爬虫爬取动态页面思路+实例（一）](http://blog.csdn.net/qq_30242609/article/details/53788228)
+
+[深入理解Session与Cookie](https://my.oschina.net/kevinair/blog/192829)
