@@ -49,7 +49,7 @@ def basic_plot():
     # 饼图
     plt.figure()
     labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
-    sizes = [15, 30, 45, 10]
+    sizes = [15, 30, 45, 150]
     explode = (0, 0.1, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
     plt.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',shadow=False, startangle=90,pctdistance=0.6)
     plt.axis('equal')         # Equal aspect ratio ensures that pie is drawn as a circle.
@@ -86,7 +86,6 @@ def medium_plot():
     plt.plot(x,y2,label='tu2')
     plt.legend()
     plt.show()
-
 
 
 
@@ -195,6 +194,6 @@ def draw_bar():
 
 # 测试入口
 if __name__ == "__main__":
-    #basic_plot()
+    basic_plot()
     #medium_plot()
-    draw_bar()
+    #draw_bar()
