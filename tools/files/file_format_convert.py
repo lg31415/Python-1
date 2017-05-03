@@ -31,9 +31,9 @@ def mxlsread():
 
 #xls的写
 def mxlswrite():
-    data=xlwt.Workbook()  #创建一个工作簿
-    table=data.add_sheet('T1')   #创建一个工作表
-    table.write(0,0,'hah')
+    data=xlwt.Workbook()         # 创建一个工作簿
+    table=data.add_sheet('T1')   # 创建一个工作表
+    table.write(0,0,'hah')       # 在00的位置写入hah
     data.save('../data/test.xls')
 
 
