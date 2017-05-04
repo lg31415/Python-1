@@ -81,6 +81,49 @@ def dataOper():
     #yesdate_str=time.strftime('%Y%m%d',yesdate.timetuple())        #20150922
     print calcdate_str
 
+#日期运算２
+def dateOper2():
+    stadate=date.today()-timedelta(days=3)   # 日期类型
+    #stadate = '%04d%02d%02d' %(stadate.year, stadate.month, stadate.day)
+    if(date.today().day==3):
+        print '每月2号开始计算上一个月的数据'
+    else:
+        print '不是2号,退出'
+        sys.exit()
+    #lastmon_first='{year}{month}01'.format(year=stadate.year,month=stadate.month)
+    lastmon_first=date(stadate.year,stadate.month,1).strftime("%Y%m%d")
+    lastmon_last=stadate.strftime("%Y%m%d")
+    lastmon=stadate.strftime("%Y%m")
+    lastlastmon=date(stadate.year,stadate.month-1,1).strftime("%Y%m")
+    #lastlastmon=str(int(lastmon)-1)
+
+# 求当月的天数，第一天和最后一天
+def getMonthFirstDayAndLastDay(year=None, month=None):
+    """
+    :param year: 年份，默认是本年，可传int或str类型
+    :param month: 月份，默认是本月，可传int或str类型
+    :return: firstDay: 当月的第一天，datetime.date类型
+              lastDay: 当月的最后一天，datetime.date类型
+    """
+    if year:
+        year = int(year)
+    else:
+        year = datetime.date.today().year
+
+    if month:
+        month = int(month)
+    else:
+        month = datetime.date.today().month
+
+    # 获取当月第一天的星期和当月的总天数
+    firstDayWeekDay, monthRange = calendar.monthrange(year, month)
+
+    # 获取当月的第一天
+    firstDay = datetime.date(year=year, month=month, day=1)
+    lastDay = datetime.date(year=year, month=month, day=monthRange)
+
+    return firstDay, lastDay
+
 
 '''
     计算两个日期的时间之差：转化为天，转化为时间戳
