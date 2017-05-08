@@ -56,6 +56,8 @@
 
 ### mxnet
 
+mxnet直接编译安装在`/usr/local/mexnet`目录下，其中配置和安装文件等都在这个目录下，在software目录不再保留其源码文件
+
 #### 安装
 
 #### 使用
@@ -68,11 +70,11 @@
 
 ---
 
-### torch
+### Torch
 
-> torch是用lua编写，支持动态计算图（这点和tensorflow不一样，tensorflow支持的是静态计算图），pytorch是torch的python接口，是的在python中调用torch进行机器学习变得方便，不需要在打包接口
+> torch是用lua编写，支持动态计算图（这点和tensorflow不一样，tensorflow支持的是静态计算图），pytorch是torch的python接口，是的在python中调用torch进行机器学习变得方便，不需要再打包接口
 
-#### 安装torch
+#### 安装Torch
 
 ##### 平台指导
 
@@ -149,12 +151,16 @@ Tested on Ubuntu 14.04, CentOS/RHEL 6.3 and OSX
 
 #### 安装PyTorch
 
+pytorch是torch的python接口实现，不依赖原有的torch，可以单独使用
+
 ```shell
 git clone https://github.com/hughperkins/pytorch.git
 cd pytorch/
 pip install -r requirements.txt
 pip install -r test/requirements.txt
 source ~/torch/install/bin/torch-activate
+
+# 在build之前，先将~/torch/install/bin/目录添加到PATH环境变量中去，不然提示报错找不到Luajit
 ./build.sh
 ```
 
@@ -164,6 +170,10 @@ source ~/torch/install/bin/torch-activate
 
 If you also see this output at the bottom of your terminal, congraulations! You have successfully installed PyTorch!
 
+####  使用
+
+//待完善
+
 #### 参考
 
 [pytorch:Torch的python支持](http://www.toutiao.com/a6377633223488733441/)
@@ -171,6 +181,12 @@ If you also see this output at the bottom of your terminal, congraulations! You 
 [Torch官方安装指南](http://torch.ch/docs/getting-started.html#_)
 
 [Tutorial: Deep Learning in PyTorch](https://iamtrask.github.io/2017/01/15/pytorch-tutorial/?utm_source=tuicool&utm_medium=referral)（近乎官方入门指南:推荐）
+
+[PyTorch参考手册](http://pytorch.org/tutorials/)
+
+[Github的Pytorch的例子](https://github.com/pytorch/examples)
+
+
 
 
 
