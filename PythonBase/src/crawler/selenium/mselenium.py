@@ -18,32 +18,10 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 import time
 
-'''
-	phantomjs无节面浏览器
-'''
-class SelPhantonJS():
-	def __init__(self):
-		self.driver=webdriver.Chrome()
-		self.driver.get('http://www.baidu.com/')
-
-	def demo(self):
-		print self.driver.title #,driver.page_source
-		assert "百度" in self.driver.title
-		elem=self.driver.find_element_by_id("kw")
-		elem.send_keys("张二狗"+Keys.RETURN)
-		time.sleep(2)
-		try:
-			#driver.find_element_by_name()
-			assert '张二狗' in self.driver.title
-			print self.driver.title
-			print self.driver.page_source.encode('utf8')
-		except NoSuchElementException:
-			assert 0,u"找不到搜索的元素"
-		self.driver.close()
-
 
 '''
-	chrome浏览器
+	selenium+chrome浏览器
+	tips:主要在于模拟手工操作
 '''
 class SelChrome():
 	def __init__(self):
@@ -116,7 +94,6 @@ class SelChrome():
 				print '最后一页了'
 		except Exception,e:
 			print str(e)
-
 
 	# 定位
 	def location(self,url=''):

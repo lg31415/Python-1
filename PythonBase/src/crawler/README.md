@@ -294,9 +294,48 @@ original_tag
 
 web自动化测试工具，的Webdriver操作浏览器。Selenium可以操作大多数主流浏览器（可能需要相应的驱动），当然也可以操作无界面的浏览器PhantomJS
 
+##### xpath定位
+
+下面是相对路径的引用写法：
+
+```
+查找页面根元素：//
+
+查找页面上所有的input元素：//input
+
+查找页面上第一个form元素内的直接子input元素(即只包括form元素的下一级input元素，使用绝对路径表示，单/号)：//form[1]/input
+
+查找页面上第一个form元素内的所有子input元素(只要在form元素内的input都算，不管还嵌套了多少个其他标签，使用相对路径表示，双//号)：//form[1]//input
+
+查找页面上第一个form元素：//form[1]
+
+查找页面上id为loginForm的form元素：//form[@id='loginForm']
+
+查找页面上具有name属性为username的input元素：//input[@name='username']
+
+查找页面上id为loginForm的form元素下的第一个input元素：//form[@id='loginForm']/input[1]
+
+查找页面具有name属性为contiune并且type属性为button的input元素：//input[@name='continue'][@type='button']
+
+查找页面上id为loginForm的form元素下第4个input元素：//form[@id='loginForm']/input[4]
+```
+
 ##### PhantomJS
 
 无界面浏览器，提供了js接口，windows平台的phantom.js接口可执行的exe，下载phantomJS并将其执行文件路径添加到PATH环境变量里
+
+phantomjs在linux下的安装：
+
+```shell
+wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+tar -xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2 
+sudo cp -R phantomjs-2.1.1-linux-x86_64 /usr/local/share/ 
+sudo ln -sf /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/ 
+```
+
+> 若不把放在PATH环境变量中去，可以手工指定，如下：
+>
+> driver=webdriver.Chrome(‘C:\\bin\phantomjs.exe’)
 
 selenium操作PhantomJS
 
@@ -310,7 +349,9 @@ print driver.page_source
 
 ##### chrome
 
-selenium操作chrome浏览器，需要chromedriver.exe,将该可执行文件放到PATH环境变量里即可，注意和chrome的版本对应关系,如何退出程序后，清退所有的后台程序
+selenium操作chrome浏览器，需要chromedriver.exe,将该可执行文件放到PATH环境变量里即可，注意和chrome的版本对应关系,==如何退出程序后，清退所有的后台程序==，这个问题如何解决？？？`driver.quit()`
+
+
 
 selenium操作Chrome
 
@@ -329,6 +370,8 @@ def sel_chrome():
 参考：
 
 [chromedriver.exe与chrome的对应关系和下载](http://blog.csdn.net/huilan_same/article/details/51896672)
+
+[盘点selenium phantomJS使用的坑](http://www.jianshu.com/p/9d408e21dc3a)
 
 ### 优化
 

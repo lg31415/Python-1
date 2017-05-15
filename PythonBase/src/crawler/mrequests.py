@@ -12,10 +12,14 @@ import sys
 import requests
 
 
+'''
+    request库的使用
+'''
 class MCRequest():
     def __init__(self):
         pass
 
+    # post请
     def req_post(self):
         url='http://longtail.v.xunlei.com/readnotice?userid=123456&sessionid=xxx&bussinessid=-1'
         url="http://longtail.v.xunlei.com/setuser?userid=123456&sessionid=xxx&bussinessid=-1"
@@ -41,6 +45,7 @@ class MCRequest():
 
         print r.text
 
+    # get请求
     def req_get(self):
         payload = {'page': '1', 'per_page': '10','Name':None}
         #headers = {'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'}
@@ -58,7 +63,7 @@ class MCRequest():
         print '二进制',r.content
         print '原始响应',r.raw
 
-    # 请求数据的时候发送cookie
+    # 请求数据的时候发送cookie,需要服务器端来解析客户端发送的cookie数据并返回
     def req_get_cookie(self):
         mcookie=dict(key1='value1')
         r=requests.get('http://testuwsgi.com/',cookies=mcookie)
@@ -72,4 +77,5 @@ class MCRequest():
 if __name__ == "__main__":
     mreq=MCRequest()
     #mreq.req_post()
-    mreq.req_get()
+    #mreq.req_get()
+    mreq.req_get_cookie()
