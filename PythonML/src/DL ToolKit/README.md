@@ -2,7 +2,21 @@
 
 [TOC]
 
+### 框架比较
+
+| **库名称**    | **开发语言**                                 | **速度** | **灵活性** | **文档** | **适合模型**  | **平台**                                   | **上手难易** |
+| ---------- | ---------------------------------------- | ------ | ------- | ------ | --------- | ---------------------------------------- | -------- |
+| Caffe      | c++/cuda                                 | 快      | 一般      | 全面     | CNN       | 所有系统                                     | 中等       |
+| TensorFlow | c++/cuda/[Python](http://lib.csdn.net/base/python) | 中等     | 好       | 中等     | CNN/RNN   | [Linux](http://lib.csdn.net/base/linux), OSX | 难        |
+| MXNet      | c++/cuda                                 | 快      | 好       | 全面     | CNN       | 所有系统                                     | 中等       |
+| `Torch`    | `c/lua/cuda`                             | `快`    | `好`     | `全面`   | `CNN/RNN` | `Linux, OSX`                             | `中等`     |
+| Theano     | python/c++/cuda                          | 中等     | 好       | 中等     | CNN/RNN   | Linux, OSX                               | 易        |
+
 ### tensorflow
+
+Google开源的其第二代深度学习技术——被使用在Google搜索、图像识别以及邮箱的深度学习框架。
+
+是一个理想的RNN（递归神经网络）API和实现，TensorFlow使用了向量运算的符号图方法，使得新网络的指定变得相当容易，支持快速开发。缺点是速度慢，内存占用较大。（比如相对于Torch）
 
 > 编程系统，支持C++和Python
 
@@ -60,17 +74,36 @@ mxnet直接编译安装在`/usr/local/mexnet`目录下，其中配置和安装�
 
 #### 安装
 
+##### python
+
+```
+pip install mxnet
+```
+
 #### 使用
+
+##### python
+
+```python
+>>> import mxnet as mx
+>>> a = mx.nd.ones((2, 3))
+>>> b = a * 2 + 1
+>>> b.asnumpy()
+array([[ 3.,  3.,  3.],
+       [ 3.,  3.,  3.]], dtype=float32)
+```
 
 #### 参考
 
-[MxNet官方安装指南](http://mxnet.io/get_started/setup.html)
+[MxNet官方安装指南](http://mxnet.io/get_started/install.html)
 
 [MxNet官方教程](http://mxnet.io/tutorials/index.html)
 
 ---
 
 ### Torch
+
+Torch是Facebook力推的深度学习框架，主要是C和Lua开发，有较好的灵活性和速度。
 
 > torch是用lua编写，支持动态计算图（这点和tensorflow不一样，tensorflow支持的是静态计算图），pytorch是torch的python接口，是的在python中调用torch进行机器学习变得方便，不需要再打包接口
 
@@ -175,6 +208,8 @@ If you also see this output at the bottom of your terminal, congraulations! You 
 //待完善
 
 #### 参考
+
+[Pytorch深度学习:60分钟快速入门](https://zhuanlan.zhihu.com/p/25572330)
 
 [pytorch:Torch的python支持](http://www.toutiao.com/a6377633223488733441/)
 
