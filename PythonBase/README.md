@@ -62,9 +62,41 @@
 
 #### 装饰器
 
+在不改变函数本身的情况下，使得函数的调用和返回发生变化，几个关键点：
+
+- 函数可以作为变量
+- 函数可以传递给函数
+- 函数嵌套函数
+
+装饰器的核心就是将函数作为参数传递给另一个函数
+
+```python
+@decrator
+def func():
+	pass
+```
+
+举例：
+
+```python
+# 定义一个嵌套函数，分别以函数和普通的字符串作为参数
+def add_tag(func):
+    def prt_func(name):
+        return '<p>{0}</p>'.format(func(name))    
+    return prt_func
+# 定义一个普通的函数,并调用装饰器
+
+@add_tag
+def print_text(name):
+    return 'hello,'+ name
+
+print(print_text('crossin'))
+# 结果 : <p>hello,crossin</p>
+```
+
 #### 闭包
 
-在定义函数时候，再嵌套定义一个函数，并将该嵌套函数返回。
+在定义函数时候，再嵌套定义一个函数，并将该嵌套函数返回,闭包是装饰器的特殊实例。
 
 ```python
 from math import pow

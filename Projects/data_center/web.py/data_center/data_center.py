@@ -51,7 +51,7 @@ class Handler(object):
 		try:
 			# 数据库请求（然后将查询结果数据进行网页展示）
 			qr=self.GetDB(cid,filesize)
-			self.res=self.render.dbquery(qr)
+			self.res=self.render.dbquery(qr)     #能不能借鉴这个渲染的方式
 			
 			# json数据请求(然后将json数据网页可视化）
 			#oview=self.GetJson(cid,filesize)

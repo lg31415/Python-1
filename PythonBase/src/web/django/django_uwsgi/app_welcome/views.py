@@ -17,7 +17,7 @@ def application(env, start_response):
 	无参函数
 '''
 def hello(request):
-	return HttpResponse('2x2322!')
+	return HttpResponse('这是app_welcome的首页!')
 
 if __name__=="__main__":
     hello()
