@@ -1,0 +1,40 @@
+{# 定义宏 #}
+
+{#输入框#}
+<pre>
+{% macro input(name, value='', type='text') -%}
+    <input type="{{ type }}" value="{{ value|e }}" name="{{ name }}">
+{%- endmacro %}
+</pre>
+
+{#多行文本框#}
+<pre>
+{%- macro textarea(name, value='', rows=10, cols=40) -%}
+    <textarea name="{{ name }}" rows="{{ rows }}" cols="{{ cols }}">{{ value|e }}</textarea>
+{%- endmacro %}
+</pre>
+
+{#表格：注意data数据是字典列表#}
+{%- macro table(class,data='') -%}
+    {# 如何将宏变量传递给运行语句 #}
+    <table class="{{ class }}">
+        {# 先输出列表头#}
+        <tr>
+            {% for t in data[0].keys() %}
+                <th>{{ t }}</th>
+            {% endfor %}
+        </tr>
+        {# 再输出表格体 #}
+        {% for d in data %}
+            <tr>
+                {% for v in d.values() %}
+                    {% if  'http://' in v|string() %}
+                        <td><a href='{{ v }}'>{{ v }}</a></td>
+                    {% else %}
+                        <td> {{ v }}</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{%- endmacro %}

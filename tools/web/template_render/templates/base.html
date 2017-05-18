@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=360, initial-scale=0.75 user-scalable=no">
+    {% block header_ext %}  {% endblock %}
+    <title>
+        {% block title %}
+            {% if title %}
+                {{ title }}
+            {% else %}
+                没有标题设置
+            {% endif %}DEMO
+        {% endblock %}
+    </title>
+</head>
+
+<body>
+{# body主体 #}
+<div class="container" id="main">
+    <div class="row">
+        <div id="show">
+            <h3>基本使用</h3>
+            {% block basic %}
+            {% endblock %}
+        </div>
+
+        <div id="show">
+            <h3>高级使用</h3>
+            {% block medium %}
+            {% endblock %}
+        </div>
+
+        <div id="show">
+            <h3>定义和使用宏</h3>
+            {% block macors %}
+            {% endblock %}
+        </div>
+
+        <div id="show">
+            <h3>表格处理</h3>
+            {% block table %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+{# 尾注  #}
+{% block footer_ext %}{% endblock %}
+</body>
+</html>

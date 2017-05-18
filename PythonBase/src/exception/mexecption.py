@@ -10,7 +10,7 @@ import sys
 def raiseException(n):
     try:
         if n==0:
-            raise ValueError("invalid n")
+            raise ValueError("invalid n")   # 抛出异常
         else:
             print("all is ok")
     except ValueError,e:
