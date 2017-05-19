@@ -17,24 +17,29 @@
 {#表格：注意data数据是字典列表#}
 {%- macro table(class,data='') -%}
     {# 如何将宏变量传递给运行语句 #}
-    <table class="{{ class }}">
+    <table id="datatable" class="{{ class }}">
         {# 先输出列表头#}
-        <tr>
-            {% for t in data[0].keys() %}
-                <th>{{ t }}</th>
-            {% endfor %}
-        </tr>
-        {# 再输出表格体 #}
-        {% for d in data %}
+        <thead>
             <tr>
-                {% for v in d.values() %}
-                    {% if  'http://' in v|string() %}
-                        <td><a href='{{ v }}'>{{ v }}</a></td>
-                    {% else %}
-                        <td> {{ v }}</td>
-                    {% endif %}
+                {% for t in data[0].keys() %}
+                    <th>{{ t }}</th>
                 {% endfor %}
             </tr>
-        {% endfor %}
+        </thead>
+
+        {# 再输出表格体 #}
+        <tbody>
+            {% for d in data %}
+                <tr>
+                    {% for v in d.values() %}
+                        {% if  'http://' in v|string() %}
+                            <td><a href='{{ v }}'>{{ v }}</a></td>
+                        {% else %}
+                            <td> {{ v }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 {%- endmacro %}
