@@ -1,10 +1,42 @@
 {% extends 'base.html' %}
 {% block title %}这是子模板重写的标题{% endblock %}
 {% block header_ext %}
+    <script src="http://mystatic.com/static/js/lib/jquery-1.8.3.min.js"></script>
+    <!--bootstrap-->
     <link rel="stylesheet" href="http://mystatic.com/static/css/lib/bootstrap.min.css">
+    <script src="http://mystatic.com/static/js/lib/bootstrap.min.js"></script>
+    <!--datatable-->
+    <link rel="stylesheet"  href="http://mystatic.com/static/css/lib/jquery.dataTables.min.css">
+    <script src="http://mystatic.com/static/js/lib/jquery.dataTables.min.js"></script>
+    <!--自定义库，方便学习-->
     <link rel="stylesheet" href="http://mystatic.com/static/css/mstyle.css">
-    <script src="http://mystatic.com/static/js/lib/jquery-1.8.3.min.js"> </script>
-    <script src="http://mystatic.com/static/js/lib/bootstrap.min.js"> </script>
+    <script src="http://mystatic.com/static/js/mfun.js"></script>
+    <script type="text/javascript" language="javascript" class="init">
+        $(document).ready(function () {
+            $('#datatable').DataTable(
+                {
+                    initComplete: function () {
+                        this.api().columns().every( function () {
+                            var column = this;
+                            var select = $('<select><option value=""></option></select>')
+                                .appendTo( $(column.footer()).empty() )
+                                .on( 'change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                    column
+                                        .search( val ? '^'+val+'$' : '', true, false )
+                                        .draw();
+                                } );
+
+                            column.data().unique().sort().each( function ( d, j ) {
+                                select.append( '<option value="'+d+'">'+d+'</option>' )
+                            } );
+                        } );
+                    },
+                    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]] // 设置分页项
+                }
+            );
+        });
+    </script>
 {% endblock %}
 
 {#基本使用#}
@@ -61,37 +93,14 @@
 {# 宏处理 #}
 {% block macors %}
     <div>
-        <p>使用宏</p>
+        <h4>使用宏</h4>
         {% import 'macors.html' as forms %}
         <label for="">UserName:</label>{{ forms.input('username') }}
         <label for="">PassWord:</label>{{ forms.input('password', type='password') }}
         <label for="">文本输入框</label>
         {{ forms.textarea('comment') }}
-        <p>表格宏</p>
+        <h5>表格宏1</h5>
         {{ forms.table("table table-hover",data=ld) }}
     </div>
 {% endblock %}
 
-{#表格处理#}
-{% block table %}
-    <table class="table table-hover">
-        {# 先输出列表头#}
-        <tr>
-            {% for t in ld[0].keys() %}
-                <th>{{ t }}</th>
-            {% endfor %}
-        </tr>
-        {# 再输出表格体 #}
-        {% for d in ld %}
-            <tr>
-                {% for v in d.values() %}
-                    {% if  'http://' in v|string() %}
-                        <td><a href='{{ v }}'>{{ v }}</a></td>
-                    {% else %}
-                        <td> {{ v }}</td>
-                    {% endif %}
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
-{% endblock %}

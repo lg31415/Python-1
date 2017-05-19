@@ -20,65 +20,25 @@
 {# body主体 #}
 <div class="container" id="main">
     <div class="row">
-        <div id="show">
+        <div class="show">
             <h3>基本使用</h3>
             {% block basic %}
             {% endblock %}
         </div>
 
-        <div id="show">
+        <div class="show">
             <h3>高级使用</h3>
             {% block medium %}
             {% endblock %}
         </div>
 
-        <div id="show">
+        <div class="show">
             <h3>定义和使用宏</h3>
             {% block macors %}
             {% endblock %}
         </div>
-
-        <div id="show">
-            <h3>表格处理</h3>
-            {% block table %}
-            {% endblock %}
-        </div>
     </div>
 </div>
-
-<div class="container">
-    <h4>表格处理：非宏</h4>
-    <p>直接显示的是表格的原始数据，非宏处理</p>
-    {#表格处理#}
-{#    {% block table %}#}
-    <table class="table table-hover">
-        {# 先输出列表头#}
-        <thead>
-            <tr>
-                {% for t in ld[0].keys() %}
-                    <th>{{ t }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        {# 再输出表格体 #}
-        <tbody>
-            {% for d in ld %}
-                <tr>
-                    {% for v in d.values() %}
-                        {% if  'http://' in v|string() %}
-                            <td><a href='{{ v }}'>{{ v }}</a></td>
-                        {% else %}
-                            <td> {{ v }}</td>
-                        {% endif %}
-                    {% endfor %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{#    {% endblock %}#}
-</div>
-
-
 
 {# 尾注  #}
 {% block footer_ext %}{% endblock %}
