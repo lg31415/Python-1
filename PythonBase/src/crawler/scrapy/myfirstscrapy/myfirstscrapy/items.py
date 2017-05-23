@@ -7,9 +7,12 @@
 
 import scrapy
 
+'''
+    添加要提取的属性
+'''
 class MyfirstscrapyItem(scrapy.Item):
-    news_title = scrapy.Field() #南邮新闻标题
-    news_date = scrapy.Field()     #南邮新闻时间
-    news_url = scrapy.Field()   #南邮新闻的详细链接
+    news_title = scrapy.Field()    # 南邮新闻标题
+    news_date = scrapy.Field()     # 南邮新闻时间
+    news_url = scrapy.Field()      # 南邮新闻的详细链接
 
 
