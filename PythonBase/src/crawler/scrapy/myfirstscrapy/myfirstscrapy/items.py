@@ -10,9 +10,18 @@ import scrapy
 '''
     添加要提取的属性
 '''
-class MyfirstscrapyItem(scrapy.Item):
+
+# 南邮新闻页
+class NanuNewsItem(scrapy.Item):
     news_title = scrapy.Field()    # 南邮新闻标题
     news_date = scrapy.Field()     # 南邮新闻时间
     news_url = scrapy.Field()      # 南邮新闻的详细链接
+
+
+# xmp电影列表页
+class XmpMovieItem(scrapy.Item):
+    movie_title = scrapy.Field()    # 电影标题
+    movie_url = scrapy.Field()      # 电影链接
+    movie_score = scrapy.Field()    # 电影评分
 
 

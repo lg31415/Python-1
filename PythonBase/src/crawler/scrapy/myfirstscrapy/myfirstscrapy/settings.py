@@ -9,11 +9,6 @@
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'myfirstscrapy'
-
-SPIDER_MODULES = ['myfirstscrapy.spiders']
-NEWSPIDER_MODULE = 'myfirstscrapy.spiders'
-
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'myfirstscrapy (+http://www.yourdomain.com)'
@@ -89,11 +84,14 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-BOT_NAME='mfscrapy'
+BOT_NAME='xmp_movie_list'
 
-SPIDER_MODULES=['myfirstscrapy.spiders']
-NEWSPIDER_MODULE='myfirstscarpy.spiders'
+SPIDER_MODULES=['myfirstscrapy.spiders']    #这个是爬虫的库包
+NEWSPIDER_MODULE='NanuNewsSpider.spiders'
+NEWSPIDER_MODULE='XmpMoiveSpider.spiders'
 
+# 定义管道处理的数据，接收处理item的数据
 ITEM_PIPELINES={
-    'myfirstscrapy.pipelines.MyfirstscrapyPipeline':1,
+#    'myfirstscrapy.pipelines.NanuNewsPipeline':1,
+    'myfirstscrapy.pipelines.XmpMoviePipeline':2,
 }

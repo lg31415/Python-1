@@ -13,8 +13,9 @@ import re
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-
-#################### 判断 #################
+'''
+	单字符判断
+'''
 #判断单个字符是否是中文
 def is_cn_char(i):
 	return 0x4e00<=ord(i)<0x9fa6
@@ -36,13 +37,13 @@ def isJapan(s):
 	#return re.search(ur"[\u3040-\u309f]+",unicode(s,"utf-8",'ignore')) is not None or re.search(ur"[\u30a0-\u30ff]+",unicode(s,"utf-8",'ignore')) is not None
 	return re.search(ur"[\u3040-\u309f]+",s) is not None or re.search(ur'[\u30a0-\u30ff]+',s) is not None
 
-
-#################### 操作 #################
+'''
+	字符串操作
+'''
 # 去除标点符号和无效字符
-def remove_comm(s):
+def remove_meanless(instr):
 	patern=re.compile(r'[\r\n\t\s【】;:,：，；*?\]\[]?')
-	sr=re.sub(patern,'',ntitle)
-	print(sr)
+	sr=re.sub(patern,'',instr)
 	return sr
 
 # 替换字符（用函数来判断规则）
@@ -57,10 +58,18 @@ def resub():
 
 	print re.sub(pattern,func, s)
 
+# 判断字符串是否是有意义串
+def judge_mean(instr):
+	sr=remove_meanless(instr)
+	if len(sr)==0:
+		return False
+	else:
+		return True
 
 
-
-############## 实战部分 #####################
+'''
+	############## 实战部分 #####################
+'''
 ntitle="【资源公众号-影视资源狗】【电影-www.】.2016.HD720P.影视资源狗.mp4"
 ntitle="zhan\t zhv33 【 zhjang ] * whwr】: ：，;；\r [鸟哥的\n\t"
 ntitle=u"[BuRongYi.com]盗墓笔记.HD1280高清国语中英双字.mp4"
@@ -83,7 +92,17 @@ def filter_str():
 
 	print "处理后的字符：",ntitle
 
+# 字符列表处理
+def filter_str_list():
+	strlist=['\n                ', u'\u8fd9\u662fspan1', '\n                ', u'\u8fd9\u662fspan2', '\n                8.9\n']
+	strlist_filter=filter(lambda x:judge_mean(x),strlist)
+	strlist_filter=map(remove_meanless,strlist_filter)
+	print strlist_filter
+
+
+# 测试入口
 if __name__ == "__main__":
-	filter_str()
-	#resub()
+	#filter_str()
+	#judge_mean()
+	filter_str_list()
 
