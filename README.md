@@ -44,6 +44,8 @@ python代码的自动格式化
 
 [Google的Python代码格式化工具:YAPF](http://www.toutiao.com/i6393821455200551425/)
 
+[Pylint:Python代码格式化工具](http://mt.sohu.com/20170406/n486768845.shtml)
+
 [Python Fire:自动生成命令行接口](http://www.toutiao.com/i6393135654800212482/)
 
 [Python Prompt Toolkit：构建强大交互式命令行的 Python 工具库](http://hao.jobbole.com/python-prompt-toolkit/?utm_source=python.jobbole.com&utm_medium=sidebar-resources)  [(参考2)](http://www.toutiao.com/i6391957455407940098/)

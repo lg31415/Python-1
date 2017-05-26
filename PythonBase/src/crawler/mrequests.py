@@ -47,27 +47,32 @@ class MCRequest():
 
     # get请求
     def req_get(self):
-        payload = {'page': '1', 'per_page': '10','Name':None}
+        geturlparas = {'page': '1', 'per_page': '10','Name':None}
         #headers = {'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'}
-        r = requests.get("http://httpbin.org/get", params=payload)#,headers=headers)
+        mcookie={}
+        r = requests.get("http://httpbin.org/get", params=geturlparas)#,headers=headers，cookies=mcookie)
+
+        # 查看请求
         print r.url
         print r.request.headers  # 查看发送的请求头
 
         # 查看返回
-        print 'response_headers',r.headers          # 服务器返回给我们的响应头部信息可以通过 r.headers
-        print 'response_cookies',r.cookies
-        sys.exit(0)
+        print 'response_headers:',r.headers          # 服务器返回的响应头部信息
+        print 'response_cookies:',r.cookies          # 服务器返回的cookie信息
+
         print r.status_code
         print 'text:',r.text
-        print 'json',r.json()
-        print '二进制',r.content
-        print '原始响应',r.raw
+        print 'json"',r.json()
+        print '二进制"',r.content
+        print '原始响应:',r.raw
 
     # 请求数据的时候发送cookie,需要服务器端来解析客户端发送的cookie数据并返回
     def req_get_cookie(self):
         mcookie=dict(key1='value1')
-        r=requests.get('http://testuwsgi.com/',cookies=mcookie)
-        print r.cookies
+        #r=requests.get('http://testuwsgi.com/',cookies=mcookie)
+        r=requests.get('http://httpbin.org/get',cookies=mcookie)
+        print 'response_headers:',r.headers
+        print 'response_cookies:',r.cookies
 
 
 

@@ -4,9 +4,9 @@
 
 ### 概览
 
-- bs4
+- bs4，lxml
 
-解析html,xml文档的利器
+解析html,lxml文档的利器，bs4不提供xpath定位，lxml提供xpath定位
 
 - urllib,urllib2,urllib3
 
@@ -16,7 +16,9 @@
 
 功能强大，接近底层
 
-- 其它
+- selenium
+
+自动化测试工具，配合phantomjs无界面浏览器，实现自动化测试
 
 ### 基础
 
@@ -282,6 +284,77 @@ original_tag
 # <b><a href="http://www.example.com">Link text.</a></b>
 ```
 
+#### lxml
+
+lxml库提供xpath语法定位,
+
+##### 通配符
+
+| 通配符    | 描述         |
+| ------ | ---------- |
+| *      | 匹配任何元素节点。  |
+| @*     | 匹配任何属性节点。  |
+| node() | 匹配任何类型的节点。 |
+
+##### 路径表达式
+
+基础
+
+| 表达式      | 描述                            |
+| -------- | ----------------------------- |
+| nodename | 选取此节点的所有子节点。                  |
+| /        | 从根节点选取。                       |
+| //       | 从匹配选择的当前节点选择文档中的节点，而不考虑它们的位置。 |
+| .        | 选取当前节点。                       |
+| ..       | 选取当前节点的父节点。                   |
+| @        | 选取属性。                         |
+
+演示版
+
+| 路径表达式           | 结果                                       |
+| --------------- | ---------------------------------------- |
+| bookstore       | 选取 bookstore 元素的所有子节点。                   |
+| /bookstore      | 选取根元素 bookstore。注释：假如路径起始于正斜杠( / )，则此路径始终代表到某元素的绝对路径！ |
+| bookstore/book  | 选取属于 bookstore 的子元素的所有 book 元素。          |
+| //book          | 选取所有 book 子元素，而不管它们在文档中的位置。              |
+| bookstore//book | 选择属于 bookstore 元素的后代的所有 book 元素，而不管它们位于 bookstore 之下的什么位置。 |
+| //@lang         | 选取名为 lang 的所有属性。                         |
+
+通配符版
+
+| 路径表达式        | 结果                     |
+| ------------ | ---------------------- |
+| /bookstore/* | 选取 bookstore 元素的所有子元素。 |
+| //*          | 选取文档中的所有元素。            |
+| //title[@*]  | 选取所有带有属性的 title 元素。    |
+
+可以在路径表达式中使用“|”，选取多个路径
+
+| 路径表达式                            | 结果                                       |
+| -------------------------------- | ---------------------------------------- |
+| //book/title \| //book/price     | 选取 book 元素的所有 title 和 price 元素。          |
+| //title \| //price               | 选取文档中的所有 title 和 price 元素。               |
+| /bookstore/book/title \| //price | 选取属于 bookstore 元素的 book 元素的所有 title 元素，以及文档中所有的 price 元素。 |
+
+##### 运算符
+
+| 运算符  | 描述      | 实例                        | 返回值                                      |
+| ---- | ------- | ------------------------- | ---------------------------------------- |
+| \|   | 计算两个节点集 | //book \| //cd            | 返回所有拥有 book 和 cd 元素的节点集                  |
+| +    | 加法      | 6 + 4                     | 10                                       |
+| –    | 减法      | 6 – 4                     | 2                                        |
+| *    | 乘法      | 6 * 4                     | 24                                       |
+| div  | 除法      | 8 div 4                   | 2                                        |
+| =    | 等于      | price=9.80                | 如果 price 是 9.80，则返回 true。如果 price 是 9.90，则返回 false。 |
+| !=   | 不等于     | price!=9.80               | 如果 price 是 9.90，则返回 true。如果 price 是 9.80，则返回 false。 |
+| <    | 小于      | price<9.80                | 如果 price 是 9.00，则返回 true。如果 price 是 9.90，则返回 false。 |
+| <=   | 小于或等于   | price<=9.80               | 如果 price 是 9.00，则返回 true。如果 price 是 9.90，则返回 false。 |
+| >    | 大于      | price>9.80                | 如果 price 是 9.90，则返回 true。如果 price 是 9.80，则返回 false。 |
+| >=   | 大于或等于   | price>=9.80               | 如果 price 是 9.90，则返回 true。如果 price 是 9.70，则返回 false。 |
+| or   | 或       | price=9.80 or price=9.70  | 如果 price 是 9.80，则返回 true。如果 price 是 9.50，则返回 false。 |
+| and  | 与       | price>9.00 and price<9.90 | 如果 price 是 9.80，则返回 true。如果 price 是 8.50，则返回 false。 |
+| mod  | 计算除法的余数 | 5 mod 2                   | 1                                        |
+
 #### urllib2
 
 和urllib的关系
@@ -393,7 +466,11 @@ def sel_chrome():
 
 [Python爬虫利器之BeautifulSoup的用法(静觅)](http://cuiqingcai.com/1319.html)
 
+[Python爬虫利器三之Xpath语法与lxml库的用法](http://cuiqingcai.com/2621.html)
+
 [BeautifulSoup官方文档](https://www.crummy.com/software/BeautifulSoup/bs4/doc/index.zh.html#insert)
+
+[lxml官方参考](http://lxml.de/tutorial.html)
 
 [书籍:Python 网络数据采集]()
 
