@@ -93,5 +93,28 @@ NEWSPIDER_MODULE='XmpMoiveSpider.spiders'
 # 定义管道处理的数据，接收处理item的数据
 ITEM_PIPELINES={
 #    'myfirstscrapy.pipelines.NanuNewsPipeline':1,
-    'myfirstscrapy.pipelines.XmpMoviePipeline':2,
+#    'myfirstscrapy.pipelines.XmpMoviePipeline':2,
+     'myfirstscrapy.pipelines.TudouAllPipeline':3,
 }
+
+
+LOG_ENABLED = True
+LOG_ENCODING = 'utf-8'
+LOG_FILE = './spider.log'
+LOG_LEVEL = 'ERROR'
+LOG_STDOUT = True
+
+
+DEFAULT_REQUEST_HEADERS = {
+	'User-Agent':'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko',
+	'Accept':'text/html;q=0.9,*/*;q=0.8',
+	'Accept-Charset':'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
+	'Accept-Encoding':'gzip',
+	'Connection':'Keep-Alive'
+	}
+
+USER_AGENT = 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko'
+
+REDIRECT_MAX_TIMES = 20
+
+

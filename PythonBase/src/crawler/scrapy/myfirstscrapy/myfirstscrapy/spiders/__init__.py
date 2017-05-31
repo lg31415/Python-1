@@ -4,4 +4,5 @@
 # your spiders.
 
 from nanuSpider import NanuNewsSpider
-from xmpSpider import XmpMoiveSpider
+from xmpSpider import XmpMoiveSpiderBase,XmpMoiveSpiderImpl1,XmpMoiveSpiderImpl2
+from tudouSpider import TudouTeleplaySpiderBase,TudouAnimalSpiderBase,TudouMovieSpiderBase,TudouTvSpiderBase

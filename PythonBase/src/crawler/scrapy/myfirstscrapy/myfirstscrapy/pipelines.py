@@ -35,3 +35,17 @@ class XmpMoviePipeline(object):
         self.file.write(item['movie_score'].encode("utf8"))
         self.file.write("\n")
         return item
+
+# 管道3:土豆处理
+class TudouAllPipeline(object):
+    def __init__(self,ctype='all'):
+        self.file = open('tudou_all.txt',mode='wb')
+    def process_item(self, item, spider):
+        self.file.write(item['item_title'].encode("utf8"))
+        self.file.write("\n")
+        self.file.write(item['item_url'].encode("utf8"))
+        self.file.write("\n")
+        self.file.write(item['item_jishu'].encode("utf8"))
+        self.file.write("\n")
+        return item
+        

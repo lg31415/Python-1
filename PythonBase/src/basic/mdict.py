@@ -16,7 +16,7 @@ def mdict():
     if 's1n' in mydict.itervalues():
         print("wrong")
     else:
-        print "ringhr"
+        print "right"
 
     locdict={'1':'2','3':'5'}
     #locdict.popitem()
@@ -66,8 +66,8 @@ def mdictVisit():
 
 #字典排序（字典是无序的）
 '''
-使用dict时，Key是无序的。在对dict做迭代时，我们无法确定Key的顺序。
-如果要保持Key的顺序，可以用OrderedDict：
+    使用dict时，Key是无序的。在对dict做迭代时，我们无法确定Key的顺序。
+    如果要保持Key的顺序，可以用OrderedDict：
 '''
 from collections import OrderedDict #排序字典
 def dict_sort():
@@ -98,7 +98,6 @@ def dict_sort():
     #字典的构造
     d = dict(name='Bob', age=20, score=88)
     print(d)
-
 
 
 #字典推导式

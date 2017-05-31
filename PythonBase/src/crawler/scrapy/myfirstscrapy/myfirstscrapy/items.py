@@ -24,4 +24,9 @@ class XmpMovieItem(scrapy.Item):
     movie_url = scrapy.Field()      # 电影链接
     movie_score = scrapy.Field()    # 电影评分
 
+# tudou系列验证
+class TudouItem(scrapy.Item):
+    item_title = scrapy.Field()    # 电影标题
+    item_url = scrapy.Field()      # 电影链接
+    item_jishu = scrapy.Field()    # 电影集数
 
