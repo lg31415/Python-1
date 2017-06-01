@@ -1,2 +1,4 @@
-from diff_tstamp import XMPDateStamp
+import global_fun
+import global_tools
+import global_var
 

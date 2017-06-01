@@ -187,9 +187,7 @@ class CPyStat():
                     self.posnum[pos]=[int(pv),int(uv)]
 
 
-'''
-    测试入口
-'''
+# 测试入口
 if __name__ == "__main__":
     cf=CPathFile(r'D:\cygwin64\home\yjm\data\subdir')
     cf.getFilelist()
