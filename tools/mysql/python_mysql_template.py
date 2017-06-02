@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-  功能注释：PythonSQL操作模板
+  功能注释：Python的SQL操作模板
   改进说明：接口泛化
 '''
 import sys
@@ -68,7 +68,7 @@ def insert_data():
 	#insert muti
 	sql="insert into persons(Id_P,LastName) VALUES (%s,%s)"
     mutivals=((int(11),"zhag"),(int(12),"gaug"))
-    cur.executemany(sql, mutivals)
+    cur.executemany(load_sql, mutivals)
 
     #insert single
     sql="insert into persons(Id_P,LastName) VALUES (%s,'%s')" % (16,'yjm')  #按转换类型插入,整型当成字符型输入

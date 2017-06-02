@@ -2,7 +2,9 @@
 
 ---
 
-问题描述：本地开发环境需要某一个库，如何将程序移植到另一台机器上，而这台机器不需要在配置和我的开发环境相同的包，（java里有maven可以方便的打成jar包进行部署）
+**问题描述：**
+
+本地开发环境需要某一个库，如何将程序移植到另一台机器上，而这台机器不需要在配置和我的开发环境相同的包，（java里有maven可以方便的打成jar包进行部署）
 
 **赞成**
 
@@ -22,8 +24,6 @@
 (注意筛选掉不需要的包，pip freeze 导出了所有安装的包)
 ```
 
-
-
 **实现方法**
 
 1. setuptools
@@ -32,9 +32,11 @@
 
 ---
 
-### 1，setuptools实现方式
+### 安装包
 
-​	setuptools是python的模块打包工具
+#### setuptools实现方式
+
+setuptools是python的模块打包工具
 
 > setup.py文件改怎么写？
 >
@@ -52,7 +54,7 @@
 >
 >   ​
 
-#### setup.py文件写法
+##### setup.py文件写法
 
 - setup.py样例
 
@@ -97,7 +99,7 @@ setup(
 
 ​	其中test.py的内日如下:`print "show me"`
 
-#### setup.py的打包
+##### setup.py的打包
 
 - setpy.py打包时的配置参数
 
@@ -145,7 +147,7 @@ setup(
 
   > 在当前目录下新增dist目录，有个同名的压缩包，windows下是zip,linux下是tar.gz
 
-#### setup.py包的安装
+##### setup.py包的安装
 
 安装测试
 
@@ -153,11 +155,11 @@ setup(
 >
 > setup.py的安装参数：
 
-### 2，buildout实现方式
+#### buildout实现方式
 
 > 只需要写一个buildout.cfg文件就可以了，然后给别人
 
-### 3，wheels实现方式
+#### wheels实现方式
 
 > 用 Python Wheels 可以把依赖项打包到一个 .whl 文件里。
 >
@@ -173,6 +175,12 @@ setup(
 4. Allows better caching for testing and continuous integration.
 5. Creates .pyc files as part of installation to ensure they match the python interpreter used.
 6. More consistent installs across platforms and machines.
+
+### 引用包
+
+python模块的每一个包中都有一个`__init__.py`的文件，该文件定义了包的属性和方法，然后是一些模块文件和子目录，如果子目录中也有`__init__.py` ,则是包的子包，模块引入的时候实际上是导入了它的`__init__.py`文件。
+
+
 
 ### 参考
 
@@ -196,7 +204,9 @@ setup(
 
 `py2exe`将python脚本转换成在windows上可独立直线的.exe程序，这样可以在windows上直接运行这个可执行程序，而不需要安装python环境和相应的开发包
 
+### 进度
 
+这个部分暂时搁置了，很长时间都没有什么进展
 
 ### 参考
 
@@ -207,6 +217,8 @@ setup(
 ## Python程序以Linux服务部署
 
 >  整体思路是将python程序进行封装，设置开机自动启动形式，也可以在crontab里设置定时执行，*服务的本质是一种一直在运行的程序*，python程序如何监听端口，调用这个程序，传递参数，实现通信。
+
+### 单独的可执行文件部署
 
 - 编写程序
 
@@ -246,7 +258,9 @@ root      2299  2298  0 21:05 pts/0    00:00:00 /usr/bin/python /home/yjm/Projec
 而且，开启启动这个服务后，无法停止，只能杀死所有相关进程才能停止，这部分可以参考nginx服务启动脚本的编写方法
 ```
 
+### 以后台服务的接口实现
 
+利用uwsgi作为网关，将接口用python来实现
 
 ### 参考
 
