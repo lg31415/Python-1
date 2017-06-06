@@ -34,6 +34,8 @@ def fun_impl():
 			myDict[char] = 1
 		print(myDict)
 
+
+# 测试入口
 if __name__ == "__main__":
     fun_impl()
 
