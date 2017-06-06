@@ -33,17 +33,18 @@ Beautiful Soup将复杂HTML文档转换成一个复杂的树形结构,每个节�
 
 Tab
 
-```
-可以直接利用soup加标签名轻松地获取标签的内容，例如soup.p，查找的是所有内容中第一个符号要求的标签，如果要查询所有的标签，则利用后面的介绍。
+```python
+# 可以直接利用soup加标签名轻松地获取标签的内容，例如soup.p，查找的是所有内容中第一个符号要求的标签，如果要查询所有的标签，则利用后面的介绍。
 
-soup.name和soup.attrs输出节点的标签名和属性字典
+#soup.name和soup.attrs输出节点的标签名和属性字典,获取和修改属性值、删除属性与字典的方法相同
 ```
 
 NavigableString
 
-```
-#获取标签内的内容,利用.string属性，返回的是NavigableString对象
-soup.p.string
+```python
+#获取标签内部的文字内容,利用.string属性，返回的是NavigableString对象
+print type(soup.p.string)
+#<class 'bs4.element.NavigableString'>
 ```
 
 BeautifulSoup
@@ -55,23 +56,27 @@ BeautifulSoup
 Comment
 
 ```
-# 一个特殊的NavigableString对象，输出的内容不包括注释符号
+# 一个特殊的NavigableString对象，输出的内容不包括注释符号,后面再详细学习
 ```
 
 判读当前节点的对象是什么
 
 ```python
-import bs4 # 或者
+import bs4 
+if isinstance(par,bs4.element.Tag):
+	print 'now is Tag'
+
+# 或者
 from bs4 import Tag,NavigableString
-if isinstance(par,bs4.element.Tag): #或者if isinstance(par,Tag)
+if isinstance(par,Tag)
 	print 'now is Tag'
 ```
 
-
-
 ##### 查找
 
-###### 遍历文档树
+###### 依据节点属性
+
+> 利用的是节点的属性的方式来遍历的
 
 直接子节点
 
@@ -154,6 +159,9 @@ list = ==find_all==()
 ---- name标签
 # 传tag标签的字符串
 # 传包含tag标签的正则表达式
+import re
+for tag in soup.find_all(re.compile("^b")): 
+    print(tag.name)
 # 传列表
 # 传方法
 def has_class_but_no_id(tag):
@@ -161,9 +169,11 @@ def has_class_but_no_id(tag):
 soup.find_all(has_class_but_no_id)
 
 --- keyword参数
+搜索的时候会把该参数当做指定名字tag的属性来搜索
 soup.find_all(href=re.compile("elsie"), id='link1'，'class_'='classname')
 # [<a class="sister" href="http://example.com/elsie" id="link1">three</a>]
 
+定义字典属性参数来搜素
 data_soup.find_all(attrs={"data-foo": "value"})
 # [<div data-foo="value">foo!</div>]
 
@@ -177,7 +187,7 @@ data_soup.find_all(attrs={"data-foo": "value"})
 find( name , attrs , recursive , text , **kwargs )
 
 ```
-它与 find_all() 方法唯一的区别是 find_all() 方法的返回结果是值包含一个元素的列表,而 find() 方法直接返回结果
+它与 find_all() 方法唯一的区别是 find_all() 方法的返回结果是值包含一个元素的列表,而 find() 方法直接返回找到的第一个结果
 ```
 
 find_parents()  find_parent()
@@ -212,11 +222,52 @@ find_all_previous() 和 find_previous()
 
 > **注：以上（2）（3）（4）（5）（6）（7）方法参数用法与 find_all() 完全相同，原理均类似，在此不再赘述。**
 
-
-
 ###### 依据CSS查找
 
-soup.select(),返回类型是list
+标签名
+
+```
+soup.select('p'),返回类型是list
+```
+
+类名
+
+```
+soup.select('.class1'),返回类型是list
+```
+
+id名
+
+```
+soup.select('#id1'),返回类型是list,这点有尤其注意
+```
+
+组合查找
+
+```
+# 例如查找 p 标签中，id 等于 link1的内容，二者需要用空格分开(表示并的关系)
+print soup.select('p #link1')
+
+直接子标签查找
+print soup.select("head > title")
+#[<title>The Dormouse's story</title>]
+```
+
+属性查找
+
+```
+print soup.select('a[class="sister"]')
+print soup.select('p a[href="http://example.com/elsie"]')
+```
+
+> 注：以上select方法返回的都是列表形式，可以变量然后使用get_text获取其内容
+>
+> ```
+> for title in soup.select('title'):
+>     print title.get_text()
+> ```
+
+
 
 ##### 修改
 

@@ -24,13 +24,14 @@ class MCRequest():
         url='http://longtail.v.xunlei.com/readnotice?userid=123456&sessionid=xxx&bussinessid=-1'
         url="http://longtail.v.xunlei.com/setuser?userid=123456&sessionid=xxx&bussinessid=-1"
         url="http://testlua.com/lua_file"
+        url="http://testuwsgi.com"
 
         #postbody = {'id': 1, 't': 123232320}
         postbody={
             "info":{
-                "nickname":"user",
+                "name":"user",
                 "sign":"hahahahahaha",
-                "sex":0,
+                "age":0,
                 "phone_num":"13800000000",
                 "email":"xxx@qq.com",
                 "birth_day":"1988-11-11",
@@ -39,9 +40,9 @@ class MCRequest():
             "t":1482302070
         }
 
-        r = requests.post(url, data=postbody)            # 发数编码为表单形式的数据（直接传递字典）
+        #r = requests.post(url, data=postbody)            # 发数编码为表单形式的数据（直接传递字典）
         #r = requests.post(url,data=json.dumps(postbody))# 发送编码为string形式的数据（json数据）
-        #r = requests.post(url,json=postbody)            # 等同于上个（这种方式等价于使用 json 参数，而给它传递 dict）
+        r = requests.post(url,json=postbody)            # 等同于上个（这种方式等价于使用 json 参数，而给它传递 dict）
 
         print r.text
 
@@ -81,6 +82,6 @@ class MCRequest():
 # 测试入口
 if __name__ == "__main__":
     mreq=MCRequest()
-    #mreq.req_post()
+    mreq.req_post()
     #mreq.req_get()
-    mreq.req_get_cookie()
+    #mreq.req_get_cookie()
