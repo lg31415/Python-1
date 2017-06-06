@@ -32,7 +32,24 @@
 
 进度
 
+#### 基础
+
+表单数据获取
+
+```
+web.input(),获取url参数，返回值是类似于字典的key-value对,可以用于GET和POST。
+web.data(),获取实体正文，返回值是一个字符串，只能用于POST。
+```
+
+#### 参考
+
+[web.py中url总结](https://my.oschina.net/yangyanxing/blog/170418)
+
 ### bottle
 
 
+
+
+
+## 参考
 
