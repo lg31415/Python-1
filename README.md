@@ -32,7 +32,7 @@
 
   scikit-learn,tensorflow等机器学习模块
 
-### 新工具
+### 效率工具
 
 #### 列表
 
@@ -50,6 +50,12 @@ python代码的自动格式化
 
 [Python Prompt Toolkit：构建强大交互式命令行的 Python 工具库](http://hao.jobbole.com/python-prompt-toolkit/?utm_source=python.jobbole.com&utm_medium=sidebar-resources)  [(参考2)](http://www.toutiao.com/i6391957455407940098/)
 
-### 感兴趣
+### 编码规范
+
+
+
+### 奇技淫巧
+
+## 感兴趣
 
 [Python+OpenCV实现相似图片搜索](http://python.jobbole.com/80860/)
