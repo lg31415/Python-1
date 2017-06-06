@@ -9,6 +9,7 @@
 import os
 import sys
 import re
+import json
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -36,6 +37,7 @@ def isJapan(s):
 	'''
 	#return re.search(ur"[\u3040-\u309f]+",unicode(s,"utf-8",'ignore')) is not None or re.search(ur"[\u30a0-\u30ff]+",unicode(s,"utf-8",'ignore')) is not None
 	return re.search(ur"[\u3040-\u309f]+",s) is not None or re.search(ur'[\u30a0-\u30ff]+',s) is not None
+
 
 '''
 	字符串操作
@@ -67,42 +69,28 @@ def judge_mean(instr):
 		return True
 
 
-'''
-	############## 实战部分 #####################
-'''
-ntitle="【资源公众号-影视资源狗】【电影-www.】.2016.HD720P.影视资源狗.mp4"
-ntitle="zhan\t zhv33 【 zhjang ] * whwr】: ：，;；\r [鸟哥的\n\t"
-ntitle=u"[BuRongYi.com]盗墓笔记.HD1280高清国语中英双字.mp4"
-ntitle="【欧美短片】（骚女和黑屌14.20分钟）.mp4"
+# 字符串转字典
+def str_to_dict():
+	instr='name=zhang&age=12'
+	d=dict(map(lambda x:x.split('='),instr.split('&')))
+	dstr=str(d)
+	dstr_json=dstr.replace('\'','"')
+
+	print d
+	print dstr
+	print dstr_json	 #json解析的字符串必须是双引号括住的
+
+	print json.loads(dstr_json)#,encoding='utf8')
 
 
-# 字符处理函数
-def filter_str():
-	global ntitle
 
-	# 去除指定模式
-	patern=re.compile(r'【[^】]*电影[^】]*】')    #删除包含电影的
-	patern=re.compile(r'【[^】]*www\.[^】]*】')  #删除包含www.的
-	patern=re.compile(r'\w{1,}语\w双?字幕?')	    #删除字幕（中文字符的正则匹配问题）
 
-	pps=re.findall(patern,ntitle)
-	for pp in pps:
-		print "删除:",pp
-		ntitle=ntitle.replace(pp,'')
-
-	print "处理后的字符：",ntitle
-
-# 字符列表处理
-def filter_str_list():
-	strlist=['\n                ', u'\u8fd9\u662fspan1', '\n                ', u'\u8fd9\u662fspan2', '\n                8.9\n']
-	strlist_filter=filter(lambda x:judge_mean(x),strlist)
-	strlist_filter=map(remove_meanless,strlist_filter)
-	print strlist_filter
 
 
 # 测试入口
 if __name__ == "__main__":
 	#filter_str()
 	#judge_mean()
-	filter_str_list()
+	str_to_dict()
+
 
