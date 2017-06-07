@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:trie树的字典实现
-	Ref:
+	Fun:trie树和实现
+	Ref:https://segmentfault.com/a/1190000000630528
 	State：
 	Date:2017/6/6
 	Author:tuling56
@@ -14,34 +14,157 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-class Trie():
-	root={}
-	END='/'
-	def __init__(self):
-		print '----init------'
+'''
+    Trie树实现
+'''
+class Trie2():
+    def __init__(self):
+        # node = [father, child, keep_char, is_word]
+        self._root = [None, [], None, False]
 
-	def add(self,word):
-		node=self.root
-		for c in word:
-			node.setdefault(c,[]).append(c)
-			node=node.get(c) # 返回的是list
-		node[self.END]=None
+    # 插入操作
+    def insert(self, word):
+        current_word = word
+        current_node = self._root
+        self._insert_operation_1(current_word, current_node)
+
+    def _insert_operation_1(self, current_word, current_node):
+        if current_word != "":
+            first_char = current_word[0]
+            child_node = current_node[1]
+            is_in_child_node = False
+
+            for node in child_node:
+                if first_char == node[2]:
+                    is_in_child_node = True
+                    current_word = current_word[1:]
+                    current_node = node
+                    self._insert_operation_1(current_word, current_node)
+                    break
+                else:
+                    continue
+
+            if not is_in_child_node:
+                self._insert_operation_2(current_word, current_node)
+        else:
+            current_node[3] = True
+
+    def _insert_operation_2(self, current_word, current_node):
+        first_char = current_word[0]
+
+        # creat a new node and insert it in the tree
+        new_node = [None, [], None, False]
+        new_node[2] = first_char
+        new_node[0] = current_node
+        current_node[1].append(new_node)
+
+        current_word = current_word[1:]
+        if current_word != "":
+            current_node = new_node
+            self._insert_operation_2(current_word, current_node)
+
+        else:
+            new_node[3] = True
+
+    # 查找操作
+    def find(self, word):
+        current_word = word
+        current_node = self._root
+        return self._find_opration(current_word, current_node)
+
+    def _find_opration(self, current_word, current_node):
+        if current_word != "":
+            first_char = current_word[0]
+            child_node = current_node[1]
+
+            if child_node == []:
+                return False
+
+            is_in_child_node = False
+            for node in child_node:
+                if first_char == node[2]:
+                    is_in_child_node = True
+                    current_word = current_word[1:]
+                    current_node = node
+                    return self._find_opration(current_word, current_node)
+
+                else:
+                    continue
+
+            if not is_in_child_node:
+                return False
+        else:
+            return current_node[3]
 
 
-	def search(self,word):
-		node=self.root
-		for c in word:
-			if c not in node:
-				return False
-			node=node[c]
-		return self.END in node
+    # 删除操纵
+    def delete(self, word):
+        current_word = word
+        current_node = self._root
+        return self._delete_operation(current_word, current_node)
 
-	def __del__(self):
-		print '-----delete-------'
+    def _delete_operation(self, current_word, current_node):
+        if current_word != "":
+            first_char = current_word[0]
 
-# 测试入口
+            child_node = current_node[1]
+            if child_node == []:
+                return False
+
+            is_in_child_node = False
+
+            for node in child_node:
+                if first_char == node[2]:
+                    is_in_child_node = True
+                    current_word = current_word[1:]
+                    current_node = node
+                    return self._delete_operation(current_word, current_node)
+
+            if not is_in_child_node:
+                return False
+        else:
+            if current_node[1] is not None:
+                current_node[3] = False
+            else:
+                father_node = current_word[0]
+                father_node[1].remove(current_node)
+
+            return True
+
+
+#测试入口
 if __name__ == "__main__":
-	mt=Trie()
-	mt.add('china')
-	mt.add('america')
-	print mt.root
+    demo_trie = Trie2()
+    print "--------Insert:-------- "
+    for word in ("apps", "apple", "cook", "cookie", "cold"):
+        print word
+        demo_trie.insert(word)
+
+    print "--------Find Test:-------"
+    print "ap:      ", demo_trie.find("ap")
+    print "apps:    ", demo_trie.find("apps")
+    print "apple    ", demo_trie.find("apple")
+    print "apples   ", demo_trie.find("apples")
+    print "coo      ", demo_trie.find("coo")
+    print "cook     ", demo_trie.find("cook")
+    print "cookie   ", demo_trie.find("cookie")
+    print "cold     ", demo_trie.find("cold")
+
+    print "--------Delte Test:-------"
+    demo_trie.delete("cookie")
+    print "> Delete cookie"
+    print "Find cook   ? ", demo_trie.find("cook")
+    print "Find cookie ?", demo_trie.find("cookie")
+
+    demo_trie.delete("apple")
+    print "> Delete apple"
+    print "Find apps   ? ", demo_trie.find("apps")
+    print "Find apple  ?", demo_trie.find("apple")
+
+    demo_trie.delete("cold")
+    print "> Delete cold"
+    print "Find cold   ? ", demo_trie.find("cold")
+    print "Find cook  ?", demo_trie.find("cook")
+
+
+
