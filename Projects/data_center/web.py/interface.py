@@ -6,12 +6,14 @@ import logging
 
 sys.path.append("./conf")
 sys.path.append("./pycomm")
+sys.path.append("./welcome")
 sys.path.append("./data_center")
 
 import utility
 
 urls = (
-	'/demo','data_center.Handler',
+    '/','welcome.Handler',
+	'/dc','data_center.Handler',
 	)
 
 app = web.application(urls, globals(), autoreload=True)
@@ -21,6 +23,6 @@ log = logging.getLogger('root')
 log.info('Loading interface.py')
 
 if __name__ == '__main__':
-        app.run(debug = False)
+    app.run()#debug = False)
 else:
-        application = app.wsgifunc()
+    application = app.wsgifunc()
