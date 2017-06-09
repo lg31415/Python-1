@@ -37,22 +37,22 @@ class SendMail():
 		att1["Content-Type"] = 'application/octet-stream'
 		att1["Content-Disposition"] = 'attachment; filename="%s"' % (os.path.basename(attach_name))
 		self.msg.attach(att1)
-	
+
 	def settocopy(self,tolist,copylist=[]):
 		self.msg['to'] = ','.join(tolist)
 		if copylist:
 			self.msg['Cc'] = ','.join(copylist)
-	
+
 	def settitle(self,title):
 		subject = title
 		self.msg['subject'] = unicode(subject.decode('utf8'))
-	
+
 	#添加邮件内容
-	def setbody(self,body):	
+	def setbody(self,body):
 		content=body
 		content = MIMEText(unicode(content.decode('utf-8')), "plain", "utf-8")
 		self.msg.attach(content)
-	
+
 	#发送邮件
 	def send(self):
 		try:
@@ -63,7 +63,7 @@ class SendMail():
 			server.sendmail(self.msg['from'], self.msg['to'],self.msg.as_string())
 			server.quit()
 			print '发送成功'
-		except Exception, e:  
+		except Exception, e:
 			print str(e)
 
 
