@@ -25,13 +25,13 @@ class BaseUrlib2():
         data={'u':'mediaso','u1':'click','u2':'search','u3':'thisu3','u4':'AWFEWKEDWDWDWEWLDW','u5':'jjwewew','rd':12243543544}
         data=OrderedDict([('u','mediaso'),('u1','click'),('u2','search'),('u3','thisu3'),('u4','AWFEWKEDWDWDWEWLDW'),('u5','jjwewew'),('rd',12243543544)])
         posturl='http://kkpgv3.stat.kankan.com/'
-        postdata=urllib.urlencode(data)
+        postdata=urllib.urlencode(data)   # 注意编码方式
         print "编码后的post数据：",postdata
         req=urllib2.urlopen(posturl,postdata)
         content=req.read()
         print content.req.url
 
-    # 构造get请（直接把要请求的数据放在url里）
+    # 构造get请（不带header头）
     def url_get(self):
         url="http://kkpgv3.stat.kankan.com/?u=mediaso&u1=click&u2=search&u4=XXXFXXXXXXXXXXXE&rd=1470057248"
         req=urllib2.urlopen(url)
@@ -46,7 +46,7 @@ class ExDownMP3():
     def __init__(self):
         self.entry_url="http://www.tingshuge.com/Book/2379.html"
 
-    # 首先获取全部的url
+    # 首先获取全部的url（带header头）
     def getAllURL_api(self):
         regex=re.compile(r'/down/\?2379-\d{1,3}\.html')
         user_agent = "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)"

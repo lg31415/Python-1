@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-  功能注释：Python的SQL操作模板
+  功能注释：Python的SQL操作模板面向过程
   改进说明：接口泛化
 '''
 import sys
@@ -14,23 +14,9 @@ import MySQLdb
 import json
 import urllib2
 import time
-from datetime import date,  datetime, timedelta
+from datetime import date,datetime, timedelta
 
-#########################  面向对象 Methods ##################################
-class SQLTeml:
-    def __init__(self):
-        self.__conn = MySQLdb.connect(host='10.65.1.18', port=3307, user='root', passwd='sd-9898w', db='lichao')
-        self.__cursor = self.conn.cursor()
-        self.__cursor.execute('set names utf8')
 
-    def __del__(self):
-        self.__cursor.close()
-        self.__conn.close()
-
-    def parse(self):
-        pass
-
-#########################  面向过程 Methods ##################################
 # 初始化工作，打开连接
 def init_conn(db):
     ## 建立连接
@@ -89,7 +75,7 @@ def insert_data():
     cur.execute(sql)
 
 # 数据查询(一次性取完)
-def select_all_data():
+def select_all_data(cur):
     #测试1
     sql="select Id_P,LastName from persons ORDER BY Id_P"
     try:
@@ -138,7 +124,6 @@ def select_each_data():
         onedata=cur.fetchone()
     #conn.commit()
 
-
 # 数据导入
 def inport_data(conn,cur):
     load_sql="use db1;load data local infile '%s' into table db1.tb1 character set utf8 fields terminated by ',';"
@@ -146,7 +131,6 @@ def inport_data(conn,cur):
         cur.execute(load_sql)
     except Exception,e:
         print(e)
-
 
 # 数据导出(mysql)
 def export_data(conn,cur):
@@ -167,10 +151,10 @@ def export_data_hive():
     print hsql
     if os.system(hsql) != 0:
         print "get %s data from t_stat_url_upload_split failed" % (stadate)
-        exit()
+        sys.exit()
 
 # 关闭连接
-def close_down(conn,cur):
+def close_conn(conn,cur):
     cur.close()
     conn.close()
 
@@ -184,10 +168,6 @@ if __name__ == "__main__":
     else:
         stadate=sys.argv[1]
 
-    curdir=os.getcwd()
-    datapath=curdir.replace('/bin','/data')
-    conn=MySQLdb.connect(host='127.0.0.1',user='root',passwd='root',db='study') #新建的数据库
-    cur=conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
 
 
 
