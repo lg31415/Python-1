@@ -94,7 +94,8 @@ NEWSPIDER_MODULE='XmpMoiveSpider.spiders'
 ITEM_PIPELINES={
 #    'myfirstscrapy.pipelines.NanuNewsPipeline':1,
 #    'myfirstscrapy.pipelines.XmpMoviePipeline':2,
-     'myfirstscrapy.pipelines.TudouAllPipeline':3,
+#    'myfirstscrapy.pipelines.TudouAllPipeline':3,
+	 'myfirstscrapy.pipelines.QQrecommPipeline':4,
 }
 
 

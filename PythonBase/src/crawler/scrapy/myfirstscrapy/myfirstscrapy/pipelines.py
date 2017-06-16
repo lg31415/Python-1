@@ -10,6 +10,9 @@
     管道的类名是否要和items定义的要爬取的字段名相同？？？
 '''
 
+import MySQLdb
+import hues
+
 # 管道1：南邮新闻页处理
 class NanuNewsPipeline(object):
     def __init__(self):
@@ -49,3 +52,57 @@ class TudouAllPipeline(object):
         self.file.write("\n")
         return item
         
+# 管道3:qqrecomm处理,存入关系库
+class QQrecommPipeline(object):
+    def __init__(self):
+        self.__conn = MySQLdb.connect(host='localhost', port=3306, user='root', passwd='root', db='study')
+        self.__cursor = self.__conn.cursor()
+        self.__cursor.execute('set names utf8')
+        self.__id_mapping={}
+
+    def __del__(self):
+        self.__cursor.close()
+        self.__conn.close()
+
+    def __addrecord2craw(self,pageurl):
+        sql="insert into url_to_crawled values()"
+
+    # 新的推荐关系插入
+    def tuple_list_to_db(self,tuple_list):
+        mutisql="replace into qq_relation_info values ('%s','%s','NOW()','NOW()')"
+        self.__cursor.executemany(mutisql,tuple_list)
+
+    # 根据pageurl查询movieid
+    def url2moieid(self,pageurl):
+        pageurlhash=pageurl  # md5
+        sql="select pageurl,dealt_flag from third_party_base_info where pageurlhash='%s';" %(pageurlhash)
+        self.__cursor.execute(sql)
+        rows=self.__cursor.fetchall()
+        if rows is None or not rows:
+            hues.warn('%s has never been crawled' %(pageurl))
+            self.__addrecord2craw(pageurl)
+            return ''
+        if len(rows)==1:
+            pageurl,dealt_flag=rows[0]
+            if dealt_flag==1:
+                hues.info('%s to be matched' %(pageurl))
+                return ''
+            sql="select movieid from id_mapping where odl_id='%s'" %(pageurlhash)
+            self.__cursor.execute(sql)
+            rows=self.__cursor.fetchall()
+            movieid=rows[0][0]
+            return movieid
+
+    def process_item(self, item, spider):
+        relations=[]
+        pageurl=item['item_url']
+        movieid=self.url2moieid(pageurl)
+        recomm_pageurls=item['item_recomurls']
+        for url in recomm_pageurls:
+            recomm_movieid=self.url2moieid(url)
+            if movieid and recomm_movieid:
+                relations.append((movieid,recomm_movieid))
+            else:
+                hues.warn('pageurl not has never been crawled:%s' %(url))
+        self.tuple_list_to_db(relations)
+        return item

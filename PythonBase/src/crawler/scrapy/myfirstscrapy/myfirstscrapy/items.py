@@ -30,3 +30,8 @@ class TudouItem(scrapy.Item):
     item_url = scrapy.Field()      # 电影链接
     item_jishu = scrapy.Field()    # 电影集数
 
+# qq推荐
+class QQrecommItem(scrapy.Item):
+    item_title=scrapy.Field()       # 推荐影片名
+    item_url=scrapy.Field()         # url
+    item_poster=scrapy.Item()       # 海报
