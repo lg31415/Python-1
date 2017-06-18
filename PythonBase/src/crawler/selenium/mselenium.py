@@ -26,6 +26,9 @@ import time
 class SelChrome():
 	def __init__(self):
 		self.driver=webdriver.Chrome()
+	def __del__(self):
+		self.driver.quit()
+		self.driver.close()
 
 	# 演示
 	def demo(self,url=''):
