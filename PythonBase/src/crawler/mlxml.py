@@ -92,59 +92,16 @@ class CXPath():
         fileHandler.close()
 
 
-'''
-    测试类
-'''
-from selenium import  webdriver
-class CXPath_T():
-    def __init__(self):
-        self.url = 'https://v.qq.com/x/cover/5a3aweewodeclku.html'
-        self.res = 'xpath-result.html'
-        self.driver=webdriver.PhantomJS()
-    def __del__(self):
-        self.driver.quit()
-        self.driver.close()
 
-    def parse(self):
-        #response = urllib2.urlopen(self.url)
-        #text = response.read()  # .decode('utf8')
-        self.driver.get(self.url)
-        self.driver.implicitly_wait(10)
-        content=self.driver.page_source.encode('utf8')
-        #f=open('test.html','w')
-        #f.write(content)
-        #f.close()
-        self.html = etree.HTML(content)
-        recomm = self.html.xpath('//*[@id="leftdown_content"]/div[7]/div[2]/div//text()') #怀疑这部分是动态加载的,需要用phatomjs来做
-        print recomm
-        return
-
-        recomm_ul_list=recomm[0].xpath('./ul')
-        print recomm_ul_list
-        if  not recomm_ul_list:
-            hues.error("找不到推荐页面，请核对")
-            return ''
-        for ul_item in recomm_ul_list:
-            li_list = ul_item.xpath('./li')
-            for li_item in li_list:
-                title = li_item.xpath('./strong/a/text()')
-                ref_url = li_item.xpath('./strong/a/@href')
-                poster_url = li_item.xpath('./a/img/@src')
-
-                hues.success("title:" + title)
-                hues.success("url:" + ref_url)
-                hues.success("poster:" + poster_url)
 
 
 
 # 测试入口
 if __name__ == "__main__":
-    #mxpath=CXPath()
+    mxpath=CXPath()
     #mxpath.xfile()
     #mxpath.xlocmod()
-    #mxpath.savetree()
+    mxpath.savetree()
 
-    # 测试类
-    mxpath=CXPath_T()
-    mxpath.parse()
+
 

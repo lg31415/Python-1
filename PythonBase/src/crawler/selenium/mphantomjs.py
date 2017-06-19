@@ -22,14 +22,20 @@ import time
 	phantomjs无节面浏览器
 '''
 class mPhantonJS():
+	'''
+		注意driver的关闭和退出
+	'''
 	def __init__(self):
 		try:
 			self.driver=webdriver.PhantomJS()
 		except Exception,e:
 			self.driver.quit()
 			return False
-
 		self.driver.get('http://www.baidu.com/')
+
+	def __del__(self):
+		self.driver.quit()
+		self.driver.close()
 
 	def demo(self):
 		print self.driver.title #,driver.page_source
