@@ -12,6 +12,7 @@
 
 import MySQLdb
 import hues
+import json
 
 # 管道1：南邮新闻页处理
 class NanuNewsPipeline(object):
@@ -30,6 +31,7 @@ class NanuNewsPipeline(object):
 class XmpMoviePipeline(object):
     def __init__(self):
         self.file = open('xmp_movie.txt',mode='wb')
+
     def process_item(self, item, spider):
         self.file.write(item['movie_title'].encode("utf8"))
         self.file.write("\n")
@@ -43,6 +45,15 @@ class XmpMoviePipeline(object):
 class TudouAllPipeline(object):
     def __init__(self,ctype='all'):
         self.file = open('tudou_all.txt',mode='wb')
+
+    # 打开蜘蛛的时候执行
+    def open_spider(self, spider):
+        hues.info("TudouAllPipeline蜘蛛打开")
+
+    # 关闭蜘蛛的时候执行
+    def close_spider(self,spider):
+        hues.info("TudouAllPipeline蜘蛛关闭")
+
     def process_item(self, item, spider):
         self.file.write(item['item_title'].encode("utf8"))
         self.file.write("\n")
@@ -50,6 +61,7 @@ class TudouAllPipeline(object):
         self.file.write("\n")
         self.file.write(item['item_jishu'].encode("utf8"))
         self.file.write("\n")
+        #hues.success(json.dumps(item,ensure_ascii=False))
         return item
         
 # 管道3:qqrecomm处理,存入关系库

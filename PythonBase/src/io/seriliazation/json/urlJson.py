@@ -122,7 +122,7 @@ class JSONBASE():
 
     # json.dumps():将Python字典转换成json字符串
     def jsonWriteStr(self):
-        text={
+        mdict={
             "retCode": "0000",
             "retMsg": "张三丰",
             "testcolor": "jajjdw",
@@ -133,7 +133,7 @@ class JSONBASE():
             }
         }
         f=open('../../../../data/write_str.json','w')
-        jsondata=json.dumps(text,ensure_ascii=False)
+        jsondata=json.dumps(mdict,ensure_ascii=False)
         print type(jsondata)
         f.write(jsondata)
         f.close()

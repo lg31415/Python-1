@@ -90,12 +90,11 @@ SPIDER_MODULES=['myfirstscrapy.spiders']    #这个是爬虫的库包
 NEWSPIDER_MODULE='NanuNewsSpider.spiders'
 NEWSPIDER_MODULE='XmpMoiveSpider.spiders'
 
-# 定义管道处理的数据，接收处理item的数据
+# 定义管道处理的数据，接收处理item的数据(如何对每个爬虫单独定义管道)
 ITEM_PIPELINES={
 #    'myfirstscrapy.pipelines.NanuNewsPipeline':1,
 #    'myfirstscrapy.pipelines.XmpMoviePipeline':2,
-#    'myfirstscrapy.pipelines.TudouAllPipeline':3,
-	 'myfirstscrapy.pipelines.QQrecommPipeline':4,
+     'myfirstscrapy.pipelines.TudouAllPipeline':3,
 }
 
 
