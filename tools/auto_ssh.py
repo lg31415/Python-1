@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:ssh自动链接和远程执行命令
+	Fun:ssh自动连接和远程执行命令
 	Ref:http://mp.weixin.qq.com/s/2P2IyrF8aCsUnsXsaNWuZA
-	State：
+		http://python.jobbole.com/87867/
+	State：持续完善中
 	Date:2017/3/16
 	Author:tuling56
 '''
@@ -36,11 +37,29 @@ def ssh_connect(ip,username,passwd,cmd):
 		print '[Error from]:%s'%(ip)
 
 
+
+
+'''
+	shutit自动连接和执行远程命令
+	状态：存在问题
+'''
+import shutit
+def shutit_connect():
+	session=shutit.create_session('bash')
+	session.login('ssh root@127.0.0.1 -p122',user='root',password='123')
+	hres=session.send_and_get_output('hostname')
+	print hres
+
+
+# 测试入口
 if __name__ == "__main__":
+	# ssh连接测试
 	#ssh_connect("127.0.0.1","root","123","hostname;ifconfig")
 	#ssh_connect("127.0.0.1","root","123","1if [ -d /var/spool ] ;then echo 1;else echo 0; fi")
 	#ssh_connect("127.0.0.1","root","123","mkdir /home/yjm/xxwe&&echo 1||echo 0")
-	ssh_connect("127.0.0.1","root","123","cd /home/yjm/Projects/ml && find .  -type f")
+	#ssh_connect("127.0.0.1","root","123","cd /home/yjm/Projects/ml && find .  -type f")
 
+	# shutit测试
+	shutit_connect()
 
 
