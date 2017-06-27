@@ -33,6 +33,7 @@ def mquote(instr):
 	print "hex:",hexstr
 	return  hexstr
 
+
 '''
 	字符串反hex化
 	输入：%E4%B8%AD%E5%9B%BD

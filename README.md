@@ -52,6 +52,8 @@ python代码的自动格式化
 
 ### 编码规范
 
+yaml这个经常使用一下
+
 
 
 ### 奇技淫巧
@@ -59,3 +61,5 @@ python代码的自动格式化
 ## 感兴趣
 
 [Python+OpenCV实现相似图片搜索](http://python.jobbole.com/80860/)
+
+[DFA实现敏感词过滤](http://www.toutiao.com/i6434251728480109058/)
