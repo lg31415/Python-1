@@ -37,6 +37,13 @@ class collectionCT(object):
         #print dd_new['key1']
         print dd_new.get('key1','nononono')
 
+        #默认字典实现计数
+        dc=defaultdict(int)
+        for k in 'xhawejwewfeqq':
+            dc[k]=dc[k]+1
+        print dc
+
+
     #有序字典（普通字典的key是无序的，在对dict迭代的时候，无法确定key的顺序）
     def morderdict(self):
         od=OrderedDict()
@@ -55,5 +62,5 @@ class collectionCT(object):
 if __name__== "__main__":
     mcoll=collectionCT()
     #mcoll.mdeque();
-    #mcoll.mdefaultdict()
-    mcoll.mCounter()
+    mcoll.mdefaultdict()
+    #mcoll.mCounter()

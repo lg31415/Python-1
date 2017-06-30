@@ -135,11 +135,21 @@ def setDictDefault():
     md['key1']='23'
     print md['key2']
 
+# 比较两个字典
+def cmpdict():
+    d1={'a':1,'b':2}
+    d2={'a':2,'b':3}
+    if cmp(d1,d2):
+        print "d1==d2"
+    else:
+        print "d1!=d2"
+
 if __name__ == "__main__":
     #mbase()
     #mdictoper()
     #mdictVisit()
     #dict_sort()
     #setDictDefault()
-    reverse_dict()
+    #reverse_dict()
+    cmpdict()
 
