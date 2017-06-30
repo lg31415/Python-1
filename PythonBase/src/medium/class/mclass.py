@@ -1,5 +1,6 @@
 #-coding:utf-8-*-
 '''
+    功能：类演示
     Created on 2015年8月10日
     @author: yjm
     Ref:http://python.jobbole.com/82297/
@@ -52,7 +53,7 @@ class Test(object):
         print cls.name*x # 类的成员变量
 
 '''
-	类的继承
+	继承类
 '''
 class subTest(Test):
     '''
