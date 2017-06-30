@@ -1,15 +1,21 @@
 #-*coding:utf-8-*-
 __author__ = 'yjm'
 '''
-功能注释：日期和时间类学习
+    功能注释：日期和时间类学习
+    状态:持续更新中
 '''
 
 import time #time也是一个模块？？
 import datetime  #datetime是一个模块
-from datetime import  date,datetime,timedelta #time
+from datetime import date,datetime,timedelta #time
 import sys
 import os
+import hues
 
+# 当前时间
+def datebasic():
+    after_time = int(time.time())-1*24*3600
+    hues.info(u"%s~~%s未有豆瓣数据更新" %(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(after_time)),time.strftime("%Y-%m-%d %H:%M:%S",time.localtime())))
 
 #最简单的日期操作
 def dataaddsub():

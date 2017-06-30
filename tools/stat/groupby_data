@@ -1,0 +1,20 @@
+anime	5899	2639
+movie	17584	8972
+teleplay	15223	7185
+tv	15687	2418
+WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.
+WARN: Please see http:/www.slf4j.org/codes.html#release for an explanation.
+anime	407	149
+documentary	1305	551
+femalestars	1246	527
+joke	2328	1098
+lovers	34	15
+malestars	81	42
+movie	12328	8227
+teleplay	852	256
+tv	81	32
+vmovie	2516	1096
+WARN: The method class org.apache.commons.logging.impl.SLF4JLogFactory#release() was invoked.
+WARN: Please see http:/www.slf4j.org/codes.html#release for an explanation.
+mvzhibo	3	3
+zhibo	2226	1263

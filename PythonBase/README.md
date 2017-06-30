@@ -220,3 +220,5 @@ os、re、base64、hashlib、argpase、datetime
 [廖雪峰Python教程](http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/)
 
 [Vamei的Python教程](https://github.com/Vamei/Python-Tutorial-Vamei/tree/master/content)(其中Python标准库--走马观花很不错)
+
+[Python修改path的搜索路径](http://blog.csdn.net/gqtcgq/article/details/49365933)
