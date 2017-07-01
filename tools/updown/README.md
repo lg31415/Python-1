@@ -1,28 +1,28 @@
-## 上传和下载
+## 文件操作工具
 
 [TOC]
 
-### 视频下载破解
+### 同步
 
-破解思路
+#### autorsync
 
-> step1: 根据视频ID获取该影片的json数据
->
-> step2:根据获取的json数据，解析title和加密字符串
->
-> step3:根据加密字符串获取sid、token数据
->
-> step4:根据sid、token获取ep
->
-> step5:sid、token、ep等信息拼接出下载地址
->
-> step6:根据下载地址，下载对应的视频
+基于paramiko和watchdog的文件（夹）自动同步工具，在win<-->linux平台上自动同步，其中watchdog用以监测文件的变化，如修改，删除，添加等操作
 
-### 上传和下载自动工具
+
+
+### 上传和下载
 
 #### sftp_updown.py
 
-基于sftp的文件和文件夹上传和下载
+基于sftp的文件和文件夹上传和下载，还需要对路径进行完善，能否直接下载整个目录
+
+例子
+
+```
+比如下载远程文件夹：/usr/local/downdir 到本地的/home/yjm/todir
+python sftp_updown.py /usr/local/downdir /home/yjm/todir
+只会将远程的downdir目录下的所有内容（不包含downdir本身），下载到在本地的todir目录下，不会在todir目录下创建downdir目录
+```
 
 
 

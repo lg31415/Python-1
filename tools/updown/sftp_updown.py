@@ -108,7 +108,6 @@ class SFTP_TOOL():
 		else:
 			return False
 
-
 	# 文件和文件夹上传
 	def sftp_upload(self,local,remote):
 		try:

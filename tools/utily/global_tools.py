@@ -9,49 +9,6 @@ import os
 import sys
 import re
 
-'''
-    txt-->xls
-'''
-import xlwt
-class CTxt2Xls():
-    def __init__(self,input):
-        self.input=input
-        self.output=os.path.splitext(input)[0]+'.xls'
-        self.workbook=xlwt.Workbook()
-
-    # 设置输出
-    def setoutput(self,output):
-        self.output=output
-
-    # 添加图片
-    def addpic(self):
-        table=self.workbook.add_sheet('T1')
-        title="合并标题".decode('utf8')
-        rdata=range(1,10)
-        table.write_merge(0,1,0,1,title)
-        table.write(3,0,'hahh')
-        table.insert_bitmap('../data/test.bmp',5,1,4,4,0.5,0.5)
-
-    # 添加文本
-    def addtxt(self):
-        table=self.data.add_sheet('T2')
-        f=open(self.input,'r')
-        contents=f.read().decode('utf8').split('\n')
-        #contents=f.readlines()
-        for i,v in enumerate(contents):
-            lcontent=v.strip().split('\t')
-            for j,vv in enumerate(lcontent):
-                if isinstance(vv,float):
-                    table.write(i,j,vv)  #浮点数据可以以指定格式写入
-                else:
-                    table.write(i,j,vv)
-        f.close()
-
-    # 程序入口
-    def txt2xls(self):
-        self.addtxt()
-        self.workbook.save(self.output)
-
 
 '''
     邮件发送
@@ -165,26 +122,6 @@ class CSysInfo():
             return "Linux"
         else:
             return "Other"
-
-
-
-'''
-    数据统计
-'''
-class CPyStat():
-    def __init__(self):
-        pass
-
-    # 实现groupby,(此处指sum)
-    def groupby(self):
-         with open(self.src_data,'r') as f:
-            for line in f:
-                pos,pv,uv=line.strip('\n').split()
-                if self.posnum.has_key(pos):
-                    self.posnum[pos][1]+=int(pv)
-                    self.posnum[pos][2]+=int(uv)
-                else:
-                    self.posnum[pos]=[int(pv),int(uv)]
 
 
 # 测试入口

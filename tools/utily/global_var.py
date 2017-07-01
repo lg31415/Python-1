@@ -17,7 +17,7 @@ sys.setdefaultencoding('utf-8')
 # 显示进度
 def process_status(cur,total):
 	ratio=round(float(cur)*100/total,2)
-	hues.log(str(ratio)+'%')
+	hues.info(str(ratio)+'%')
 
 
 # 测试入口
