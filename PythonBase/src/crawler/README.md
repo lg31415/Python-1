@@ -459,7 +459,9 @@ sudo ln -sf /usr/local/share/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/loc
 
 > 若不把放在PATH环境变量中去，可以手工指定，如下：
 >
-> driver=webdriver.Chrome(‘C:\\bin\phantomjs.exe’)
+> driver=webdriver.Phantomjs(‘C:\\bin\phantomjs.exe’) 
+>
+> driver=webdriver.Phantomjs("executable_path=''./phantomjs'") 
 
 selenium操作PhantomJS
 
