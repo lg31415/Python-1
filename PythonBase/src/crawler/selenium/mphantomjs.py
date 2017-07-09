@@ -36,7 +36,7 @@ class mPhantonJS():
 			if False:
 				self.driver=webdriver.PhantomJS(desired_capabilities=self.__webdrive_conf())
 			else:
-				self.driver=webdriver.PhantomJS()
+				self.driver=webdriver.PhantomJS() #executable_path=""
 		except Exception,e:
 			self.driver.quit()
 			self.driver.close()
