@@ -23,7 +23,8 @@ import socket
 '''
 def tcpclient():
 	s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-	s.connect(('10.10.160.11',9999))
+#	s.connect(('10.10.160.11',9999))
+	s.connect(('127.0.0.1',80))
 	hues.info(s.recv(1024))
 	for data in list('s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)'): #['Michael','Tracy','Sarah']:
 		s.send(data.encode())

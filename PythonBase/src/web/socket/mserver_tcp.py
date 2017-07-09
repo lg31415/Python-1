@@ -40,7 +40,8 @@ def tcplink(sock,addr):
 '''
 def tcpserver():
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)  # 创建一个基于ipv4 的TCP协议的socket
-    s.bind(('127.0.0.1',9999))
+#    s.bind(('127.0.0.1',9999))
+    s.bind(('127.0.0.1',80))
     s.listen(5)                 # 开始监听
     hues.log("Waiting for connection......")
     # 无限循环等待连接
