@@ -19,7 +19,7 @@ import time
 import threading
 
 '''
-	创建tcp连接
+	创建服务器端连接
 '''
 def tcplink(sock,addr):
     hues.info("accept new connection from %s:%s..." % addr)
@@ -27,7 +27,7 @@ def tcplink(sock,addr):
     while True:                 #通信循环：发送与接收
         data=sock.recv(1024)
         hues.success("Received [%s] from %s:%s" %(data,addr[0],addr[1]))
-        time.sleep(5)
+        time.sleep(2)
         if data=='exit' or not data:
             break
         sock.send("hello: ".encode()+data)
@@ -50,6 +50,7 @@ def tcpserver():
         t=threading.Thread(target=tcplink,args=(sock, addr))
         t.start()
 
+# 测试入口
 if __name__ == "__main__":
     tcpserver()
 

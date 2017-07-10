@@ -7,7 +7,7 @@
 	Date:2017/4/24
 	Author:tuling56
 '''
-import re, os, sys
+import re,os, sys
 import hues
 from urllib import quote,unquote
 from urllib import urlencode  #注意没有urldecode()这个函数

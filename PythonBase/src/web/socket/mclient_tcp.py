@@ -26,11 +26,25 @@ def tcpclient():
 #	s.connect(('10.10.160.11',9999))
 	s.connect(('127.0.0.1',80))
 	hues.info(s.recv(1024))
-	for data in list('s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)'): #['Michael','Tracy','Sarah']:
+
+	# 自动
+	'''
+	for data in ['Michael','Tracy','Sarah']: #list('s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)')
 		s.send(data.encode())
 		print(s.recv(1024))
 	s.send(b'exit')
+	'''
 
+	# 交互
+	while True:
+		sd=raw_input("请输入要发送的内容:")
+		s.send(sd.encode())
+		print (s.recv(1024))
+		if sd=='exit' or sd=='quit' or sd=='q':
+			print "程序退出"
+			break
+
+# 测试入口
 if __name__ == "__main__":
 	tcpclient()
 
