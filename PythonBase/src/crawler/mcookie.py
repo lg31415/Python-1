@@ -58,12 +58,42 @@ class mCookie():
         print result.read()
 
 
+    # 字符串hex化
+    def __str2hex(self,cstr):
+        hexs=cstr.encode('hex')
+        hexss=[hexs[x:x+2] for x in range(0,len(hexs),2)]
+        hexstr='%'+'%'.join(hexss)
+        return  hexstr
 
+
+
+'''
+    测试和验证
+'''
+# 豆瓣测试：冏的是要访问的页面不用使用cookie验证登录就可以看的
+def doubantest(self):
+    #保存登录cookie
+    filename='logincookie_douban.txt'
+    loginurl = 'https://www.douban.com/accounts/login?source=main'
+    postdata=urllib.urlencode({
+        'username':'yueqiulaishu@163.com',
+        'password':'a112233'
+    })
+    cookie=cookielib.MozillaCookieJar(filename)
+    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
+    respone = opener.open(loginurl, postdata)
+    cookie.save(ignore_discard=False,ignore_expires=False)
+
+    #用登录cookie模拟登录
+    visiturl="https://www.douban.com/people/45545682/"
+    result=opener.open(visiturl)
+    print result.read()
 
 # 测试入口
 if __name__ == "__main__":
     mcookie=mCookie()
     #mcookie.savecookie()
-    mcookie.requestWithCookie()
+    #mcookie.requestWithCookie()
+    mcookie.doubantest()
 
 

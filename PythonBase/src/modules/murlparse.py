@@ -3,6 +3,7 @@
 '''
 	Fun:url参数解析
 	Ref:http://blog.csdn.net/acceptedxukai/article/details/8806204
+		http://www.cnblogs.com/huangcong/archive/2011/08/31/2160633.html
 	State：此处只是做个引子，内容的完善需要自己完成
 	Date:2017/4/14
 	Author:tuling56

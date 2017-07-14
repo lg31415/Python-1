@@ -8,8 +8,9 @@ __author__ = 'yjm'
 import urllib
 import urllib2
 import cookielib
+import hues
 import json
-import re
+import sys
 from bs4 import BeautifulSoup
 
 '''
@@ -17,63 +18,40 @@ from bs4 import BeautifulSoup
 '''
 class mCookie():
     def __init__(self):
-        self.visurlurl="http://192.168.16.33/meal/" #'http://192.168.16.33/meal/'   #访问网址
-        self.filename='cookie.txt'   #保存cookie的文件
+        self.url="http://192.168.16.33/meal/"
+        self.cookiefile='cookie.txt'
 
     # 访问并保存cookie
     def savecookie(self):
-        #声明一个MozillaCookieJar对象实例来保存cookie，之后写入文件
-        cookie = cookielib.MozillaCookieJar(self.filename)
-        #利用urllib2库的HTTPCookieProcessor对象来创建cookie处理器
+        cookie = cookielib.MozillaCookieJar(self.cookiefile)
         handler = urllib2.HTTPCookieProcessor(cookie)
-        #通过handler来构建opener
         opener = urllib2.build_opener(handler)
-        #创建一个请求，原理同urllib2的urlopen
         response = opener.open(self.url)
-        #解析cookie内容
-        for item in cookie:
-            print "Domain:"+item.domain+"\tPath:"+item.path+"\tName="+item.name+"\tValue="+item.value
-        #保存cookie到文件
+        for num,item in enumerate(cookie):
+            hues.info("Cookie["+str(num+1)+"]","Domain:"+item.domain+"\tPath:"+item.path+"\tName="+item.name+"\tValue="+item.value)
         cookie.save(ignore_discard=True, ignore_expires=True)
 
     # 先用密码登录并保存cookie，再使用cookie访问
     def requestWithCookie(self):
-        #保存登录cookie
-        filename='logincookie'
-        loginurl = 'http://home.xunlei.com/plaf/login.jsf'
+        # 保存登录cookie
+        loginurl = 'http://sso.sandai.net/server/login?service=http://home.xunlei.cn/plaf/caslogin.jsf&serverlogin=http://home.xunlei.cn/plaf/login.jsf'
         postdata=urllib.urlencode({
             'username':'yuanjunmiao',
-            'password':'2Jzn2Q7ue49W', #'42852644fea1cb03f80b1a700368047f%26%23646215'
+            'password':'2Jzn2Q7ue49W',
             'lt':'e4s1',
-            'eventId':'submit',
-            'cookie':-1
+            'eventId':'submit'
         })
-        cookie=cookielib.MozillaCookieJar(self.filename)
+        cookie=cookielib.MozillaCookieJar(self.cookiefile)
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
-        respone = opener.open(loginurl, postdata)
+        response=opener.open(loginurl, postdata)
         cookie.save(ignore_discard=False,ignore_expires=False)
-        #用登录cookie模拟登录
-        result=opener.open(self.visurlurl)
-        print result.read()
+        pcontant=response.read().decode('utf8').strip()
+        print "密码登录看到的内容:\n",pcontant.encode('utf8')
 
-    # 使用豆瓣测试通过
-    def doubantest(self):
-        #保存登录cookie
-        filename='logincookie'
-        loginurl = 'https://accounts.douban.com/login?alias=&redir=https%3A%2F%2Fwww.douban.com%2F&source=index_nav&error=1001'
-        postdata=urllib.urlencode({
-            'username':'yueqiulaishu@163.com',
-            'password':'a112233'
-        })
-        cookie=cookielib.MozillaCookieJar(filename)
-        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
-        respone = opener.open(loginurl, postdata)
-        cookie.save(ignore_discard=False,ignore_expires=False)
-        #用登录cookie模拟登录
-        visiturl="https://www.douban.com/people/45545682/"
-        result=opener.open(visiturl)
-        print result.read()
-
+        # 用登录cookie模拟登录
+        result=opener.open(self.url)
+        ccontant=result.read().decode('utf8').strip()
+        print "cookie登陆看到的内容:\n",ccontant.encode('utf8')
 
 
     # 字符串hex化
@@ -82,9 +60,6 @@ class mCookie():
         hexss=[hexs[x:x+2] for x in range(0,len(hexs),2)]
         hexstr='%'+'%'.join(hexss)
         return  hexstr
-
-    def uridecode(self,uristr):
-        pass
 
 
 
@@ -95,11 +70,8 @@ class mDinner(mCookie):
     def __init__(self):
         mCookie.__init__(self)
 
-    #构造header头
-    def buildHead(self):
-        pass
 
-    #获取菜单
+    # 获取菜单(不需要登录)
     def getMenu(self):
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36",
@@ -116,7 +88,7 @@ class mDinner(mCookie):
         #all=soup.findAll('li')
         #print all
 
-    #订餐
+    # 订餐（需要登录带有cookie）
     def loginwithcookie(self):
         rest=['天府川香','美味通']
         hexrest=map(self.str2hex,rest)
@@ -141,13 +113,14 @@ class mDinner(mCookie):
         f.close()
 
 
+# 测试入口
 if __name__ == "__main__":
     mcookie=mCookie()
-    mcookie.requestWithCookie()
     #mcookie.savecookie()
-    #mcookie.doubantest()
-    #mcookie.loginwithcookie()
-    exit()
+    mcookie.requestWithCookie()
+
+    sys.exit(0)
 
     mdinner=mDinner()
     mdinner.getMenu()
+    #mdinner.loginwithcookie()
