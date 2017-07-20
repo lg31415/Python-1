@@ -24,8 +24,8 @@ g_top_num = 20
 '''
 class XMPTypePlay():
 	def __init__(self):
-		self.kankan_play = '%s/peerid_play_table_%s' %(datapath,date)
-		self.jingpin_play = '%s/peerid_conv_table_%s' %(datapath,date)
+		self.kankan_play = '%s/peerid_kankan_play_%s' %(datapath,date)
+		self.jingpin_play = '%s/peerid_jingpin_play_%s' %(datapath,date)
 		self.conn = MySQLdb.connect(host="localhost", user="root", passwd="hive")
 		self.cur = self.conn.cursor(MySQLdb.cursors.DictCursor)
 		self.cur.execute('set names utf8')
@@ -44,19 +44,17 @@ class XMPTypePlay():
 		print cmd
 		ret = os.system(cmd)
 		if ret != 0:
-			print "error:get_play_movieid_list from t_stat_play failed! ret:",ret
+			hues.error("get_kankan_play from t_stat_play failed! ret:",ret)
 			return None
 
 		cmd = "%s -e \"use xmp_odl;select fu1, fu4, '' from xmpconv where ds='%s' and fu3='XMP-JingPin' and length(fu4)>4\">%s" %(g_tool_hive,date, self.jingpin_play)
 		print cmd
 		ret = os.system(cmd)
 		if ret != 0:
-			print "error:get_play_movieid_list from xmpconv failed! ret:",ret
+			hues.error("get_jingpin play from xmpconv failed! ret:",ret)
 			return None
 
-		print "load mysql, return list"
-
-		mid_table = 'pgv_stat_mid.xmp_play_movieid_title'
+		mid_table = 'pgv_stat_mid.xmp_play_movieid_title' #和在线播放排行复用了这个中间表（注意执行顺序）
 		self.cur.execute("delete from %s;" %(mid_table))
 		self.cur.execute("load data local infile '%s' into table %s" %(self.kankan_play, mid_table))
 		self.cur.execute("load data local infile '%s' into table %s" %(self.jingpin_play, mid_table))
@@ -74,17 +72,17 @@ class XMPTypePlay():
 				kankan_id_info = {}
 				kankan_id_info['movieid'] = one['movieid']
 				kankan_id_info['type'] = one['type']
-				self.g_map_kkid[one['kankan_id']] = kankan_id_info
+				self.g_map_kkid[one['kankan_id']] = kankan_id_info  # 以kankanid为键，的moveid和type信息
 			return True
 		except Exception,e:
-			print "except Exception e:%s" %(str(e))
+			hues.error("except Exception e:%s" %(str(e)))
 			return False
 
-	#　获取topplay
+	#　获取top_play
 	def get_top_list(self):
 		top_list = {}
 		kankan_list = {}
-		kankan_index = 1	#排行序号
+		kankan_index = 1
 		tv_list = {}
 		tv_index = 1
 		anime_list = {}
@@ -94,13 +92,13 @@ class XMPTypePlay():
 		movie_list = {}
 		movie_index = 1
 
-		cnt = 0
 		for one in self.play_list:
 			movieid = one['movieid']
 			title = one['title']
 			pv = one['pv']
 			vv = one['vv']
-			if 5 == len(movieid):					#kankan_id
+			## kankan资源处理
+			if 5 == len(movieid):								# kankan_id
 				if not self.g_map_kkid.has_key(movieid):
 					continue
 					if g_top_num < kankan_index:
@@ -114,8 +112,8 @@ class XMPTypePlay():
 					kankan_list[movieid] = movie_info
 					kankan_index = kankan_index + 1
 					continue
-				movieid = g_map_kkid[movieid]['movieid']
-			elif 8 == len(movieid) and '4' == movieid[0:1]:		#kankan_vip_id
+				movieid = self.g_map_kkid[movieid]['movieid']
+			elif 8 == len(movieid) and '4' == movieid[0:1]:		# kankan_vip_id
 				if not g_map_kkid.has_key(movieid[3:8]):
 					continue
 					if g_top_num < kankan_index:
@@ -129,23 +127,22 @@ class XMPTypePlay():
 					kankan_list[movieid] = movie_info
 					kankan_index = kankan_index + 1
 					continue
-				movieid = g_map_kkid[movieid[3:8]]['movieid']
-			else:							#media_id
+				movieid = self.g_map_kkid[movieid[3:8]]['movieid']
+			else:												# media_id
 				movieid = 'mi' + movieid
 
+
+			## 竞品资源处理
 			try:
-				#print "after media movieid:", movieid
 				http_req = 'http://media.v.xunlei.com/pc/info?movieid=%s' %(movieid)
-				#print http_req
 				request = urllib2.Request(http_req, None, self.headers)
 				resp = self.opener.open(request, None, 40)
 				result = resp.read().decode('utf8')
-				#print result
 				s = json.loads(result)
 				title = s['title']
 				type = s['type']
 				if 'tv' == type:
-					if tv_list.has_key(movieid):	#合并看看id翻译过之后的数据
+					if tv_list.has_key(movieid):
 						tv_list[movieid]['pv'] = tv_list[movieid]['pv'] + pv
 						tv_list[movieid]['vv'] = tv_list[movieid]['vv'] + vv
 						continue
@@ -160,7 +157,7 @@ class XMPTypePlay():
 					tv_list[movieid] = movie_info
 					tv_index = tv_index + 1
 				elif 'anime' == type:
-					if anime_list.has_key(movieid):	#合并看看id翻译过之后的数据
+					if anime_list.has_key(movieid):
 						anime_list[movieid]['pv'] = anime_list[movieid]['pv'] + pv
 						anime_list[movieid]['vv'] = anime_list[movieid]['vv'] + vv
 						continue
@@ -175,7 +172,7 @@ class XMPTypePlay():
 					anime_list[movieid] = movie_info
 					anime_index = anime_index + 1
 				elif 'teleplay' == type:
-					if teleplay_list.has_key(movieid):	#合并看看id翻译过之后的数据
+					if teleplay_list.has_key(movieid):
 						teleplay_list[movieid]['pv'] = teleplay_list[movieid]['pv'] + pv
 						teleplay_list[movieid]['vv'] = teleplay_list[movieid]['vv'] + vv
 						continue
@@ -190,7 +187,7 @@ class XMPTypePlay():
 					teleplay_list[movieid] = movie_info
 					teleplay_index = teleplay_index + 1
 				elif 'movie' == type:
-					if movie_list.has_key(movieid):	#合并看看id翻译过之后的数据
+					if movie_list.has_key(movieid):
 						movie_list[movieid]['pv'] = movie_list[movieid]['pv'] + pv
 						movie_list[movieid]['vv'] = movie_list[movieid]['vv'] + vv
 						continue
@@ -204,11 +201,10 @@ class XMPTypePlay():
 					movie_info['vv']=vv
 					movie_list[movieid] = movie_info
 					movie_index = movie_index + 1
-				#print "kankan_index:", kankan_index, " tv_index:", tv_index, "anime_index:", anime_index, " teleplay_index:", teleplay_index
-				if g_top_num < tv_index and g_top_num < anime_index and g_top_num < teleplay_index and g_top_num < movie_index:
+				if g_top_num < tv_index and g_top_num < anime_index and g_top_num < teleplay_index and g_top_num < movie_index: # 保证每种类型都选够20个
 					break
 			except Exception,e:
-				print "except Exception e:%s" %(str(e)), " movieid=", movieid
+				hues.error("except Exception e:%s" %(str(e)), " movieid=", movieid)
 				continue
 
 		#top_list["kankan"] = kankan_list
@@ -221,6 +217,7 @@ class XMPTypePlay():
 		encoder = json.dumps(top_list)
 		print encoder
 
+	# 重新排序（在中间表中排序，然后插入到结果表中）
 	def order_by_vv(self,toplist):
 		table = 'pgv_stat.xmp_play_ranking'
 		self.cur.execute("delete from %s where date='%s';" %(table, date))
@@ -235,7 +232,7 @@ class XMPTypePlay():
 			info = top_list["teleplay"][key]
 			value = ", ('%s', %d)" %(info['movieid'], info['vv'])
 			sql = sql + value
-		#print sql
+
 		self.cur.execute(sql)
 		self.cur.execute("select movieid from %s order by vv desc limit %d" %(mid_table, len(keys)))
 		list = self.cur.fetchall()
@@ -255,7 +252,6 @@ class XMPTypePlay():
 			info = top_list["anime"][key]
 			value = ", ('%s', %d)" %(info['movieid'], info['vv'])
 			sql = sql + value
-		#print sql
 		self.cur.execute(sql)
 		self.cur.execute("select movieid from %s order by vv desc limit %d" %(mid_table, len(keys)))
 		list = self.cur.fetchall()
@@ -275,7 +271,6 @@ class XMPTypePlay():
 			info = top_list["tv"][key]
 			value = ", ('%s', %d)" %(info['movieid'], info['vv'])
 			sql = sql + value
-		#print sql
 		self.cur.execute(sql)
 		self.cur.execute("select movieid from %s order by vv desc limit %d" %(mid_table, len(keys)))
 		list = self.cur.fetchall()
@@ -295,7 +290,7 @@ class XMPTypePlay():
 			info = top_list["movie"][key]
 			value = ", ('%s', %d)" %(info['movieid'], info['vv'])
 			sql = sql + value
-		#print sql
+
 		self.cur.execute(sql)
 		self.cur.execute("select movieid from %s order by vv desc limit %d" %(mid_table, len(keys)))
 		list = self.cur.fetchall()
@@ -315,7 +310,6 @@ if __name__ == "__main__":
 		date = '%04d%02d%02d' %(yesterday.year, yesterday.month, yesterday.day)
 	else:
 		date = sys.argv[1]
-
 
 	xtp=XMPTypePlay()
 	#获取看看id和媒资库id的映射关系
