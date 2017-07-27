@@ -2,44 +2,22 @@
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-    功能：urllib2库的使用
+    功能：urllib2库的应用之下载mp3
     ref:
     state:
 '''
 
 import re
 import urllib,urllib2
+import json
 from collections import OrderedDict
 
+import socket
+socket.setdefaulttimeout(60)    # 设置全局socket超时时间60s
+
 
 '''
-    基本使用
-'''
-class BaseUrlib2():
-    def __init__(self):
-        pass
-
-    #构造post请求(在请求的时候传送body体)
-    def url_post(self):
-        data={'username':'zawe','password':'12342'}
-        data={'u':'mediaso','u1':'click','u2':'search','u3':'thisu3','u4':'AWFEWKEDWDWDWEWLDW','u5':'jjwewew','rd':12243543544}
-        data=OrderedDict([('u','mediaso'),('u1','click'),('u2','search'),('u3','thisu3'),('u4','AWFEWKEDWDWDWEWLDW'),('u5','jjwewew'),('rd',12243543544)])
-        posturl='http://kkpgv3.stat.kankan.com/'
-        postdata=urllib.urlencode(data)   # 注意编码方式
-        print "编码后的post数据：",postdata
-        req=urllib2.urlopen(posturl,postdata)
-        content=req.read()
-        print content.req.url
-
-    # 构造get请（不带header头）
-    def url_get(self):
-        url="http://kkpgv3.stat.kankan.com/?u=mediaso&u1=click&u2=search&u4=XXXFXXXXXXXXXXXE&rd=1470057248"
-        req=urllib2.urlopen(url)
-        content=req.read()
-        print content
-
-'''
-    应用1：获取和下载MP3
+    应用：获取和下载MP3
     功能注释：下载和保存固定网址的mp3视频,主要是urlib2库的使用
 '''
 class ExDownMP3():
@@ -92,7 +70,7 @@ class ExDownMP3():
 
 # 测试入口
 if __name__ == "__main__":
-    mb=BaseUrlib2()
-    mb.url_post()
+    ed3=ExDownMP3()
+    ed3.down_mp3_entry()
 
 

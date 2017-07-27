@@ -60,12 +60,13 @@ s1='PFhh7bsb/uD0SjU3DfECtUDe4lmB8G5A0NTTmYoBeQcGGch8Nf5nPOtgvqGmUs32ko7MIFu89L3k
 p2='1C1B0D1F912471OE'	
 s2='OKGCCnYU3gr7t//WCOiE1VF36AzKyh2wX2wD8C7aION J4/1jlswymNgGFu7N mc8xDmf u3OUCMABAK5Rq7ggSWslas25cRkYewCDhbL54MIWD0Eo7dhCyU/mzV7LuRG44W6z4drBK5n ggcC2tEQ=='
 
+p3=''
+s3="hs887a4on6PkWrmIK5ObDmw5dHX1hkdNnxAr/so+tfgn9N7lt2Twcp5F7U+fi1hako7MIFu89L3kD/OKGgevVySg1S5eIrj3vsN5KL3jN2rOt3nchNSdlYHhuk5dQSEUfaeeEuEZBWXMmQzGkctupHxrzLfXvPk4xyekSaSfPL73Cu9ZU/2aQoZ4ROEGLxjnVu095LaGSXVsA84ZS+U517oKxps6T9Xgs0IF1x/OoDcovft5KVhhR2XOk3dO2CGq/t0i+7I7ybsOSEVoXE9+1oMcaktSzJ3Z9Z6F412PBsveEeJxLz6qaEnLuzNpolA98RoCo9GPRXkCMnHzqwsHUgLLE86vP9VkvjtbSiI3AUM="
 
 if __name__ == '__main__':
 	key='546hcmwxcnnzdm234'+p2
 	aes = XMP_AES(key)
-	encrypt_str=s2
-	#encrypt_str=s2
+	encrypt_str=s3
 	print '[len(encrypt_str)]:',len(encrypt_str)
 	print '[encrypt_str]:', len(encrypt_str),'\n',encrypt_str
 	decode_str = aes.decode(encrypt_str)
