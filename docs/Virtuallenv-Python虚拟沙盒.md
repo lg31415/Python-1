@@ -32,7 +32,11 @@
 
 :grey_question:virtualenv创建的虚拟环境是Python2的还是Python3的？
 
-### 参考
+使用的pip是哪个环境的，安装的Virtualenv就是哪个环境的，比如是pip是python2.7下的，则Virtualenv是也python2.7
+
+
+
+## 参考
 
 [virtualenv -- python虚拟沙盒](http://www.cnblogs.com/tk091/p/3700013.html)
 
