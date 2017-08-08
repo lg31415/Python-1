@@ -163,13 +163,13 @@ class SyncHandler(FileSystemEventHandler):
         print event.key,"moved"
         self.doFileDelete(event)
         self.doFileSync(event)        
-  
+
+# 测试入口
 if __name__ == "__main__":    
     if len(sys.argv) < 2 :
         print "usage : %s conf.xml" % sys.argv[0]
         sys.exit(1)
     confFile = sys.argv[1]
-        
     conf = ConfigData(confFile)
     conf.show()
     
