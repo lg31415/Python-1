@@ -13,6 +13,9 @@ import hues
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+'''
+    基础版
+'''
 import subprocess,shlex
 def python_invoke_shell():
 	cmd="md5sum python_shell.py"
@@ -54,9 +57,22 @@ def execute_command(cmdstring, cwd=None, timeout=None, isshell=False):
 
     return str(sub.returncode)
 
+'''
+    python调用其它程序
+'''
+import webbrowser
+def python_invoke():
+    timeleft=4
+    while timeleft>0:
+        print(timeleft)
+        time.sleep(1)
+        timeleft=timeleft-1
+
+    #subprocess.Popen(['start','README.md'],shell=True)
+    webbrowser.open('http://www.baidu.com',new=1)
 
 # 测试入口
 if __name__ == "__main__":
-	python_invoke_shell()
-	print execute_command("ls")
-
+    #python_invoke_shell()
+    #print execute_command("ls")
+    python_invoke()
