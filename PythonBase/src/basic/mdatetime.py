@@ -171,6 +171,10 @@ def mdateutil():
     daydiff=relativedelta(now_date,start_date) # 参数是两个日期类型，返回是差的日期数：relativedelta(months=+2, days=+22)
     print(daydiff)
 
+def datediff():
+    pass
+
+
 
 '''
     文件日期参与的计算
@@ -235,8 +239,8 @@ if __name__=='__main__':
     #str2date()
     #timeStamp2date()
     #formatTrans()
-    dataOper()
-    #mdateutil()
+    #dataOper()
+    mdateutil()
     #cmpdate()
 
 
