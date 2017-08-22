@@ -489,15 +489,24 @@ def sel_chrome():
 	driver.get('http://www.baidu.com')
 	print driver.title
 	print 'return'
+def __del__():
+    driver.close()
+    dirver.quit()
 ```
 
+##### 参考
 
+[chromedriver.exe与chrome的版本对应关系](http://blog.csdn.net/huilan_same/article/details/51896672)
 
-参考：
-
-[chromedriver.exe与chrome的对应关系和下载](http://blog.csdn.net/huilan_same/article/details/51896672)
+[chromedriver.exe下载](http://chromedriver.storage.googleapis.com/index.html)
 
 [盘点selenium phantomJS使用的坑](http://www.jianshu.com/p/9d408e21dc3a)
+
+[通过headless chrome执行selenium脚本](http://blog.csdn.net/happymff/article/details/77073296)
+
+[在headless模式下运行selenium](http://blog.csdn.net/happymff/article/details/77073296)
+
+[headless chrome基础教程](http://blog.csdn.net/happymff/article/details/77073296)
 
 ### 优化
 

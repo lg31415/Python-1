@@ -47,6 +47,7 @@ class mPhantonJS():
 		self.driver.quit()
 		self.driver.close()
 
+
 	# 请求配置
 	def __webdrive_conf(self,imgload=False,isproxy=False):
 		desired_capabilities = DesiredCapabilities.PHANTOMJS.copy()
