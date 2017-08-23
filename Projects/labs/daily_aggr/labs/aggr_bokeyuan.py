@@ -89,7 +89,7 @@ class BokeAggr():
             abstract=item.find_element_by_xpath('.//div[@class="link_content"]/div')
             abstract=abstract.text
         except Exception,e:
-            hues.error("解析备注失败:\n"+str(e))
+            hues.warn("无备注:\n"+str(e))
 
         # types
         tags=''
@@ -109,34 +109,36 @@ class BokeAggr():
         print "abstract:",abstract
         print "read_num:",read_num
         print "comment_num:",comment_num
-        print 'publish_time:',publish_time
 
         # 数据入库
         try:
-            sql="replace into collection_base_info(pageurl,pageurlhash,poster,title,type,source,abstract,tags,read_num,comment_num,publish_time,insert_time) values('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s)"
-            paras=(pageurl,pageurlhash,poster,title,type,source,abstract,tags,str(read_num),str(comment_num),publish_time,'now()')
+            sql="replace into collection_base_info(pageurl,pageurlhash,title,type,source,abstract,tags,insert_time) values('%s','%s','%s','%s','%s','%s','%s',%s)"
+            paras=(pageurl,pageurlhash,title,type,source,abstract,tags,'now()')
             sql=sql % paras
-            hues.info(sql.encode('utf-8'))
-            m=self.cursor.execute(self._transcode(sql.encode('utf-8')))
+            hues.log(sql.decode('utf-8').encode('utf-8'))
+            m=self.cursor.execute(sql.decode('utf-8').encode('utf-8'))
             print 'replace into collection_base_info:',title,"------>ret = ",m
         except Exception,e:
-            hues.warn(sql)
+            hues.warn(str(e))
 
     # 方法１：模拟点击下一页
     def boke_aggr(self):
-        self.driver.get('http://wz.cnblogs.com/')
+        self.driver.get('http://wz.cnblogs.com/my/10.html')
         next_page=self.driver.find_element_by_xpath('//*[@id="main"]/div/div[3]/a[last()]')
-        next_url='http://wz.cnblogs.com/'
-        while next_page.text=='Next >':
+        last=False
+        while next_page.text=='Next >' or last:
             cururl=self.driver.current_url
-            hues.info("cur crawler:%s\next crawler:%s" %(cururl,next_url))
+            hues.info("cur crawler:%s" %(cururl))
             items=self.driver.find_elements_by_xpath('//*[@id="wz_list"]/div')
             for item in items:
                 self.process_item(item)
-
+            if last:
+                break
             next_page.click()
             next_page=self.driver.find_element_by_xpath('//*[@id="main"]/div/div[3]/a[last()]')
             next_url=next_page.get_attribute('href')
+            if next_page.text!='Next >':
+                last=True
 
 
 # 测试入口

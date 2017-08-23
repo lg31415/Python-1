@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-  功能注释：Python的SQL操作模板类
+  功能注释：Python的SQL操作模板类面向对象
   改进说明：接口泛化
 '''
 
@@ -21,7 +21,7 @@ from datetime import date,datetime, timedelta
 class SQLTemlClass:
     def __init__(self):
         self.__conn = MySQLdb.connect(host='localhost', port=3306, user='root', passwd='root', db='study')
-        self.__cursor = self.__conn.cursor()
+        self.__cursor = self.__conn.cursor()  # cursorclass=MySQLdb.cursors.DictCursor
         self.__cursor.execute('set names utf8')
 
     def __del__(self):

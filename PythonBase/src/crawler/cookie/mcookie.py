@@ -6,6 +6,7 @@ __author__ = 'yjm'
   参考：http://python.jobbole.com/81344/
 '''
 
+import sys
 import json
 import re
 import urllib
@@ -18,8 +19,13 @@ from bs4 import BeautifulSoup
 '''
 class mCookie():
     def __init__(self):
-        self.url="http://sso.sandai.net/server/login?service=http://192.168.16.33/meal/" #'http://192.168.16.33/meal/'
-        self.filename='cookie.txt'
+        self.url="https://wz.cnblogs.com/"
+        self.filename='mcookie.log'
+
+    # 保存网页
+    def savehtml(self,content):
+        with open('mcookie.html','w') as f:
+            f.write(content)
 
     # 访问并保存cookie
     def savecookie(self):
@@ -31,6 +37,7 @@ class mCookie():
         opener = urllib2.build_opener(handler)
         #创建一个请求，原理同urllib2的urlopen
         response = opener.open(self.url)
+        self.savehtml(response.read().decode('utf-8').encode('utf-8'))
 
         #解析cookie内容（可能保存的是很多的cookie）
         for item in cookie:
@@ -42,20 +49,22 @@ class mCookie():
     # 先用密码登录并保存cookie，再使用cookie访问
     def requestWithCookie(self):
         # 登录并保存cookie
-        filename='logincookie'
-        loginurl = 'http://sso.sandai.net/server/login?service=http://192.168.16.33/meal/'
+        loginurl = 'https://passport.cnblogs.com/user/signin'
         postdata=urllib.urlencode({
             'username':'yuanjunmiao',
             'password':'2Jzn2Q7ue49W'
         })
-        cookie=cookielib.MozillaCookieJar(filename)
+        cookie=cookielib.MozillaCookieJar('logincookie.log')
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
-        respone = opener.open(loginurl, postdata)
+        response = opener.open('https://wz.cnblogs.com/', postdata)
         cookie.save(ignore_discard=False,ignore_expires=False)
 
         # 用登录cookie模拟登录
         result=opener.open(self.url)  #这个时候带cookie了吗???
         print result.read()
+
+
+
 
 
     # 字符串hex化
@@ -67,33 +76,11 @@ class mCookie():
 
 
 
-'''
-    测试和验证
-'''
-# 豆瓣测试：冏的是要访问的页面不用使用cookie验证登录就可以看的
-def doubantest(self):
-    #保存登录cookie
-    filename='logincookie_douban.txt'
-    loginurl = 'https://www.douban.com/accounts/login?source=main'
-    postdata=urllib.urlencode({
-        'username':'yueqiulaishu@163.com',
-        'password':'a112233'
-    })
-    cookie=cookielib.MozillaCookieJar(filename)
-    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
-    respone = opener.open(loginurl, postdata)
-    cookie.save(ignore_discard=False,ignore_expires=False)
-
-    #用登录cookie模拟登录
-    visiturl="https://www.douban.com/people/45545682/"
-    result=opener.open(visiturl)
-    print result.read()
 
 # 测试入口
 if __name__ == "__main__":
     mcookie=mCookie()
-    #mcookie.savecookie()
+    mcookie.savecookie()
     #mcookie.requestWithCookie()
-    mcookie.doubantest()
 
 
