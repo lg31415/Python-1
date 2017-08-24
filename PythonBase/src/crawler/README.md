@@ -2,7 +2,15 @@
 
 [TOC]
 
-### 概览
+### 基础
+
+#### cookie
+
+
+
+### 模块
+
+**概览**
 
 - bs4，lxml
 
@@ -14,13 +22,11 @@
 
 - requests
 
-功能强大，接近底层
+功能强大，接近底层，其session部分很强大
 
 - selenium
 
 自动化测试工具，配合phantomjs无界面浏览器，实现自动化测试
-
-### 基础
 
 #### bs4
 
@@ -520,9 +526,15 @@ def __del__():
 
 ## 参考
 
-[Scrapy 爬虫 使用指南 完全教程](http://www.tuicool.com/articles/aMJvuu3)
+- 基础部分
 
-[以生活例子介绍多线程和单线程](http://mp.weixin.qq.com/s?__biz=MjM5OTMxMzA4NQ==&mid=2655932144&idx=1&sn=2f6a122d5e0363f2dbb85fc2b7e406cd&scene=0#rd)
+[深入理解Session与Cookie](https://my.oschina.net/kevinair/blog/192829)
+
+[导出指定网站的Cookie](http://www.bao21.com/89.html)
+
+- 模块部分
+
+[Scrapy 爬虫 使用指南 完全教程](http://www.tuicool.com/articles/aMJvuu3)
 
 [Requests库的使用](https://funhacks.net/explore-python/HTTP/Requests.html)
 
@@ -540,4 +552,6 @@ def __del__():
 
 [Python爬虫爬取动态页面思路+实例（一）](http://blog.csdn.net/qq_30242609/article/details/53788228)
 
-[深入理解Session与Cookie](https://my.oschina.net/kevinair/blog/192829)
+- 优化部分
+
+[以生活例子介绍多线程和单线程](http://mp.weixin.qq.com/s?__biz=MjM5OTMxMzA4NQ==&mid=2655932144&idx=1&sn=2f6a122d5e0363f2dbb85fc2b7e406cd&scene=0#rd)

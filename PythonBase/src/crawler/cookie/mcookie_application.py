@@ -35,7 +35,7 @@ class CookieApplication():
         loginurl = 'https://www.douban.com/accounts/login?source=main'
         postdata=urllib.urlencode({
             'username':'yueqiulaishu@163.com',
-            'password':'a112233'
+            'password':'avvvv'
         })
         cookie=cookielib.MozillaCookieJar(filename)
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
@@ -59,6 +59,7 @@ class CookieApplication():
         opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
         response = opener.open(req)
         print response.read()
+
 
     # 博客园cookie测试(成功,cookie是事先导出保存的)
     def cnblog(self):

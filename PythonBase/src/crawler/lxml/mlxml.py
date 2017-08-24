@@ -24,17 +24,21 @@ from lxml import etree
     xpath语法处理器（学习类）
 '''
 class CXPath():
-    def __init__(self):
+    def __init__(self,isfile=True):
         self.url='http://list.v.xunlei.com/v,type/5,movie/page2/'
         self.file='xpath-sample.html'
         self.res='xpath-result.html'
+        if isfile:
+            self._xfile()
+        else:
+            self._xrespone()
 
-    def xrespone(self):
+    def _xrespone(self):
         response=urllib2.urlopen(self.url)
         text=response.read()#.decode('utf8')
         self.html=etree.HTML(text)
 
-    def xfile(self):
+    def _xfile(self):
         self.html=etree.HTML(open(self.file,'r').read()) # 其等效于直接解析文件
         # html=etree.parse(self.file)
 
@@ -52,8 +56,14 @@ class CXPath():
             print(e.xpath('string(.)'))
         #print(len(property_lst))
 
+    # 获取属性
+    def xpros(self):
+        ress=self.html.xpath('//*[@id!="datatable"]')
+        for res in ress:
+            print res.attrib
+
     # 修改xml树
-    def xlocmod(self):
+    def xmod(self):
         lr=self.html.xpath('//*[@id="wrapper"]/div[2]/ul/li[1]/a')[0]
         # 获取和修改属性
         print lr.get('href'),lr.attrib['href']
@@ -77,9 +87,8 @@ class CXPath():
         # 输出最后的整个节点
         #print etree.tostring(self.html,encoding='utf8',pretty_print=True)
 
-
-    # 保存树
-    def savetree(self):
+    # 保存xml树
+    def xsave(self):
         # 转换成文本后保存
         with open(self.res,'wb') as f:
             result=etree.tostring(self.html,encoding='utf8',pretty_print=True)
@@ -94,14 +103,10 @@ class CXPath():
 
 
 
-
-
 # 测试入口
 if __name__ == "__main__":
     mxpath=CXPath()
-    #mxpath.xfile()
-    #mxpath.xlocmod()
-    mxpath.savetree()
+    mxpath.xpros()
 
 
 
