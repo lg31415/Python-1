@@ -67,18 +67,6 @@ class AutoDinnerCookie():
 
     # 点餐
     def parse_dinner(self):
-        pass
-
-    # 历史
-    def parse_history(self):
-        pass
-
-    # 排行
-    def parse_rank(self):
-        pass
-
-    #　解析入口
-    def parse(self):
         #content=self._get_content()
         #self.html=etree.HTML(content)
         self.html=etree.HTML(open('dinner.html','r').read())
@@ -92,6 +80,21 @@ class AutoDinnerCookie():
                 menu_name=menu.xpath('./a/div[@class="dish_name"]/strong/text()')
                 menu_id=menu.xpath('./a/@id')
                 print menu_name
+
+    # 历史
+    def parse_history(self):
+        pass
+
+    # 排行
+    def parse_rank(self):
+        pass
+
+    #　解析入口
+    def parse(self):
+        self.parse_dinner()
+        self.parse_history()
+        self.parse_rank()
+
 
 
 

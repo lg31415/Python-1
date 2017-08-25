@@ -48,9 +48,9 @@ class MCRequest():
 
     # get请求
     def req_get(self):
-        geturlparas = {'page': '1', 'per_page': '10','Name':None}
         #headers = {'User-Agent': 'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'}
         mcookie={}
+        geturlparas = {'page': '1', 'per_page': '10','Name':None}
         r = requests.get("http://httpbin.org/get", params=geturlparas)#,headers=headers，cookies=mcookie)
 
         # 查看请求
@@ -71,7 +71,7 @@ class MCRequest():
     def req_get_cookie(self):
         mcookie=dict(key1='value1')
         #r=requests.get('http://testuwsgi.com/',cookies=mcookie)
-        r=requests.get('http://httpbin.org/get',cookies=mcookie)
+        r=requests.get('http://httpbin.org/get',cookies=mcookie)  #传递的是字典数据
         print 'response_headers:',r.headers
         print 'response_cookies:',r.cookies
 
