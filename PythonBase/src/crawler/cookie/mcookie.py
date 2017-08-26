@@ -12,7 +12,12 @@ import re
 import urllib
 import urllib2
 import cookielib
+import hues
 from bs4 import BeautifulSoup
+from collections import OrderedDict
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 '''
     cookie公共类
@@ -63,10 +68,6 @@ class mCookie():
         result=opener.open(self.url)  #这个时候带cookie了吗???
         print result.read()
 
-
-
-
-
     # 字符串hex化
     def __str2hex(self,cstr):
         hexs=cstr.encode('hex')
@@ -75,12 +76,59 @@ class mCookie():
         return  hexstr
 
 
+'''
+    cookie加载和转换
+'''
+class LoadCookie():
+    def __init__(self):
+        self.cookies=[]
+
+    #加载chrome的edit_this_cookie导出的cookie
+    def load_chrome_cookie(self):
+        with open('chrome_cookies.ck','r') as f:
+            try:
+                chrome_cookies=json.load(f,encoding='utf-8')#,object_pairs_hook=OrderedDict)
+                self.cookies.append({'name':chrome_cookies['name'],'value':chrome_cookies['value']})
+                print self.cookies
+            except Exception,e:
+                hues.error('解析chrome_cookies失败:',str(e))
+
+    # 加载firefox的firedebug导出的cookie
+    def load_firefox_cookie(self):
+        with open('firefox_cookies.ck','r') as f:
+            try:
+                for line in f:
+                    name,value=line.strip().strip('\n').split('\t')[-2:]
+                    self.cookies.append({'name':name,'value':value})
+                print self.cookies
+            except Exception,e:
+                hues.error('解析firefox_cookies失败:',str(e))
+
+    # 加载cookielib保存的cookie
+    def load_morzila_cookie(self):
+        with open('morzila_cookies.ck','r') as f:
+            try:
+                for line in f:
+                    line=line.strip().strip('\n').decode('ascii').encode('utf8')
+                    if line.startswith('#') or line=='':
+                        continue
+                    name,value=line.split('\t')[-2:]
+                    self.cookies.append({'name':name,'value':value})
+                print self.cookies
+            except Exception,e:
+                hues.error('解析morzila_cookies失败:',str(e))
+
+
 
 
 # 测试入口
 if __name__ == "__main__":
-    mcookie=mCookie()
-    mcookie.savecookie()
+    #mcookie=mCookie()
+    #mcookie.savecookie()
     #mcookie.requestWithCookie()
 
+    lc=LoadCookie()
+    #lc.load_chrome_cookie()
+    #lc.load_firefox_cookie()
+    lc.load_morzila_cookie()
 

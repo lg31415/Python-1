@@ -2,8 +2,8 @@
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-  功能注释：sqllite3嵌入式关系数据库,其数据库就是一个文件
-  参考：http://www.runoob.com/sqlite/sqlite-tutorial.html
+    功能注释：sqllite3嵌入式关系数据库,其数据库就是一个文件
+    参考：http://www.runoob.com/sqlite/sqlite-tutorial.html
 '''
 
 import sqlite3
@@ -12,6 +12,7 @@ class CSqlite3():
     def __init__(self):
         self.conn=sqlite3.connect('sqllite3.db')
         self.cursor = self.conn.cursor()
+
     def __del__(self):
         self.conn.commit()
         self.cursor.close()

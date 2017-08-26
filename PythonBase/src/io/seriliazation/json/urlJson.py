@@ -133,7 +133,7 @@ class JSONBASE():
             }
         }
         f=open('../../../../data/write_str.json','w')
-        jsondata=json.dumps(mdict,ensure_ascii=False)
+        jsondata=json.dumps(mdict,ensure_ascii=False)#,sort_keys=True,indent=4)
         print type(jsondata)
         f.write(jsondata)
         f.close()

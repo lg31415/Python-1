@@ -164,8 +164,6 @@ def mutifileOper(filename1,filename2,filename3):
 	文件重定向
 	参考：http://www.cnblogs.com/clover-toeic/p/5491073.html
 '''
-
-
 def file_redirect():
 	savedStdout = sys.stdout  # 保存标准输出流
 	with open('out.txt', 'w+') as file:

@@ -13,6 +13,7 @@ import re
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
+import hues
 from whoosh.index import create_in
 from whoosh.fields import *
 from jieba.analyse import ChineseAnalyzer
@@ -32,10 +33,11 @@ def msearch():
 	ix = create_in(indexdir, schema)
 
 	# 按照schema定义信息，增加需要建立索引的文档（注意：字符串格式需要为unicode格式）
-	# 如何快速将文件内容进行索引，或者说是增量索引，这个是实用的关键（比不上elasticsearch
+	# 如何快速将文件内容进行索引，或者说是增量索引，这个是实用的关键（比不上elasticsearch)
 	writer = ix.writer()
 	writer.add_document(title=u"第一篇文档", path=u"/a",	content=u"这是我们增加的第一篇文档")
-	writer.add_document(title=u"第二篇文档", path=u"/b", content=u"第二篇文档也很interesting！")
+	writer.add_document(title=u"第二作文", path=u"/b", content=u"第二篇文档也很interesting！")
+	writer.add_document(title=u"这篇文档非常没意思", path=u"/b", content=u"第二篇文档也很interesting！")
 	writer.commit()
 
 	# 创建一个检索器
@@ -44,15 +46,14 @@ def msearch():
 	# 检索标题中出现'文档'的文档
 	results = searcher.find("title", u"文档")  #简单的查询（后面可以近一步的扩展）
 
-	# 检索出来的第一个结果，数据格式为dict{'title':.., 'content':...}
-	firstdoc = results[0].fields()
+	# 检索出来的每个结果，数据格式为dict{'title':.., 'content':...}
+	for i,result in enumerate(results):
+		hues.info("检索出的第%s篇文档: title:%s\t,bm25得分:%s" %(i,result['title'],result.score))
+		firstdoc = result.fields()
+		jsondoc = json.dumps(firstdoc, ensure_ascii=False)  # python2中，需要使用json来打印包含unicode的dict内容
+		print jsondoc										# 打印出检索出的文档全部内容
+		print "关键词高亮:",result.highlights("title")					# 高亮标题中的检索词 <b class="match term0">文档</b>
 
-	# python2中，需要使用json来打印包含unicode的dict内容
-	jsondoc = json.dumps(firstdoc, ensure_ascii=False)
-
-	print jsondoc  # 打印出检索出的文档全部内容
-	print results[0].highlights("title")  # 高亮标题中的检索词 <b class="match term0">文档</b>
-	print results[0].score  # bm25分数
 
 
 if __name__ == "__main__":

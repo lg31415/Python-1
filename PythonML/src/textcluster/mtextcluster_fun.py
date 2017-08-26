@@ -3,8 +3,8 @@
 from __future__ import  print_function
 __author__ = 'yjm'
 '''
-  功能注释：文本聚类程序演示
-      参考：http://python.jobbole.com/85481/
+    功能注释：文本聚类程序演示
+    参考：http://python.jobbole.com/85481/
 '''
 import numpy as np
 import pandas as pd
@@ -387,5 +387,6 @@ for i in range(num_cluster):
 #层次聚类
 hierarchyCluster(dist,titles)
 
+# 测试入口
 if __name__ == "__main__":
     pass

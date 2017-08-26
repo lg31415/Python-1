@@ -12,6 +12,7 @@ logs/
 static/
 migrations/
 
+*.ck
 
 *.pyc
 *.csv

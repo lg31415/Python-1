@@ -22,7 +22,6 @@ class MCRequest():
     # post请
     def req_post(self):
         url='http://longtail.v.xunlei.com/readnotice?userid=123456&sessionid=xxx&bussinessid=-1'
-        url="http://longtail.v.xunlei.com/setuser?userid=123456&sessionid=xxx&bussinessid=-1"
         url="http://testlua.com/lua_file"
         url="http://testuwsgi.com"
 
@@ -76,12 +75,30 @@ class MCRequest():
         print 'response_cookies:',r.cookies
 
 
+    # 会话处理
+    def session(self):
+        ms=requests.Session()
+        # 可先get添加cookie,然后在会话中post的时候使用这个cookie
+        cookies={}
+        ms.get('',cookies=cookies)
+        ms.post('')
+
+        # 也可先post的方式登录指定的网站，然后get的时候使用登录后的cookie
+        login_url=''
+        login_data={'user':'abc','psw':123}
+        ms.post(login_url,data=login_data)
+
+        visit_url=''
+        visit_data={"name":'二黑','age':10}
+        ms.get(visit_url,visit_data)
+
+        ms.close() #关闭会话
 
 
 
 # 测试入口
 if __name__ == "__main__":
     mreq=MCRequest()
-    mreq.req_post()
+    #mreq.req_post()
     #mreq.req_get()
-    #mreq.req_get_cookie()
+    mreq.req_get_cookie()

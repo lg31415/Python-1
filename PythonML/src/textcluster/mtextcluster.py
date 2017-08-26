@@ -17,6 +17,8 @@ import mpld3
 from bs4 import  BeautifulSoup
 
 
+data_dir='../../data/text_cluster'
+
 '''
     功能函数
 '''
@@ -60,24 +62,24 @@ def tfidf(synopses):
 
 
 '''
-    文本预处理:去停用词，分词和词干化
+    step1:文本预处理:去停用词，分词和词干化
 '''
 def textProc():
     #import three lists: titles, links and wikipedia synopses
-    titles = open('data/title_list.txt').read().split('\n')
+    titles = open(os.path.join(data_dir,'title_list.txt')).read().split('\n')
     #ensures that only the first 100 are read in
     titles = titles[:100]
 
     # 链接
-    links = open('data/link_list_imdb.txt').read().split('\n')
+    links = open(os.path.join(data_dir,'link_list_imdb.txt')).read().split('\n')
     links = links[:100]
 
     # 类别
-    genres = open('data/genres_list.txt').read().split('\n')
+    genres = open(os.path.join(data_dir,'genres_list.txt')).read().split('\n')
     genres = genres[:100]
 
     # 摘要处理（wiki和imdb的合并）
-    synopses_wiki = open('data/synopses_list_wiki.txt').read().split('\n BREAKS HERE')
+    synopses_wiki = open(os.path.join(data_dir,'synopses_list_wiki.txt')).read().split('\n BREAKS HERE')
     synopses_wiki = synopses_wiki[:100]
     synopses_clean_wiki = []
     for text in synopses_wiki:
@@ -86,7 +88,7 @@ def textProc():
         synopses_clean_wiki.append(text)
     synopses_wiki = synopses_clean_wiki
 
-    synopses_imdb = open('data/synopses_list_imdb.txt').read().split('\n BREAKS HERE')
+    synopses_imdb = open(os.path.join(data_dir,'synopses_list_imdb.txt')).read().split('\n BREAKS HERE')
     synopses_imdb = synopses_imdb[:100]
     synopses_clean_imdb = []
     for text in synopses_imdb:
@@ -133,9 +135,8 @@ def textProc():
 
 
 
-
 '''
-    计算文本余弦相似度
+    step2:计算文本余弦相似度
 '''
 from sklearn.metrics.pairwise import cosine_similarity
 def calcSimilarty(tfidf_matrix):
@@ -144,7 +145,7 @@ def calcSimilarty(tfidf_matrix):
 
 
 '''
-    K-means文本聚类
+    step3:K-means文本聚类
 '''
 from sklearn.cluster import KMeans
 def textCluster(tfidf_matrix):
@@ -165,14 +166,11 @@ def textClusterLoad():
 
 
 
-
-
 '''
-    聚类可视化
+   step4: 聚类可视化
 '''
 def cluster_visual():
     pass
-
 
 def clusterVisual():
     pass
