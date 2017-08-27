@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 __author__ = 'yjm'
 '''
-  功能注释：收取带附件的邮件
+  功能注释：收取邮件并下载附件
 '''
 
 import os,sys

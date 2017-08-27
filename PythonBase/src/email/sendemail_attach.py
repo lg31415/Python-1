@@ -65,8 +65,8 @@ def send_mail(mail_from, mail_to, subject, msg_txt, files=[]):
     # 邮件服务器设置
     # sendmail function takes 3 arguments: sender's address, recipient's address and message to send - here it is sent as one string.
     mail_host="smtp.163.com"    #设置服务器
-    mail_user="yueqiulaishu"    #用户名
-    mail_pass="yjm112233"       #口令
+    mail_user="xxxxxx"    #用户名
+    mail_pass="xxxxxx"       #口令
     s = smtplib.SMTP(mail_host)
     s.login(mail_user,mail_pass)
 

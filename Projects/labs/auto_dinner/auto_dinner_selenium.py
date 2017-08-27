@@ -90,7 +90,7 @@ class AutoDinnerSelium():
         #dinner.click()
         time.sleep(2)
         flag=True
-        self.__save_html('dinner')
+        self.__save_html('dinner.html')
         # 菜单解析
         while flag:
             try:

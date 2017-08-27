@@ -11,8 +11,8 @@ from email.mime.text import MIMEText
 
 mailto_list=["873925609@qq.com"]
 mail_host="smtp.163.com"  #设置服务器
-mail_user="yueqiulaishu"    #用户名
-mail_pass="yjm112233"   #口令
+mail_user="xxxxx"    #用户名
+mail_pass="xxxxx"   #口令
 mail_postfix="163.com"  #发件箱的后缀
 
 
@@ -63,6 +63,7 @@ if __name__ == '__main__':
     else:
         print "发送html失败"
     '''
+
     if send_html_mail(mailto_list,"以txt发送邮件内容的测试","这是txt邮件内容"):
         print "发送txt邮件成功" ,mailto_list
     else:

@@ -1,4 +1,6 @@
-#-coding:utf-8-*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 '''
     功能：类演示
     Created on 2015年8月10日
@@ -9,6 +11,7 @@
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
+import hues
 
 
 '''
@@ -22,11 +25,12 @@ class Test(object):
     '''
     name='hallo '  # 类变量
     def __init__(self,name): # 构造函数
+        hues.info("调用基类的构造函数，需要传递name参数")
         #self.name=self.__class__.name  # 实例的成员变量用类变量进行赋值
         self.name=name # 实例的成员变量在初始的时候由类的构造函数传递过来
 
-    # def __init__(self):
-        #print 'defaut constructor no arguments '
+    def __del__(self):
+        hues.info('调用基类的析构函数，defaut constructor no arguments ')
 
     def tellyourself(self):
         print "this is Test class.tellyourself() method"
@@ -60,11 +64,21 @@ class subTest(Test):
         subTest类继承自Test父类
     '''
     def __init__(self,name):
-        Test.__init__(self,name) # 调用父类的构造函数
-        print '【this is subTest invoke parent class constructor】：',self.name
+        self.name="我是子类的构造函数传递过来的name"
+        hues.info("调用子类的构造函数")
+        hues.info("子类调用父类的构造函数")
+        #Test.__init__(self,name) # 调用父类的构造函数
+
+    def __del__(self):
+        hues.info("调用子类的析构函数")
 
     def tellyourself(self):
+        print '子类调用父类的方法', self.name
         super(subTest,self).tellyourself() # 父类没有机进行初始化构造啊
+
+    def testyourself_son(self):
+        hues.info("子类调用自身的方法")
+
 
 
 # 测试入口
