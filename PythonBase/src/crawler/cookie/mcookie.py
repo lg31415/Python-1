@@ -88,7 +88,8 @@ class LoadCookie():
         with open('chrome_cookies.ck','r') as f:
             try:
                 chrome_cookies=json.load(f,encoding='utf-8')#,object_pairs_hook=OrderedDict)
-                self.cookies.append({'name':chrome_cookies['name'],'value':chrome_cookies['value']})
+                for ck in chrome_cookies:
+                    self.cookies.append({'name':ck['name'],'value':ck['value']})
                 print self.cookies
             except Exception,e:
                 hues.error('解析chrome_cookies失败:',str(e))
@@ -128,7 +129,7 @@ if __name__ == "__main__":
     #mcookie.requestWithCookie()
 
     lc=LoadCookie()
-    #lc.load_chrome_cookie()
+    lc.load_chrome_cookie()
     #lc.load_firefox_cookie()
-    lc.load_morzila_cookie()
+    #lc.load_morzila_cookie()
 

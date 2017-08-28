@@ -67,7 +67,7 @@ class subTest(Test):
         self.name="我是子类的构造函数传递过来的name"
         hues.info("调用子类的构造函数")
         hues.info("子类调用父类的构造函数")
-        #Test.__init__(self,name) # 调用父类的构造函数
+        #Test.__init__(self,name) # 显示调用父类的构造函数
 
     def __del__(self):
         hues.info("调用子类的析构函数")
