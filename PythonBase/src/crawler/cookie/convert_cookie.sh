@@ -1,4 +1,6 @@
 #!/bin/bash
+# Fun:将firefox的firebug插件导出的cookie数据转化成能够被cookielib的MozillaCookieJar直接加载的cookie文件
+
 cd $(dirname $0)
 if [ $# != 2 ];then
 	echo "parameters wrong"

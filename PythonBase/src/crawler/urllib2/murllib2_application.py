@@ -56,7 +56,7 @@ class ExDownMP3():
         rest=re.search(pattern,page)
         if rest:
             bytes1=urllib2.urlopen(rest.group())
-            f = open("D://"+str(num)+".mp3", 'wb');
+            f = open("D://"+str(num)+".mp3", 'wb')  # 全部读取然后保存的
             f.write(bytes1.read())      # 利用url打开音频的地址，然后二进制写入
             f.flush()
             f.close()

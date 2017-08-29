@@ -420,6 +420,14 @@ lxml库提供xpath语法定位,
 
 怎样配合cookie等访问使用，
 
+
+
+##### 设置和保存cookie
+
+参考：
+
+[Requests设置和保存Cookies](http://www.coofly.com/index.php/archives/23/)
+
 #### selenium
 
 web自动化测试工具，的Webdriver操作浏览器。Selenium可以操作大多数主流浏览器（可能需要相应的驱动），当然也可以操作无界面的浏览器PhantomJS

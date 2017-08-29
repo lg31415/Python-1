@@ -13,7 +13,7 @@ import requests
 
 
 '''
-    request库的使用
+    requests库的使用
 '''
 class MCRequest():
     def __init__(self):
@@ -58,7 +58,8 @@ class MCRequest():
 
         # 查看返回
         print 'response_headers:',r.headers          # 服务器返回的响应头部信息
-        print 'response_cookies:',r.cookies          # 服务器返回的cookie信息
+        cookie_dict=requests.utils.dict_from_cookiejar(r.cookies)
+        print 'response_cookies:',cookie_dict          # 服务器返回的cookie信息
 
         print r.status_code
         print 'text:',r.text
