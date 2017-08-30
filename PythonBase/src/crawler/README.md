@@ -82,7 +82,7 @@ if isinstance(par,Tag)
 
 ###### 依据节点属性
 
-> 利用的是节点的属性的方式来遍历的
+> 利用的是节点的属性的方式来遍历的,是其自带的属性
 
 直接子节点
 
@@ -159,6 +159,20 @@ for cc in tag.stripped_string:
 
 ###### 依据DOM查找
 
+> 主要是find系列方法的使用
+>
+> find_all( name , attrs , recursive , text , **kwargs )
+>
+> - name
+>   - 传字符串
+>   - 传正则表达式
+>   - 传列表
+>   - 传True
+>   - 传方法
+> - keyword参数
+
+
+
 list = ==find_all==() 
 
 ```
@@ -229,6 +243,8 @@ find_all_previous() 和 find_previous()
 > **注：以上（2）（3）（4）（5）（6）（7）方法参数用法与 find_all() 完全相同，原理均类似，在此不再赘述。**
 
 ###### 依据CSS查找
+
+> 主要是select方法的使用
 
 标签名
 

@@ -13,9 +13,9 @@ import multiprocessing as winmproc
 def mmutiproc():
     print "now_proc_pid:",os.getpid()
     pid=os.fork()
-    if pid==0: #当前进程已经是子进程
+    if pid==0: # 当前进程已经是子进程
         print 'I am child process (%s) and my parent is %s.' % (os.getpid(), os.getppid())
-    else:     #当前进程是父进程，创建了pid的子进程
+    else:     # 当前进程是父进程，创建了pid的子进程
         print 'I (%s) just created a child process (%s).' % (os.getpid(), pid)
 
 
@@ -25,15 +25,16 @@ def mmutiproc():
 # 子进程要执行的代码
 def win_child_mutiproc(name):
     print 'Run child process %s (%s)...' % (name, os.getpid())
+    print "Child Process end."
 
 # 调用子进程
 def win_main_mutiproc():
-    print 'Parent process %s.' % os.getpid()
+    print 'Parent process start %s.' % os.getpid()
     p = winmproc.Process(target=win_child_mutiproc, args=('test',))
     print '>>Child Process will start.'
     p.start()
     p.join()
-    print ">>Child Process end."
+    print "Parent Process end."
 
 #进程池：若需要启动大量的子进程
 def mProcpool():

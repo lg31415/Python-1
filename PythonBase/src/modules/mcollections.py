@@ -4,7 +4,7 @@ __author__ = 'yjm'
 '''
   功能注释：collections模块中几个重要类学习
 '''
-from  collections import  *
+from collections import *
 
 class collectionCT(object):
     def mnametuple(self):
@@ -46,11 +46,16 @@ class collectionCT(object):
 
     #有序字典（普通字典的key是无序的，在对dict迭代的时候，无法确定key的顺序）
     def morderdict(self):
+        # 排序字典的构建
         od=OrderedDict()
         od['z']=1
         od['y']=2
         od['x']=3
         print od.keys()  #如何做一个FIFO
+
+        # 构建方法2
+        od=OrderedDict({'jingpin_pv':"次数","jingpin_uv":"人数"})
+        print od.keys()
 
     def mCounter(self):
         mc=Counter()

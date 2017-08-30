@@ -24,6 +24,12 @@ class mBS4():
     def __init__(self):
         self.soup=BeautifulSoup(open('bs4-sample.html'))
 
+    # 保存
+    def __saveres(self):
+        res=self.soup.prettify().encode('utf8')
+        with open('bs4-result.html','w') as f:
+            f.write(res)
+
     # 基础演示
     def bsdemo(self):
         #print self.soup.prettify() #,soup.html
@@ -36,7 +42,6 @@ class mBS4():
         # 修改标题
         print "原标题:",self.soup.title.string
         self.soup.title.string='这是新标题'
-
 
     # 添加元素和设置元素属性
     def add_elem(self):
@@ -71,13 +76,14 @@ class mBS4():
         tarobj=self.soup.find(id="id2")
         tarobj.select('ul > li > a') # 这个要求子节点（而不是能后代节点）
 
+    def search_by_find(self):
+        table=self.soup.find('table',class_="xx table_class")
+        if table:
+            tbody=table.tbody
+            for tr in tbody.find_all('tr'):
+                print type(tr)
+                print tr.text,tr.string
 
-    # 保存
-    def saveres(self):
-        res=self.soup.prettify().encode('utf8')
-        f=open('bs4-result.html','w')
-        f.write(res)
-        f.close()
 
 
 
@@ -86,7 +92,7 @@ class mBS4():
 '''
 if __name__ == "__main__":
     mbs4=mBS4()
-    mbs4.bsdemo()
+    #mbs4.bsdemo()
     #mbs4.modfiy()
     #mbs4.search_elem()
-    mbs4.saveres()
+    mbs4.search_by_find()
