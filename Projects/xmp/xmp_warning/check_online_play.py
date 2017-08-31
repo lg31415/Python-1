@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python27
 # -*- coding: utf8 -*-
 '''
     功能：在线播放报警
@@ -6,8 +6,9 @@
     日期：2017年8月30日
 '''
 
+import re
 import os,sys
-import time
+import hues
 import MySQLdb
 from datetime import date, datetime, timedelta
 
@@ -23,19 +24,23 @@ else:
 file_path=os.getcwd()
 file_path=file_path.replace("/bin","/data")
 
-warnfile="%s/warning_%s.txt" %(file_path,yesterday)
-warnfile_detail="%s/warning_detail_%s.txt" %(file_path,yesterday)
+# 全局报警文件
+fwarn_summary="%s/warn_online_play_sumary_%s.txt" %(file_path,yesterday)
+fwarn_detail="%s/warn_online_play_detail_%s.txt" %(file_path,yesterday)
 
 
-class OnlinePlayWarn():
+'''
+    监测工具集
+'''
+class CBaseWarn():
     def __init__(self):
-        self.conn = MySQLdb.connect(host="localhost", user="root", passwd="hive")
+        self.conn = MySQLdb.connect(host="localhost",port=3316,user="root", passwd="123")
         self.cur = self.conn.cursor(MySQLdb.cursors.DictCursor)
-        self.cur.execute("use pgv_stat")
+        self.cur.execute("use pgv_stat_yingyin")
 
         # 数据生成
-        self.ferror=open(warnfile,'w+')
-        self.fdetail=file(warnfile_detail,'w+')
+        self.fsummary=open(fwarn_summary,'w+')
+        self.fdetail=open(fwarn_detail,'w+')
 
         # 定义单日跌幅上限和连续跌幅上限
         self.cur_limit=-15
@@ -44,121 +49,172 @@ class OnlinePlayWarn():
     def __del__(self):
         self.cur.close()
         self.conn.close()
-        self.ferror.close()
+        self.fsummary.close()
         self.fdetail.close()
 
+    # _报警文件转换成xls
+    def _conv2xls(self):
+        import xlwt
+        data=xlwt.Workbook()
+        table=data.add_sheet('T1')
+        self.fdetail.seek(0)
+        contents=self.fdetail.read().decode('utf8').split('\n')
+        for i,v in enumerate(contents):
+            lcontent=v.strip().split('\t')
+            for j,vv in enumerate(lcontent):
+                if isinstance(vv,float):
+                    table.write(i,j,vv)
+                else:
+                    table.write(i,j,vv)
+        self.fwarn_detail_xls=re.sub('.txt$',".xls",fwarn_detail)
+        data.save(self.fwarn_detail_xls)
 
-    ## 播放统计报警
-    def play_warning_total(self):
-        tablea="select date,jingpin_pv,jingpin_uv from xmp_jingpin where date>=date_sub(curdate(),interval 7 day)"
-        tableb="select date,jingpin_pv,jingpin_uv from xmp_jingpin where date>=date_sub(curdate(),interval 14 day)"
-        whatis="a.date as '日期',b.date as '上周同期'," \
-               "a.jingpin_pv as '总播次数',b.jingpin_pv as '上周同期播放次数',concat(round((a.jingpin_pv-b.jingpin_pv)*100/b.jingpin_pv,2),'%') as '次数周同比'," \
-               "a.jingpin_uv as '总播放人数',b.jingpin_uv as '上周同期播放人数',concat(round((a.jingpin_uv-b.jingpin_uv)*100/b.jingpin_uv,2),'%') as '人数周同比'"
-        sql = "SELECT {whatis} FROM ({tablea}) a INNER JOIN ({tableb}) b on b.date=DATE_FORMAT(DATE_SUB(a.date,INTERVAL 7 day),'%Y%m%d') order by a.date desc".format(whatis=whatis,tablea=tablea,tableb=tableb)
-        print "\033[1;31m在线播放sql:\033[0m" #,sql
+    # _邮件报警
+    def _sendemail(self,tabledict,senddict,xls=False):
+        import smtplib
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
+
+        meaning=tabledict.get("meaning","")
+        sends=senddict.get("sends",[])
+        copys=senddict.get("copys",[])
+
+        msg = MIMEMultipart()
+
+        #加邮件头
+        msg['to'] = ','.join(sends)
+        msg['from'] = 'monitor@cc.sandai.net'
+        subject = '%s号%s异常' % (yesterday,meaning)
+        msg['subject'] = unicode(subject.decode('utf8'))
+        if copys:
+            msg['Cc'] = ','.join(copys)
+
+        #添加邮件内容
+        self.fsummary.seek(0)
+        content=self.fsummary.read()
+        content+="\n详情请查看附件！"
+        msg_content = MIMEText(unicode(content.decode('utf-8')), "plain", "utf-8")
+        msg.attach(msg_content)
+
+        # 添加附件
+        self.fdetail.seek(0)
+        att1 = MIMEText(self.fdetail.read(), 'base64', 'gb2312')
+        att1["Content-Type"] = 'application/octet-stream'
+        fattach=self.fwarn_detail_xls if xls else fwarn_detail
+        att1["Content-Disposition"] = 'attachment; filename="%s"' % (os.path.basename(fattach))
+        msg.attach(att1)
+
+        hues.info('[msg to]:',msg['to'])
+        #发送邮件
+        try:
+            server = smtplib.SMTP()
+            server.connect('xxxx')
+            server.login('xxxxx','121212')
+            server.sendmail(msg['from'],msg['to'],msg.as_string())
+            server.quit()
+            hues.success('邮件发送成功')
+        except Exception, e:
+            hues.error('邮件发送失败',str(e))
+
+
+    # _生成联合sql
+    def _magicconv(self,confdict):
+        table=confdict["table"]
+        selects=confdict["itemsdict"].keys()
+        single_select_options="date,"+','.join(selects)
+
+        join_select_options=['a.date','b.date']
+        for item in selects:
+            #statitem="a.%s,b.%s,concat(round((a.%s-b.%s)*100/b.%s,2),'%%')" %(item,item,item,item,item)  # 百分表示方法
+            statitem="a.%s,b.%s,round((a.%s-b.%s)*100/b.%s,2) as %s_wr" %(item,item,item,item,item,item)
+            join_select_options.append(statitem)
+        join_select_options=','.join(join_select_options)
+
+        tbla="select %s from %s where date>=date_sub(curdate(),interval 7 day)" %(single_select_options,table)
+        tblb="select %s from %s where date>=date_sub(curdate(),interval 14 day)" %(single_select_options,table)
+        cond=" b.date=date_format(date_sub(a.date,interval 7 day),'%Y%m%d') order by a.date desc"
+        sql = "select {join_select_options} from ({tbla}) a inner join ({tblb}) b on {cond}".format(join_select_options=join_select_options,tbla=tbla,tblb=tblb,cond=cond)
+
+        return sql
+
+    # _查询和报警处理
+    def _magicwarn(self,confdict,sql):
+        meaning=confdict.get("meaning","")
+        itemsdict=confdict.get("itemsdict",{})
         self.cur.execute(sql)
         results = self.cur.fetchall()
+        for k,v in itemsdict.iteritems():
+            # 要为每个统计项添加header头
+            header=["日期(上周同期)",v+"\t上周同期"+v,v+"周同比（%）"]
+            header='\t'.join(header)+'\n'
+            iscur,downnum,maxdown,sumdown=0,0,0,0
+            warn_detail=''
+            warn_sumary=[]
+            for itemres in results:
+                warn_detail+=itemres['date']+'('+itemres['b.date']+')\t'+'\t'.join(map(lambda s:str(s),[itemres[k],itemres["b."+k],itemres[k+"_wr"]]))+'\n'
+                weekratio=float(itemres[k+"_wr"])
+                if iscur==0:
+                    cur_weekratio=weekratio
+                    iscur=1
+                sumdown+=weekratio
+                if weekratio<0:
+                    downnum+=1
+                maxdown=weekratio if maxdown>weekratio else maxdown
 
-        downnum=0
-        maxvvdown,maxuvdown=0,0
-        sumvvdown,sumuvdown=0,0
-        play_info="\n日期(上周同期)\t总播放次数\t上周同期播放次数\t总播放次数周同比\t总播放人数\t上周同期总播放人数\t总播放人数周同比\n"
-        iscur=0
-        for date,lwdate,total_vv,lwtotal_vv,total_vv_weekratio,total_uv,lwtotal_uv,total_uv_weekratio in results:
+            # 汇总数据
+            #hues.info("[downnum]:",downnum,"[maxdown]:",maxdown,"[sumdown]:",sumdown)
+            warn_detail+="\t".join(["[downnum]:"+str(downnum),"[maxdown]:"+str(maxdown)+"%","[sumdown]:"+str(sumdown)+"%"])+"\n"
 
-            play_info+=date+"("+lwdate+")\t"+str(total_vv)+"\t"+str(lwtotal_vv)+"\t"+total_vv_weekratio+"\t"+str(total_uv)+"\t"+str(lwtotal_uv)+"\t"+total_uv_weekratio+"\n"
-            total_vv_weekratio=float(total_vv_weekratio.replace('%',''))
-            total_uv_weekratio=float(total_uv_weekratio.replace('%',''))
-            if iscur==0:
-                cur_total_vv_weekratio=total_vv_weekratio
-                cur_total_uv_weekratio=total_uv_weekratio
-                iscur=1
-            sumvvdown+=total_vv_weekratio
-            sumuvdown+=total_uv_weekratio
-            if total_vv_weekratio<0 or total_uv_weekratio<0:
-                downnum+=1
-            maxvvdown=total_vv_weekratio if maxvvdown>total_vv_weekratio else maxvvdown
-            maxuvdown=total_uv_weekratio if maxuvdown>total_uv_weekratio else maxuvdown
-        print "[downnum]:",downnum,"[maxvvdown]:",maxvvdown,"[maxuvdown]:",maxuvdown
-        play_info+="[downnum]:"+str(downnum)+"\t[maxvvdown]:"+str(maxvvdown)+"%\t[maxuvdown]:"+str(maxuvdown)+"%\t[sumvvdown]:"+str(sumvvdown)+"%\t[sumuvdown]:"+str(sumuvdown)+"%\n"
+            iswarn=False
+            if downnum==7:
+                warn=u"连续七日周同比下跌"
+                warn_sumary.append(warn)
+                iswarn=True
 
-        playwarn="播放统计报警:\t"
-        if downnum==7:
-            playwarn+="连续七日周同比下跌 "
+            if cur_weekratio<self.cur_limit:
+                warn=u"昨日跌幅超过"+str(abs(self.cur_limit))+'%'
+                warn_sumary.append(warn)
+                iswarn=True
 
-        if cur_total_uv_weekratio<self.cur_limit or cur_total_vv_weekratio<self.cur_limit:
-            playwarn+="昨日跌幅超过"+str(abs(self.cur_limit))+'%'
+            if sumdown<self.sum_limit:
+                warn=u"近七日跌幅和超过"+str(abs(self.sum_limit))+'%'
+                warn_sumary.append(warn)
+                iswarn=True
 
-        if sumvvdown<self.sum_limit or sumuvdown<self.sum_limit:
-            playwarn+="近七日跌幅和超过"+str(abs(self.sum_limit))+'%'
+            # 在有报警的情况下才会产生详细的数据表
+            if iswarn:
+                warn_header=u"%s-->%s报警:\t" %(meaning,v)
+                warn_sumary=warn_header+' & '.join(warn_sumary)+"\n\n"
+                self.fsummary.write(warn_sumary)
+                self.fsummary.flush()
 
-        if playwarn!="播放统计报警:\t":
-            playwarn+="\n\n"
-            play_info+=playwarn
-            self.f.write(playwarn)
-        self.fdetail.write(play_info)
+                self.fdetail.write(header)
+                self.fdetail.write(warn_detail)
+                self.fdetail.write(warn_sumary)  #在汇总表也详细的加入报警信息
+                self.fdetail.write('-'*50)
+                self.fdetail.flush()
 
-    ## 在线播放按站点报警
-    def play_warning_bysite(self):
-        sites=['iqiyi','letv','youku','hunantv','qq','sohu']
-        sites=map(lambda site:site+'_pv',sites)
-        sites=','.join(sites)
-
-        tablea="select date,%s from xmp_jingpin where date>=date_sub(curdate(),interval 7 day)" %(sites)
-        tableb="select date,%s from xmp_jingpin where date>=date_sub(curdate(),interval 14 day)" %(sites)
-
-        header=','.join()
-        whatis="a.date as '日期',b.date as '上周同期',a.iqiyi_pv as '上',a.channel as '渠道',a.s_install_end as '总安装量',b.s_install_end as '上周同期总安装量',concat(round((a.s_install_end-b.s_install_end)*100/b.s_install_end,2),'%') as '总装周同比',a.s_install_new as '全新安装量',b.s_install_new as '上周同期全新安装量',concat(round((a.s_install_new-b.s_install_new)*100/b.s_install_new,2),'%') as '全新周同比'"
-        sql = "select {whatis} from ({tablea}) a inner join ({tableb}) b on b.date=date_format(date_sub(a.date,interval 7 day),'%y%m%d') order by a.date desc".format(whatis=whatis,tablea=tablea,tableb=tableb)
+    ## 报警接口
+    def api_warn(self,confdict):
+        sql=self._magicconv(confdict)
+        self._magicwarn(confdict,sql)
 
 
-        self.cur.execute(sql)
-        results = self.cur.fetchall()
+    # 播放统计报警按站点
+    def online_play_warning(self,xls=False,sendmail=True):
+        confdict={"meaning":"竞品播放","table":"xmp_jingpin","itemsdict":{'jingpin_pv':"总次数","iqiyi_pv":"爱奇艺",'qq_pv':'腾讯','youku_pv':"优酷"}}
+        senddict={"sends":['xxxx@xxx.com'],"copys":[]}
+        self.api_warn(confdict)
+        if xls:
+            self._conv2xls()
+        if sendmail:
+            self._sendemail(confdict,senddict,xls=False)
 
-        downnum=0
-        maxtotaldown,maxnewdown=0,0
-        sumtotaldown,sumnewdown=0,0
-        install_info="\n日期(上周同期)\t渠道\t总装\t上周同期总装\t总装周同比\t全新安装\t上周同期全新安装\t全新安装周同比\n"
-        iscur=0
-        for date,lwdate,channel,total,lwtotal,total_tongbi,new,lwnew,new_tongbi in results:
-            #print date,total,total_tongbi,new,new_tongbi
-            install_info+=date+"("+lwdate+")\t"+channel+"\t"+str(total)+"\t"+str(lwtotal)+"\t"+total_tongbi+"\t"+str(new)+"\t"+str(lwnew)+"\t"+new_tongbi+"\n"
-            total_tongbi=float(total_tongbi.replace('%',''))
-            new_tongbi=float(new_tongbi.replace('%',''))
-            if iscur==0:
-                cur_total_tongbi=total_tongbi
-                cur_new_tongbi=new_tongbi
-                iscur=1
-            sumtotaldown+=total_tongbi
-            sumnewdown+=new_tongbi
-            if total_tongbi<0 and new_tongbi<0:
-                downnum+=1
-            maxtotaldown=maxtotaldown if maxtotaldown<total_tongbi else total_tongbi
-            maxnewdown=maxnewdown if maxnewdown<new_tongbi else new_tongbi
-        print "[downnum]:",downnum,"[maxtotaldown]:",maxtotaldown,"[maxnewdown]:",maxnewdown
-        install_info+="[downnum]:"+str(downnum)+"\t[maxtotaldown]:"+str(maxtotaldown)+"%\t[maxnewdown]:"+str(maxnewdown)+"%\t[sumtotaldown]:"+str(sumtotaldown)+"%\t[sumnewdown]:"+str(sumnewdown)+"%\n"
 
-        installwarn=channel+"渠道:\t"
-        if downnum==7:
-            installwarn+="连续七日周同比下跌 "
-
-        if cur_total_tongbi<self.cur_limit or cur_new_tongbi<self.cur_limit:
-            installwarn+="昨日跌幅超过"+str(abs(self.cur_limit))+'%'
-
-        if sumtotaldown<self.sum_limit or sumnewdown<self.sum_limit:
-            installwarn+="近七日跌幅和超过"+str(abs(self.sum_limit))+'%'
-
-        if installwarn!=channel+"渠道:\t":
-            installwarn+="\n\n"
-            install_info+=installwarn
-            self.ferror.write(installwarn)
-        self.fdetail.write(install_info)
 
 #程序入口
 if __name__=="__main__":
-    opw=OnlinePlayWarn()
-    opw.play_warning_total()
-    opw.play_warning_site()
+    opw=CBaseWarn()
+    opw.online_play_warning()
 
 
