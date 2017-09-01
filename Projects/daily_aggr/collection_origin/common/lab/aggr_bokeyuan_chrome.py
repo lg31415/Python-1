@@ -6,7 +6,7 @@
     Date:2017/4/28
     Author:tuling56
 '''
-import re,os, sys
+import re,os,sys
 import hues
 import time
 import MySQLdb
@@ -15,51 +15,26 @@ import hashlib
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-from selenium import webdriver
-#from selenium.common.exceptions import NoSuchElementException
-#from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.keys import Keys
+
+sys.path.append(sys.path[0] + '/../') # 本级目录的上级目录
+from chrome_init import ChromeBrowserBase
 
 
 '''
    博客园收藏抓取
 '''
-class BokeAggr():
-    def __init__(self,interface=False,browser='Chrome'):
-        self.conn=MySQLdb.connect(host = 'localhost', port = 3316, user = 'root', passwd = '123', db = 'labs')
-        self.cursor = self.conn.cursor()
-        self.cursor.execute('set names utf8')
-        self.pattern=re.compile(r'[^\d\s\-:]?')  # 替换模式
-        self._init_browser(interface,browser)
-
-    # 浏览器初始化
-    def _init_browser(self,interface,browser):
-        if browser=='Chrome':
-            profile_dir=r'C:\\Users\\xl\\AppData\\Local\\Google\\Chrome\\User Data'
-            chrome_options=webdriver.ChromeOptions()
-            if not interface:
-                chrome_options.add_argument("--headless")
-            chrome_options.add_argument("user-data-dir="+os.path.abspath(profile_dir))
-            self.driver=webdriver.Chrome(chrome_options=chrome_options) # 打开浏览器的时候带cookie
-        elif browser=='Firefox':
-            profile_dir=r'C:\\Users\\xl\\AppData\\Local\\Mozilla\\Firefox\\Profiles\rh7qc3tr.default'
-            profile_option=webdriver.FirefoxProfile(profile_dir)
-            self.driver=webdriver.Firefox(profile_option)
-        else:
-            print "wrong browser parammeters"
-            sys.exit()
-        #self.driver.maximize_window()
-        hues.info("浏览器初始化完毕")
-
-    def __del__(self):
-        self.cursor.close()
-        self.conn.close()
-        self.driver.quit()
-        self.driver.close()
+class BokeAggr(ChromeBrowserBase):
+    def __init__(self):
+        ChromeBrowserBase.__init__(self) # 显示调用父类的初始化方法
+        self.init_chrome_browser()      # 调用父类的初始化方法
+        #self.init_chrome_cookie('bokeyuan_chrome_cookie.ck')
+        #self.driver.get('https://passport.cnblogs.com/user/signin')
 
     def _transcode(self, content):
         content = MySQLdb.escape_string(content)
         return content
-
 
     def process_item(self,item):
         # 初始设置
@@ -123,7 +98,8 @@ class BokeAggr():
 
     # 方法１：模拟点击下一页
     def boke_aggr(self):
-        self.driver.get('http://wz.cnblogs.com/my/10.html')
+        self.driver.get('http://wz.cnblogs.com/my/57.html')
+        print self.driver.page_source.encode('utf-8')
         next_page=self.driver.find_element_by_xpath('//*[@id="main"]/div/div[3]/a[last()]')
         last=False
         while next_page.text=='Next >' or last:
@@ -147,6 +123,6 @@ class BokeAggr():
 
 # 测试入口
 if __name__ == "__main__":
-    selbrowser=BokeAggr(interface=True,browser='Chrome')
+    selbrowser=BokeAggr()
     selbrowser.boke_aggr()
 

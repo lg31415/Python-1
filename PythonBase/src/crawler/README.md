@@ -432,6 +432,10 @@ lxml库提供xpath语法定位,
 
 和urllib的关系
 
+#### pycurl
+
+pycurl是功能强大的python的url包，是用c语言写的，速度很快，比urllib和httplib都快
+
 #### requests
 
 怎样配合cookie等访问使用，
@@ -503,11 +507,9 @@ driver.get('http://www.baidu.com/')
 print driver.page_source
 ```
 
-##### chrome
+##### Chrome
 
 selenium操作chrome浏览器，需要chromedriver.exe,将该可执行文件放到PATH环境变量里即可，注意和chrome的版本对应关系,==如何退出程序后，清退所有的后台程序==，这个问题如何解决？？？`driver.quit()`
-
-
 
 selenium操作Chrome
 

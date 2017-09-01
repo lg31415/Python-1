@@ -25,7 +25,7 @@ from selenium import webdriver
 '''
 class TuikuAggr():
     def __init__(self,interface=False,browser='Chrome'):
-        self.conn=MySQLdb.connect(host = 'localhost', port = 3316, user = 'root', passwd = '123', db = 'media_lib')
+        self.conn=MySQLdb.connect(host = 'localhost', port = 3316, user = 'root', passwd = '123', db = 'labs')
         self.cursor = self.conn.cursor()
         self.cursor.execute('set names utf8')
         self.pattern=re.compile(r'[^\d\s\-:]?')  # 替换模式
@@ -65,7 +65,7 @@ class TuikuAggr():
         # 初始设置
         source='开发者头条'
         comment_num=0
-        
+
         # 标题和链接
         try:
             target=item.find_element_by_xpath('.//h3[@class="title"]/a')

@@ -26,7 +26,7 @@ from selenium import webdriver
 '''
 class CSDNAggr():
     def __init__(self,interface=False,browser='Chrome'):
-        self.conn=MySQLdb.connect(host = 'localhost', port = 3316, user = 'root', passwd = '123', db = 'media_lib')
+        self.conn=MySQLdb.connect(host = 'localhost', port = 3316, user = 'root', passwd = '123', db = 'labs')
         self.cursor = self.conn.cursor()
         self.cursor.execute('set names utf8')
         self.pattern=re.compile(r'[^\d\s\-【:】]?')  # 替换模式
