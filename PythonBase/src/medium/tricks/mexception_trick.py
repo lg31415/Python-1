@@ -23,6 +23,7 @@ def fun():
 		myDict[char] += 1
 		print(myDict)
 
+# 通过异常处理来提高运行效率
 def fun_impl():
 	n = 16
 	myDict = {}
