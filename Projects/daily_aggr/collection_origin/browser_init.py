@@ -8,13 +8,13 @@
 '''
 import re,os, sys
 import hues
-import time
 import MySQLdb
 import hashlib
+import json
+
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
-
 
 
 '''
@@ -25,16 +25,22 @@ class BrowserBase(object):
         self.conn=MySQLdb.connect(host = 'localhost', port = 3316, user = 'root', passwd = '123', db = 'media_lib')
         self.cursor = self.conn.cursor()
         self.cursor.execute('set names utf8')
-        self._init_browser(interface,browser)
+        self.isdriver=False
+        self.iscookie=False
 
     def __del__(self):
         self.cursor.close()
         self.conn.close()
-        self.driver.quit()
-        self.driver.close()
+        if self.isdriver:
+            self.driver.quit()
+            self.driver.close()
+        if self.iscookie:
+            self.sess.close()
+            self.opener.close()
 
-    def by_browser(self,browers='Chrome'):
-        from selenium import webdriver
+    # 使用浏览器（自带cookie）
+    def by_browser(self,browser='Chrome'):
+        self.isbrowser=True
         if browser=='Chrome':
             self.__init_chrome_browser()
         elif browser=='Firefox':
@@ -46,50 +52,54 @@ class BrowserBase(object):
             return
         hues.info("浏览器初始化完毕")
 
-
     def __init_chrome_browser(self,interface=False):
+        from selenium import webdriver
         profile_dir=r'C:\\Users\\xl\\AppData\\Local\\Google\\Chrome\\User Data'
         chrome_options=webdriver.ChromeOptions()
         if not interface:
             chrome_options.add_argument("--headless")
             if False:  # 无界面模式下要使用cookie，不然无界面的时候不会加载用户的配置文件，授权登录失败
                 with open('csdn_chrome_cookie.ck','r') as f:
-                try:
-                    chrome_cookies=json.load(f,encoding='utf-8')#,object_pairs_hook=OrderedDict)
-                    for ck in chrome_cookies:
-                        self.driver.add_cookie({'domain':ck['domain'],'path':ck['path'],'name':ck['name'],'value':ck['value']})
-                        return
-                except Exception,e:
-                    hues.error('解析chrome_cookies失败:',str(e))
+                    try:
+                        chrome_cookies=json.load(f,encoding='utf-8')#,object_pairs_hook=OrderedDict)
+                        for ck in chrome_cookies:
+                            self.driver.add_cookie({'domain':ck['domain'],'path':ck['path'],'name':ck['name'],'value':ck['value']})
+                            return
+                    except Exception,e:
+                        hues.error('解析chrome_cookies失败:',str(e))
 
         chrome_options.add_argument("user-data-dir="+os.path.abspath(profile_dir))
         self.driver=webdriver.Chrome(chrome_options=chrome_options) # 打开浏览器的时候带cookie
         #self.driver.maximize_window()
 
     def __init_firefox_browser(self):
+        from selenium import webdriver
         profile_dir=r'C:\\Users\\xl\\AppData\\Local\\Mozilla\\Firefox\\Profiles\rh7qc3tr.default'
         profile_option=webdriver.FirefoxProfile(profile_dir)
         self.driver=webdriver.Firefox(profile_option)
         #self.driver.maximize_window()
 
     def __init_phantomjs_browser(self):
+        from selenium import webdriver
         self.driver=webdriver.PhantomJS()
         #self.driver.maximize_window()
 
 
-    def by_cookies(self,method="requests"):
+    # 使用cookie(浏览器中导出)
+    def by_cookies(self,method="requests",cookie_file=""):
+        self.iscookie=True
         if method=='requests':
-            self.__init_requests_cookies(self)  # 返回会话session对象
+            self.__init_requests_cookies(cookie_file)  # 返回会话session对象
         elif method=='urllib2':
-            self.__init_urllib2_cookies(self)    # 返回带cookie的opener对象
+            self.__init_urllib2_cookies(cookie_file)    # 返回带cookie的opener对象
         else:
             hues.error("其它cookies的使用方法待添加,目前只有requests和urllib2")
             return
 
-    def __init_requests_cookies(self):
+    def __init_requests_cookies(self,cookie_file='xxx_chrome_cookies.ck'):
         import requests
         # 将chrome浏览器的edit_plus_this_cookie插件导出的cookie为requests库使用
-        with open('xxx_chrome_cookies.ck','r') as f:
+        with open(cookie_file,'r') as f:
             try:
                 chrome_cookies=json.load(f,encoding='utf-8')#,object_pairs_hook=OrderedDict)
                 for ck in chrome_cookies:
@@ -97,16 +107,18 @@ class BrowserBase(object):
             except Exception,e:
                 hues.error('解析chrome_cookies失败:',str(e))
 
-    def __init_urllib2_cookies(self):
+    def __init_urllib2_cookies(self,cookie_file='firefox_convet_cookie.ck'):
         # urllib2_cookie的方法有问题(需要将firefox导出的cookie进行转换)
         import urllib2
         import cookielib
-        cookie = cookielib.MozillaCookieJar(self.cookies_file)
+        cookie = cookielib.MozillaCookieJar(cookie_file)
         handler = urllib2.HTTPCookieProcessor(cookie)
         self.opener = urllib2.build_opener(handler)
         urllib2.install_opener(self.opener)
 
-
+    # 登录的方式（没有验证码，登录后保存cookie,下次使用cookie登录）
+    def by_login(self,url,user,passwd):
+        pass
 
 
 
