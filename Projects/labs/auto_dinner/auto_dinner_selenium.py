@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:模拟点击进行订餐
-	Ref:
-	State：
-	Date:2017/8/24
-	Author:tuling56
+    Fun:模拟点击进行订餐
+    Ref:
+    State：
+    Date:2017/8/24
+    Author:tuling56
 '''
 import re, os, sys
 import hues

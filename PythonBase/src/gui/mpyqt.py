@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:python gui之pyqt学习
-	Ref:http://mp.weixin.qq.com/s/Ru_TpOnelMXPzH-1o34oZw
-	State：
-	Date:2017/5/17
-	Author:tuling56
+    Fun:python gui之pyqt学习
+    Ref:http://mp.weixin.qq.com/s/Ru_TpOnelMXPzH-1o34oZw
+    State：
+    Date:2017/5/17
+    Author:tuling56
 '''
 import re, os, sys
 import hues

@@ -12,10 +12,10 @@ import MySQLdb
 from collections import OrderedDict
 
 ############# 参数设置
-pthreshsize=5;	# 调节峰值筛选阈值
+pthreshsize=5;    # 调节峰值筛选阈值
 
 ############# 全局变量
-top_cid_filesize='toplist'						# 待添加高潮模式的影片信息文件列表
+top_cid_filesize='toplist'                        # 待添加高潮模式的影片信息文件列表
 datapath='/usr/local/sandai/xmp_hotview/data'   # 原始采集数据文件位置
 hotrespath='/usr/local/sandai/xmp_hotview/high' # 高潮模式结果信息文件
 
@@ -23,7 +23,7 @@ hotrespath='/usr/local/sandai/xmp_hotview/high' # 高潮模式结果信息文件
 ############# step0: get viewdata
 '''
     首先利用update_top_cidfilesize函数获取播放最多的影片的cid和filesize信息到本地的toplist文件
-	或者toplist列表,然后step1根据cid和filesize查找本地文件得到view数据
+    或者toplist列表,然后step1根据cid和filesize查找本地文件得到view数据
 '''
 # 获取cid和filesize信息
 def update_top_cidfilesize(top_cid_filesize): 
@@ -44,8 +44,8 @@ def update_top_cidfilesize(top_cid_filesize):
             cur.execute(sql)
             querydatas = cur.fetchall()
             for querydata in querydatas:
-            	toplist.append(querydata)
-            	infostr+=querydata[0]+'.'+str(querydata[1])+'\n'
+                toplist.append(querydata)
+                infostr+=querydata[0]+'.'+str(querydata[1])+'\n'
         except Exception,e:
             derror=sys.exc_info()
             print "error-->%s,line:%s" %(derror[1],derror[2].tb_lineno)
@@ -57,7 +57,7 @@ def update_top_cidfilesize(top_cid_filesize):
     fout.write(infostr)
     fout.close()
 
-	# 返回文件信息列表
+    # 返回文件信息列表
     return  toplist;
 
 
@@ -216,9 +216,9 @@ def find_high_peek(smdata):
 
 ############ step3:find high_dur
 '''
-	peerks和onediff_pv两者均是排序字典:
-	peerks=OrderedDict([(21,5464),(1634,25346),(45403,4540)])  
-	onediff_pv=OrderedDict([(21,5464),(1634,25346),(45403,4540)])
+    peerks和onediff_pv两者均是排序字典:
+    peerks=OrderedDict([(21,5464),(1634,25346),(45403,4540)])  
+    onediff_pv=OrderedDict([(21,5464),(1634,25346),(45403,4540)])
 '''
 def find_high_dur(peaks,onediff_pv,smdata):
     smdata=smdata.items() # 反字典化
@@ -273,7 +273,7 @@ def find_high_dur(peaks,onediff_pv,smdata):
 
 #step3.1  高潮区间合并
 '''
-	将小于5的删除，将区间间隔小于5的合并（这里还存在提升空间）
+    将小于5的删除，将区间间隔小于5的合并（这里还存在提升空间）
 '''
 def mergehigh(high_dur):
     hdurbg5=filter(lambda x:x[-1]-x[0]>5,high_dur)
@@ -301,7 +301,7 @@ def mergehigh(high_dur):
 
 #step3.2  判断高潮区间的占比
 '''
-	占全片的比例小于20%或者大于80%，提交审核
+    占全片的比例小于20%或者大于80%，提交审核
 '''
 def judgehigh(highdur,view):
     flag=''

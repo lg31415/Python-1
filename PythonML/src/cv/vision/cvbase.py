@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:
-	Ref:
-	State：
-	Date:2017/1/12
-	Author:tuling56
+    Fun:
+    Ref:
+    State：
+    Date:2017/1/12
+    Author:tuling56
 '''
 import re, os, sys
 import hues
@@ -46,6 +46,6 @@ def cvdemo(picname):
 
 
 if __name__ == "__main__":
-	picname='D:'
-	cvdemo(picname)
+    picname='D:'
+    cvdemo(picname)
 

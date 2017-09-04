@@ -61,7 +61,7 @@ def viterbi(obs,states,start_p,trans_p, emit_p):
         path=newpath
     print_dptable(V)
     (prob, state) = max([(V[len(obs) - 1][y], y) for y in states])  #选取最后一天概率最大的
-    return (prob, path[state])										#然后返回怎么样达到该状态的最短路径，其实也是最大概率
+    return (prob, path[state])                                        #然后返回怎么样达到该状态的最短路径，其实也是最大概率
 
 if __name__=='__main__':
     print viterbi(observations,states,start_probability,transition_probability,emission_probability)

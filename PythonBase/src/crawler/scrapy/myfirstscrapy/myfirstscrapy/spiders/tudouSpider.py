@@ -26,7 +26,7 @@ class TudouTeleplaySpiderBase(scrapy.Spider):
     allowed_domains = ["new.tudou.com"]
     start_urls = ["http://new.tudou.com/category/c_97.html"]
 
-	# 控制解析的页数
+    # 控制解析的页数
     def __init__(self):
         self.page=1
 
@@ -59,7 +59,7 @@ class TudouMovieSpiderBase(scrapy.Spider):
     allowed_domains = ["new.tudou.com"]
     start_urls = ["http://new.tudou.com/category/c_96.html"]
 
-	# 控制解析的页数
+    # 控制解析的页数
     def __init__(self):
         self.page=1
 
@@ -93,7 +93,7 @@ class TudouTvSpiderBase(scrapy.Spider):
     allowed_domains = ["new.tudou.com"]
     start_urls = ["http://new.tudou.com/category/c_85.html"]
 
-	# 控制解析的页数
+    # 控制解析的页数
     def __init__(self):
         self.page=1
 
@@ -127,7 +127,7 @@ class TudouAnimalSpiderBase(scrapy.Spider):
     allowed_domains = ["new.tudou.com"]
     start_urls = ["http://new.tudou.com/category/c_100.html"]
 
-	# 控制解析的页数
+    # 控制解析的页数
     def __init__(self):
         self.page=1
 

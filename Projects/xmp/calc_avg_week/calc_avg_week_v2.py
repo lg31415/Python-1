@@ -127,7 +127,7 @@ if __name__ == "__main__":
         stadate=date.today()-timedelta(days=1)
         stadate = '%04d%02d%02d' %(stadate.year, stadate.month, stadate.day)
         tblname='xmp_alive_online_source_percent'   #默认上线留存按渠道
-	print '[stadata]',stadate,'\n','[tblname]',tblname
+    print '[stadata]',stadate,'\n','[tblname]',tblname
     else:
         stadate=sys.argv[1]
         tblname=sys.argv[2]

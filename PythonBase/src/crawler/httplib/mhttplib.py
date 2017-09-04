@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:httplib模块的使用
-	Ref:http://blog.csdn.net/five3/article/details/7078951
-	State：
-	Date:2017/7/28
-	Author:tuling56
+    Fun:httplib模块的使用
+    Ref:http://blog.csdn.net/five3/article/details/7078951
+    State：
+    Date:2017/7/28
+    Author:tuling56
 '''
 import re, os, sys
 import hues

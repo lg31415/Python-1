@@ -19,7 +19,7 @@ import time
 import threading
 
 '''
-	创建服务器端连接
+    创建服务器端连接
 '''
 def tcplink(sock,addr):
     hues.info("accept new connection from %s:%s..." % addr)
@@ -36,7 +36,7 @@ def tcplink(sock,addr):
 
 
 '''
-	tcp服务器（多线程）
+    tcp服务器（多线程）
 '''
 def tcpserver():
     s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)  # 创建一个基于ipv4 的TCP协议的socket

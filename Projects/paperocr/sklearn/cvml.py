@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:利用opencv自带的机器学习库进行学习
-	Ref:
-	Date:2016/9/17
-	Author:tuling56
+    Fun:利用opencv自带的机器学习库进行学习
+    Ref:
+    Date:2016/9/17
+    Author:tuling56
 '''
 import os
 import sys
@@ -16,22 +16,22 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 '''
-	数据准备
+    数据准备
 '''
 from sklearn import cross_validation # 用于训练和测试分开
 from sklearn import preprocessing    # 预处理
 def loaddata():
-	X=np.loadtxt('./data/samples',dtype=np.float32,delimiter=',')
-	# data normalization
-	norm_X=preprocessing.normalize(X)
-	stand_X=preprocessing.scale(X)
-	y=np.loadtxt('./data/labels_c', dtype=np.float32,converters={ 0 : lambda ch : ord(ch)-ord('A')})
-	#随机抽取生成训练集和测试集，其中训练集的比例为60%，测试集40%
-	X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size=0.4, random_state=0)
-	return  X_train, X_test, y_train, y_test
+    X=np.loadtxt('./data/samples',dtype=np.float32,delimiter=',')
+    # data normalization
+    norm_X=preprocessing.normalize(X)
+    stand_X=preprocessing.scale(X)
+    y=np.loadtxt('./data/labels_c', dtype=np.float32,converters={ 0 : lambda ch : ord(ch)-ord('A')})
+    #随机抽取生成训练集和测试集，其中训练集的比例为60%，测试集40%
+    X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size=0.4, random_state=0)
+    return  X_train, X_test, y_train, y_test
 
 '''
-	分类算法
+    分类算法
 '''
 class StatModel(object):
     def load(self, fn):

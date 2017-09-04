@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:
-	Ref:http://blog.csdn.net/caleng/article/details/5712850
-	State：
-	Date:2016/11/11
-	Author:tuling56
+    Fun:
+    Ref:http://blog.csdn.net/caleng/article/details/5712850
+    State：
+    Date:2016/11/11
+    Author:tuling56
 '''
 import re, os, sys
 import hues
@@ -17,8 +17,8 @@ import web
 import datetime
 
 '''
-	use test;
-	CREATE TABLE entries (    
+    use test;
+    CREATE TABLE entries (    
     id INT AUTO_INCREMENT,    
     title TEXT,    
     content TEXT,    

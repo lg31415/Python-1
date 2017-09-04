@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:
-	Ref:
-	State：
-	Date:2016/11/17
-	Author:tuling56
+    Fun:
+    Ref:
+    State：
+    Date:2016/11/17
+    Author:tuling56
 '''
 import re, os, sys
 import hues
@@ -15,10 +15,10 @@ sys.setdefaultencoding('utf-8')
 
 
 def fun():
-	print "fun"
+    print "fun"
 
 
 if __name__ == "__main__":
-	print "模型模块"
-	fun()
+    print "模型模块"
+    fun()
 

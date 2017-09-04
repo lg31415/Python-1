@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:flask关系数据库操作
-	Ref:https://funhacks.gitbooks.io/head-first-flask/content/chapter03/section3.02.html
-	State：
-	Date:2017/4/21
-	Author:tuling56
+    Fun:flask关系数据库操作
+    Ref:https://funhacks.gitbooks.io/head-first-flask/content/chapter03/section3.02.html
+    State：
+    Date:2017/4/21
+    Author:tuling56
 '''
 import re, os, sys
 import hues
@@ -22,16 +22,16 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
 
 class User(db.Model):
-	"""定义数据模型"""
-	__tablename__ = 'users'
-	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(80), unique=True)
-	email = db.Column(db.String(120), unique=True)
-	def __init__(self, username, email):
-		self.username = username
-		self.email = email
-	def __repr__(self):
-		return '<User %r>' % self.username
+    """定义数据模型"""
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True)
+    email = db.Column(db.String(120), unique=True)
+    def __init__(self, username, email):
+        self.username = username
+        self.email = email
+    def __repr__(self):
+        return '<User %r>' % self.username
 
 @app.route('/')
 def index():
@@ -53,19 +53,19 @@ def index():
 
 @app.route('/adduser')
 def add_user():
-	user1 = User('ethan', 'ethan@example.com')
-	user2 = User('admin', 'admin@example.com')
-	user3 = User('guest', 'guest@example.com')
-	user4 = User('joe', 'joe@example.com')
-	user5 = User('michael', 'michael@example.com')
-	db.session.add(user1)
-	db.session.add(user2)
-	db.session.add(user3)
-	db.session.add(user4)
-	db.session.add(user5)
+    user1 = User('ethan', 'ethan@example.com')
+    user2 = User('admin', 'admin@example.com')
+    user3 = User('guest', 'guest@example.com')
+    user4 = User('joe', 'joe@example.com')
+    user5 = User('michael', 'michael@example.com')
+    db.session.add(user1)
+    db.session.add(user2)
+    db.session.add(user3)
+    db.session.add(user4)
+    db.session.add(user5)
 
-	db.session.commit()  #记得提交事务
-	return "<p>add succssfully!"
+    db.session.commit()  #记得提交事务
+    return "<p>add succssfully!"
 
 @app.route('/update')
 def update():
@@ -132,8 +132,8 @@ def pagination():
 
 # 测试入口
 if __name__ == '__main__':
-	db.create_all()
-	app.run(host='127.0.0.1',port=5200,debug=True)
+    db.create_all()
+    app.run(host='127.0.0.1',port=5200,debug=True)
 
 
 

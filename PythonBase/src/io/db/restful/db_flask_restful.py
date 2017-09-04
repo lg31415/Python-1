@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:db数据库查询的restful接口实现
-	Ref:https://flask-restless.readthedocs.io/en/stable/
-	    https://segmentfault.com/q/1010000008335958?_ea=1878275
-	Author:tuling56
-	Date: 2017年5月5日
+    Fun:db数据库查询的restful接口实现
+    Ref:https://flask-restless.readthedocs.io/en/stable/
+        https://segmentfault.com/q/1010000008335958?_ea=1878275
+    Author:tuling56
+    Date: 2017年5月5日
 '''
 import os,sys
 import time

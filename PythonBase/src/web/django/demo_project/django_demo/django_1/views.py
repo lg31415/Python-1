@@ -6,33 +6,33 @@ from django.shortcuts import render
 from  django.http import HttpResponse
 
 '''
-	无参函数
+    无参函数
 '''
 def hello(request):
-	return HttpResponse('2x2322!')
+    return HttpResponse('2x2322!')
 
 
 '''
-	带参函数
+    带参函数
 '''
 html='''
     <form method="post" action="/add/">
     <input type="text" name='a',value='%d' />+
-	<input type="text" name='b',value='%d' />
-	<input type="submit" value="="/>
-	<input type="text" value="%d" />'''
+    <input type="text" name='b',value='%d' />
+    <input type="submit" value="="/>
+    <input type="text" value="%d" />'''
 
 def add(request):
-	if request.POST.has_key('a'):
-		a=int(request.POST['a'])
-		b=int(request.POST['b'])
-	else:
-		a=0
-		b=0
-	return HttpResponse(html%(a,b,a+b))
+    if request.POST.has_key('a'):
+        a=int(request.POST['a'])
+        b=int(request.POST['b'])
+    else:
+        a=0
+        b=0
+    return HttpResponse(html%(a,b,a+b))
 
 '''
-	模板函数
+    模板函数
 '''
 from django.shortcuts import render_to_response
 address=[
@@ -45,20 +45,20 @@ def addressbook(request):
     return render_to_response('addreslist.html',{'address':address})
 
 '''
-	文件保存
+    文件保存
 '''
 from django.template import loader,Context
 def output(request, filename):
-    response = HttpResponse() #mimetype='text/csv')	# 创建response对象
+    response = HttpResponse() #mimetype='text/csv')    # 创建response对象
     response['Content-Disposition'] = 'attachment; filename =%s.csv' % filename  #修改response对象的属性
     t = loader.get_template('csv.html')   # 生成templete对象
-    c = Context({'data':address})	      # 生成Context对象
-    response.write(t.render(c))			  # 渲染模板
-    return response						  # 返回response对象
+    c = Context({'data':address})          # 生成Context对象
+    response.write(t.render(c))              # 渲染模板
+    return response                          # 返回response对象
 
 
 '''
-	交互数据库
+    交互数据库
 '''
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render_to_response

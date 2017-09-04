@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:进程通信
-	Ref:https://segmentfault.com/a/1190000008122273
-	State：
-	Date:2017/8/29
-	Author:tuling56
+    Fun:进程通信
+    Ref:https://segmentfault.com/a/1190000008122273
+    State：
+    Date:2017/8/29
+    Author:tuling56
 '''
 import re, os, sys
 import hues

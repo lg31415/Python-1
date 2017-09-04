@@ -29,15 +29,15 @@ send_smtp.login(mailname,mailpass)
 # 增强功能
 '''
 for key in mailinfo.keys():
-	v='\n'.join(mailinfo[key])
-	print emad[key],v
-	context=v
-	msg=MIMEText(context,_charset='utf-8')
-	msg['Subject'] ="相关指标异常报警"
-	msg['From']="monitor@cc.sandai.net"
-	msg['To']=emad[key]
-	msg['Date']= formatdate(localtime=True)
-	send_smtp.sendmail("monitor@cc.sandai.net",emad[key],msg.as_string())
+    v='\n'.join(mailinfo[key])
+    print emad[key],v
+    context=v
+    msg=MIMEText(context,_charset='utf-8')
+    msg['Subject'] ="相关指标异常报警"
+    msg['From']="monitor@cc.sandai.net"
+    msg['To']=emad[key]
+    msg['Date']= formatdate(localtime=True)
+    send_smtp.sendmail("monitor@cc.sandai.net",emad[key],msg.as_string())
 #send_smtp =smtplib.SMTP()
 #send_smtp.connect(mailhost)
 #send_smtp.login(mailname,mailpass)
@@ -56,7 +56,7 @@ gp_members={}
 
 # 文件1获取报警内容和发送的邮件组user.list
 for line in opfile1:
-	emailaddr=[]
+    emailaddr=[]
         str= line.rstrip().split("\t")  
         name=str[1].rstrip().split("|")
         for n in name:
@@ -68,37 +68,37 @@ context_group={}
 
 #获取邮件和组(sendemail.list)
 for line in opfile:
-	str=line.rstrip().split("\t")
-	if context_group.has_key(str[1]):
-		context_group[str[1]].append(str[0]) #邮件组作为key,邮件内容作为value
-	else:
-		context_group[str[1]]=[]
-		context_group[str[1]].append(str[0])
+    str=line.rstrip().split("\t")
+    if context_group.has_key(str[1]):
+        context_group[str[1]].append(str[0]) #邮件组作为key,邮件内容作为value
+    else:
+        context_group[str[1]]=[]
+        context_group[str[1]].append(str[0])
 
 
 # 给组中的每个人发送报警邮件
 for g in context_group:
-	send_smtp =smtplib.SMTP()
-	send_smtp.connect(mailhost)  #均采用了这种方式
-	send_smtp.login(mailname,mailpass)
+    send_smtp =smtplib.SMTP()
+    send_smtp.connect(mailhost)  #均采用了这种方式
+    send_smtp.login(mailname,mailpass)
 
-	mailto=[]
-	gps=g.rstrip().split("|")
-	for gp in gps:
-		mailto+=gp_members[gp]
-	context='\n'.join(context_group[g])
+    mailto=[]
+    gps=g.rstrip().split("|")
+    for gp in gps:
+        mailto+=gp_members[gp]
+    context='\n'.join(context_group[g])
 
-	print mailto,context
+    print mailto,context
 
-	# 邮件体
-	mailto_list=','.join(mailto)
-	msg=MIMEText(context,_charset='utf-8')
-	msg['Subject'] ="相关指标异常报警"
-	msg['To']=mailto_list
-	msg['From']="monitor@cc.sandai.net"
-	msg['Date']= formatdate(localtime=True) 
+    # 邮件体
+    mailto_list=','.join(mailto)
+    msg=MIMEText(context,_charset='utf-8')
+    msg['Subject'] ="相关指标异常报警"
+    msg['To']=mailto_list
+    msg['From']="monitor@cc.sandai.net"
+    msg['Date']= formatdate(localtime=True) 
 
-	# send_smtp.sendmail("monitor@cc.sandai.net",mailto,msg.as_string())
-	send_smtp.quit()
+    # send_smtp.sendmail("monitor@cc.sandai.net",mailto,msg.as_string())
+    send_smtp.quit()
 
 

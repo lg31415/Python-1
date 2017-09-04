@@ -15,11 +15,11 @@ def listMatrix():
 ##全局变量的使用方法1
 global glist
 def globalM():
-	#global list #声明使用的是全局变量
-	glist=[]
-	glist.append('123')
-	glist.append('2344')
-	print 'globalInner:',glist
+    #global list #声明使用的是全局变量
+    glist=[]
+    glist.append('123')
+    glist.append('2344')
+    print 'globalInner:',glist
 
 
 ##全局变量的使用方法2

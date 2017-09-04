@@ -5,11 +5,11 @@
   使用方法：calc_avg_week.py 20150923 xmp_alive_push_source_percent
             输入：
             ---20150932是输入统计日期
-			---xmp_alive_push_source_percent是要统计的表名，只能从以下四个表中选，若输错，会给出提示。
-			   'xmp_alive_online_source_percent','xmp_alive_online_version_percent','xmp_alive_push_source_percent','xmp_alive_play_version_percent','xmp_alive_play_source_percent'
-			***日期和表名必须同时指定，若不指定日期和表名，默认选择当前日期的前一天和xmp_alive_online_source_percent
-			输出：
-			    （当前脚本所在目录下）以表名为名字的txt文档
+            ---xmp_alive_push_source_percent是要统计的表名，只能从以下四个表中选，若输错，会给出提示。
+               'xmp_alive_online_source_percent','xmp_alive_online_version_percent','xmp_alive_push_source_percent','xmp_alive_play_version_percent','xmp_alive_play_source_percent'
+            ***日期和表名必须同时指定，若不指定日期和表名，默认选择当前日期的前一天和xmp_alive_online_source_percent
+            输出：
+                （当前脚本所在目录下）以表名为名字的txt文档
 '''
 import os
 import  sys

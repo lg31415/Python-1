@@ -14,8 +14,8 @@ db=SQLAlchemy(app)
 
 #@app.route('/')
 #def hello_world():
-#	print "包初始化"
-#	return 'Hello，this is',__file__
+#    print "包初始化"
+#    return 'Hello，this is',__file__
 
 #if __name__ == '__main__':
-#	app.run()
+#    app.run()

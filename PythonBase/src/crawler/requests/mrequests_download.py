@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:
-	Ref:https://www.zhihu.com/question/41132103
-	    https://www.zhihu.com/question/41132103/answer/93438156
-	State：
-	Date:2017/8/29
-	Author:tuling56
+    Fun:
+    Ref:https://www.zhihu.com/question/41132103
+        https://www.zhihu.com/question/41132103/answer/93438156
+    State：
+    Date:2017/8/29
+    Author:tuling56
 '''
 import re, os, sys
 import hues

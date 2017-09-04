@@ -21,21 +21,21 @@ def mkdir(path):
 
 # 获取每个模特的个性域名
 def getUrls(url):
-	driver= webdriver.PhantomJS()
-	html = urlopen(url)
-	bs = BeautifulSoup(html.read().decode('gbk'),"html.parser")
-	girls = bs.findAll("a",{"class":"lady-name"})
-	namewithurl = {}
-	for item in girls:
-		linkurl = item.get('href')
-		driver.get("https:"+linkurl)   #为什么非也要用这种方式获得
-		bs1 = BeautifulSoup(driver.page_source,"html.parser")
-		links = bs1.find("div",{"class":"mm-p-info mm-p-domain-info"})
-		if links is not None:
-			links = links.li.span.get_text()
-			namewithurl[item.get_text()] = links
-			print(links)
-	return namewithurl
+    driver= webdriver.PhantomJS()
+    html = urlopen(url)
+    bs = BeautifulSoup(html.read().decode('gbk'),"html.parser")
+    girls = bs.findAll("a",{"class":"lady-name"})
+    namewithurl = {}
+    for item in girls:
+        linkurl = item.get('href')
+        driver.get("https:"+linkurl)   #为什么非也要用这种方式获得
+        bs1 = BeautifulSoup(driver.page_source,"html.parser")
+        links = bs1.find("div",{"class":"mm-p-info mm-p-domain-info"})
+        if links is not None:
+            links = links.li.span.get_text()
+            namewithurl[item.get_text()] = links
+            print(links)
+    return namewithurl
 
 def getImgs(parms):
     personname = parms[0]

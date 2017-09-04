@@ -29,14 +29,14 @@ today=time.strftime('%Y%m%d',time.localtime(time.time()))
 end_day=date(int(today[0:4]),int(today[4:6]),int(today[-2:]))-timedelta(days=30)
 
 for file in file_list:
-	t=os.stat(file)[8]
-	file_mdate=time.strftime('%Y%m%d',time.localtime(t))
-	#print file, file_mdate
-	fmd='%04d%02d%02d' %(end_day.year, end_day.month, end_day.day)
-	#print fmd
-	if file_mdate < fmd:
-		os.remove(file)
-		print "file %s has deleted!!!" % file
+    t=os.stat(file)[8]
+    file_mdate=time.strftime('%Y%m%d',time.localtime(t))
+    #print file, file_mdate
+    fmd='%04d%02d%02d' %(end_day.year, end_day.month, end_day.day)
+    #print fmd
+    if file_mdate < fmd:
+        os.remove(file)
+        print "file %s has deleted!!!" % file
 
 
 

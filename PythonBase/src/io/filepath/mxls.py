@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:Python修改并保存当前excel文件
-	Ref:http://www.toutiao.com/i6344931811272950273/
-	    http://www.python-excel.org/
-	State：未完成测试
-	Date:2017/8/26
-	Author:tuling56
+    Fun:Python修改并保存当前excel文件
+    Ref:http://www.toutiao.com/i6344931811272950273/
+        http://www.python-excel.org/
+    State：未完成测试
+    Date:2017/8/26
+    Author:tuling56
 '''
 import re, os, sys
 import hues

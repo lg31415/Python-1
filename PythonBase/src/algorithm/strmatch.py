@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun: 字符串匹配算法(KMP、BM和Sunday)的Python实现
-	Ref: http://blog.chinaunix.net/uid-28311809-id-4243589.html
-	State:有问题
-	Date:2016/10/20
-	Author:tuling56
+    Fun: 字符串匹配算法(KMP、BM和Sunday)的Python实现
+    Ref: http://blog.chinaunix.net/uid-28311809-id-4243589.html
+    State:有问题
+    Date:2016/10/20
+    Author:tuling56
 '''
 import os
 import sys

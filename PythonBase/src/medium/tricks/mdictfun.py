@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:通过字典函数实现if-else的判别
-	Ref:
-	State：
-	Date:2017/9/1
-	Author:tuling56
+    Fun:通过字典函数实现if-else的判别
+    Ref:
+    State：
+    Date:2017/9/1
+    Author:tuling56
 '''
 import re, os, sys
 import hues

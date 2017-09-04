@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:命令行参数解析
-	Ref:http://www.tuicool.com/articles/jaqQvq
-	Date:2016/9/18
-	Author:tuling56
+    Fun:命令行参数解析
+    Ref:http://www.tuicool.com/articles/jaqQvq
+    Date:2016/9/18
+    Author:tuling56
 '''
 import os
 import sys

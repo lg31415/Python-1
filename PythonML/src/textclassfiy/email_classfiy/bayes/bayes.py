@@ -22,11 +22,11 @@ class Bayes:
             self.register_mode(Tfidf)
             self.register_mode(Chi)
             self.register_mode(Status)
-	except Exception as ex:
+    except Exception as ex:
             print ex
 
     def register_mode(self, mode_class):
-	self.modes[mode_class.__name__.lower()] = mode_class
+    self.modes[mode_class.__name__.lower()] = mode_class
 
     def run(self, args):
         result = None
@@ -45,7 +45,7 @@ class Bayes:
             result = mode.execute()
             mode.output(result)
 
-	except Exception as ex:
+    except Exception as ex:
             print ex
 
         return result
@@ -59,25 +59,25 @@ if __name__ == '__main__':
     
     print b.run(args)
     
-	# try:
-	# 	register_mode(Learn)
-	# 	register_mode(Classify)
-	# 	register_mode(Reset)
-	# 	register_mode(Status)
+    # try:
+    #     register_mode(Learn)
+    #     register_mode(Classify)
+    #     register_mode(Reset)
+    #     register_mode(Status)
 
-	# 	args = sys.argv
-	# 	usage = 'Usage: %s %s <mode specific args>' % (args[0], '|'.join(modes.keys()))
+    #     args = sys.argv
+    #     usage = 'Usage: %s %s <mode specific args>' % (args[0], '|'.join(modes.keys()))
 
-	# 	if (len(args) < 2):
-	# 		raise ValueError(usage)
+    #     if (len(args) < 2):
+    #         raise ValueError(usage)
 
-	# 	mode_name = args[1]
-	# 	if mode_name not in modes:
-	# 		raise ValueError(usage + '\nUnrecognised mode: ' + mode_name)
+    #     mode_name = args[1]
+    #     if mode_name not in modes:
+    #         raise ValueError(usage + '\nUnrecognised mode: ' + mode_name)
 
-	# 	mode = modes[mode_name]()
-	# 	mode.validate(args)
-	# 	mode.output(mode.execute())
-		
-	# except Exception as ex:
-	# 	print ex
+    #     mode = modes[mode_name]()
+    #     mode.validate(args)
+    #     mode.output(mode.execute())
+        
+    # except Exception as ex:
+    #     print ex

@@ -17,15 +17,15 @@ service_name="mexporter"
 
 
 '''
-	定时采集制定查询规则和结果数据返回
-	状态：待完成
+    定时采集制定查询规则和结果数据返回
+    状态：待完成
 '''
 def alauda_get_instance_metrics(namespace, name, instance_uuid, start_time, end_time, interval):
     pass
 
 
 '''
-	数据收集
+    数据收集
 '''
 def gather_data(namespace, run_event):
     g_cpu_usage = Gauge("cpu_cumulative_usage", "CPU Cumulative Usage", ["service", "instance"])

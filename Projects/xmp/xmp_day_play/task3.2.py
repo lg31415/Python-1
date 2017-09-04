@@ -120,10 +120,10 @@ def urlParase(url):
 def getTypeTitle(movieid):
     url='http://media.v.xunlei.com/pc/info?movieid='+movieid
     headers ={
-    	"Host":"media.v.xunlei.com",
-    	"Referer": "http://media.v.xunlei.com",
-		"cookie":"client=pc;version=5.1.0.3054"
-	}
+        "Host":"media.v.xunlei.com",
+        "Referer": "http://media.v.xunlei.com",
+        "cookie":"client=pc;version=5.1.0.3054"
+    }
     request=urllib2.Request(url,None,headers)
     resonse=urllib2.urlopen(request)
     content=resonse.read().decode('utf8')

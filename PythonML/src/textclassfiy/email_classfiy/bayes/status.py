@@ -6,22 +6,22 @@ from mode import Mode
 
 class Status(Mode):
 
-	def validate(self, args):
-		if len(args) != 2:
-			raise ValueError('Usage: %s status' % args[0])
+    def validate(self, args):
+        if len(args) != 2:
+            raise ValueError('Usage: %s status' % args[0])
 
-	def execute(self):
-		db = Db()
-		return db.get_doctype_counts().items()
+    def execute(self):
+        db = Db()
+        return db.get_doctype_counts().items()
 
-	def output(self, results):
-		bar = '=' * 40
-		print '%s\n Training:\n%s\n' % (bar, bar)
+    def output(self, results):
+        bar = '=' * 40
+        print '%s\n Training:\n%s\n' % (bar, bar)
 
-		if results:
-			for doctype, count in results:
-				print '%s: %s' % (doctype, count)
-		else:
-			print 'No data'
+        if results:
+            for doctype, count in results:
+                print '%s: %s' % (doctype, count)
+        else:
+            print 'No data'
 
-		print '\n%s' % bar
+        print '\n%s' % bar

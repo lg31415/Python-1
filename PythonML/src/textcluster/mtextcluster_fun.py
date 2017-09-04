@@ -145,35 +145,35 @@ def strip_proppers_POS(text):
 
 # 分词，去专有名词，去停用词完整流程
 from gensim import corpora, models, similarities 
-def wordfilter(synopses):		
-	#remove proper names
-	preprocess = [strip_proppers(doc) for doc in synopses]
-	#tokenize
-	tokenized_text = [tokenize_and_stem(text) for text in preprocess]
-	#remove stop words
-	texts = [[word for word in text if word not in stopwords] for text in tokenized_text]
-	
-	# 用文本构建 Gensim 字典
-	dictionary = corpora.Dictionary(texts)
-	# 去除极端的词（和构建 tf-idf 矩阵时用到 min/max df 参数时很像）
-	dictionary.filter_extremes(no_below=1, no_above=0.8)
-	# 将字典转化为词典模型（bag of words）作为参考
-	corpus = [dictionary.doc2bow(text) for text in texts]
+def wordfilter(synopses):        
+    #remove proper names
+    preprocess = [strip_proppers(doc) for doc in synopses]
+    #tokenize
+    tokenized_text = [tokenize_and_stem(text) for text in preprocess]
+    #remove stop words
+    texts = [[word for word in text if word not in stopwords] for text in tokenized_text]
+    
+    # 用文本构建 Gensim 字典
+    dictionary = corpora.Dictionary(texts)
+    # 去除极端的词（和构建 tf-idf 矩阵时用到 min/max df 参数时很像）
+    dictionary.filter_extremes(no_below=1, no_above=0.8)
+    # 将字典转化为词典模型（bag of words）作为参考
+    corpus = [dictionary.doc2bow(text) for text in texts]
 
-	lda = models.LdaModel(corpus, num_topics=5,
-							id2word=dictionary, 
+    lda = models.LdaModel(corpus, num_topics=5,
+                            id2word=dictionary, 
                             update_every=5, 
                             chunksize=10000, 
                             passes=100)
-		
-	print(lda.show_topics())
+        
+    print(lda.show_topics())
 
-	# 取出前20个词
-	topics_matrix = lda.show_topics(formatted=False, num_words=20)
-	topics_matrix = np.array(topics_matrix)
-	topic_words = topics_matrix[:,:,1]
-	for i in topic_words:
-		print([str(word) for word in i])
+    # 取出前20个词
+    topics_matrix = lda.show_topics(formatted=False, num_words=20)
+    topics_matrix = np.array(topics_matrix)
+    topic_words = topics_matrix[:,:,1]
+    for i in topic_words:
+        print([str(word) for word in i])
 
 
 #数据可视化（使用matplotlib和mpld3）
@@ -295,24 +295,24 @@ synopses_wiki = open('data/synopses_list_wiki.txt').read().split('\n BREAKS HERE
 synopses_wiki = synopses_wiki[:100]
 synopses_clean_wiki = []
 for text in synopses_wiki:
-	text = BeautifulSoup(text, 'html.parser').getText()
-	#strips html formatting and converts to unicode
-	synopses_clean_wiki.append(text)
+    text = BeautifulSoup(text, 'html.parser').getText()
+    #strips html formatting and converts to unicode
+    synopses_clean_wiki.append(text)
 synopses_wiki = synopses_clean_wiki
 
 synopses_imdb = open('data/synopses_list_imdb.txt').read().split('\n BREAKS HERE')
 synopses_imdb = synopses_imdb[:100]
 synopses_clean_imdb = []
 for text in synopses_imdb:
-	text = BeautifulSoup(text, 'html.parser').getText()
-	#strips html formatting and converts to unicode
-	synopses_clean_imdb.append(text)
+    text = BeautifulSoup(text, 'html.parser').getText()
+    #strips html formatting and converts to unicode
+    synopses_clean_imdb.append(text)
 synopses_imdb = synopses_clean_imdb
 
 synopses = []
 for i in range(len(synopses_wiki)):
-	item = synopses_wiki[i] + synopses_imdb[i]
-	synopses.append(item)
+    item = synopses_wiki[i] + synopses_imdb[i]
+    synopses.append(item)
 
 print("LDA主题模型分析")
 wordfilter(synopses) # LDA主题模型分析
@@ -327,15 +327,15 @@ print(str(len(genres)) + ' genres')
 # generates index for each item in the corpora (in this case it's just rank) and I'll use this for scoring later
 ranks = []
 for i in range(0,len(titles)):
-	ranks.append(i)
+    ranks.append(i)
 
 totalvocab_stemmed = []   # 分词并词干化
 totalvocab_tokenized = [] # 只分词
 for i in synopses:
-	allwords_stemmed = tokenize_and_stem(i)
-	totalvocab_stemmed.extend(allwords_stemmed)
-	allwords_tokenized = tokenize_only(i)
-	totalvocab_tokenized.extend(allwords_tokenized)
+    allwords_stemmed = tokenize_and_stem(i)
+    totalvocab_stemmed.extend(allwords_stemmed)
+    allwords_tokenized = tokenize_only(i)
+    totalvocab_tokenized.extend(allwords_tokenized)
 
 
 # 构造原始材料

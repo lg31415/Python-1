@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:Python调用shell
-	Ref:
-	State：还需要完善
-	Date:2017/4/12
-	Author:tuling56
+    Fun:Python调用shell
+    Ref:
+    State：还需要完善
+    Date:2017/4/12
+    Author:tuling56
 '''
 import re, os, sys
 import hues
@@ -18,13 +18,13 @@ sys.setdefaultencoding('utf-8')
 '''
 import subprocess,shlex
 def python_invoke_shell():
-	cmd="md5sum python_shell.py"
-	p=subprocess(shlex.split(cmd),stdout=subprocess.PIPE)
-	print(p.stdout.read())
+    cmd="md5sum python_shell.py"
+    p=subprocess(shlex.split(cmd),stdout=subprocess.PIPE)
+    print(p.stdout.read())
 
 
 '''
-	增强版
+    增强版
 '''
 import time
 import datetime
@@ -32,9 +32,9 @@ def execute_command(cmdstring, cwd=None, timeout=None, isshell=False):
     """执行一个SHELL命令
            封装了subprocess的Popen方法, 支持超时判断，支持读取stdout和stderr
            参数:
-			cwd: 运行命令时更改路径，如果被设定，子进程会直接先更改当前路径到cwd
-			timeout: 超时时间，秒，支持小数，精度0.1秒
-			shell: 是否通过shell运行(这个参数的意义是什么？？？？)
+            cwd: 运行命令时更改路径，如果被设定，子进程会直接先更改当前路径到cwd
+            timeout: 超时时间，秒，支持小数，精度0.1秒
+            shell: 是否通过shell运行(这个参数的意义是什么？？？？)
     Returns: return_code
     Raises:  Exception: 执行超时
     """

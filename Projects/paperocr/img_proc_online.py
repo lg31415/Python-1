@@ -37,8 +37,8 @@ datapath=os.path.join(curpath,'data')
 class Img2Vec(object):
     def __init__(self,HAS_CV,srcpath,datapath):
         self.HAS_CV=HAS_CV
-        self.datapath=datapath	# 向量化后的数据
-        self.srcpath=srcpath	# 源数据图像
+        self.datapath=datapath    # 向量化后的数据
+        self.srcpath=srcpath    # 源数据图像
         self.train_samples=[]   # 训练矩阵
         self.train_whats=[]      # 样本标签矩阵
         self.filelist=[]        # 训练样本
@@ -97,7 +97,7 @@ class Img2Vec(object):
         保存训练数据
     '''
     def savetrdata(self,save=True):
-	print np.array(self.train_samples)
+    print np.array(self.train_samples)
         dd=np.array(self.train_samples)
         #是否保存样本矩阵
         np.savetxt(os.path.join(self.datapath,"samples"),np.array(self.train_samples),delimiter=',',fmt='%5.4f')  # 保留4位小数
@@ -118,7 +118,7 @@ class Img2Vec(object):
 
 
 '''
-	测试（数据准备）
+    测试（数据准备）
 '''
 from sklearn import cross_validation # 用于训练和测试分开
 from sklearn import preprocessing    # 预处理

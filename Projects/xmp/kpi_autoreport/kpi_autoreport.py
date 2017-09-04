@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:kpi自动报表配置
-	Ref:http://www.jb51.net/article/60510.htm
-	State：注意日期处理
-	Date:2017/5/3
-	Author:tuling56
+    Fun:kpi自动报表配置
+    Ref:http://www.jb51.net/article/60510.htm
+    State：注意日期处理
+    Date:2017/5/3
+    Author:tuling56
 '''
 import re, os, sys
 #import hues
@@ -43,7 +43,7 @@ curdir=os.getcwd()
 datapath=curdir.replace("/bin","/data")
 
 '''
-	数据的生成和报表的配置
+    数据的生成和报表的配置
 '''
 class KPIAutoReport():
     def __init__(self):

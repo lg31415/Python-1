@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:trie树和实现
-	Ref:https://segmentfault.com/a/1190000000630528
-	State：
-	Date:2017/6/6
-	Author:tuling56
+    Fun:trie树和实现
+    Ref:https://segmentfault.com/a/1190000000630528
+    State：
+    Date:2017/6/6
+    Author:tuling56
 '''
 import re, os, sys
 import hues

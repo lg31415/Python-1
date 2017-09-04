@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Date:
-	Author:tuling56
+    Date:
+    Author:tuling56
 '''
 import os
 import sys
@@ -14,13 +14,13 @@ import global_var as G
 import invoke_global as V1
 
 def run():
-	G.g_maillist.append('this is append')
-	print G.g_maillist
+    G.g_maillist.append('this is append')
+    print G.g_maillist
 
 
 
 if __name__ == "__main__":
-	print "invoke 1"
-	run()
-	V1.run()
+    print "invoke 1"
+    run()
+    V1.run()
 

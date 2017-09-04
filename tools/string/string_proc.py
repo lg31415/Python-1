@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:字符串处理类
-	Ref:
-	Date:2016/10/19
-	Author:tuling56
+    Fun:字符串处理类
+    Ref:
+    Date:2016/10/19
+    Author:tuling56
 '''
 import os
 import sys
@@ -15,7 +15,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 '''
-	单字符判断
+    单字符判断
 '''
 # 判断单个字符是否是中文
 def is_cn_char(i):
@@ -36,14 +36,14 @@ def isxdigit(s):
 # 判断字符是否是日文
 def isJapan(s):
     '''
-	unicode
-	'''
+    unicode
+    '''
     #return re.search(ur"[\u3040-\u309f]+",unicode(s,"utf-8",'ignore')) is not None or re.search(ur"[\u30a0-\u30ff]+",unicode(s,"utf-8",'ignore')) is not None
     return re.search(ur"[\u3040-\u309f]+", s) is not None or re.search(ur'[\u30a0-\u30ff]+', s) is not None
 
 
 '''
-	字符串操作
+    字符串操作
 '''
 # 去除标点符号和无效字符
 def remove_meanless(instr):

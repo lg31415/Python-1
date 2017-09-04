@@ -13,8 +13,8 @@ import utility
 
 urls = (
     '/','welcome.Handler',
-	'/dc','data_center.Handler',
-	)
+    '/dc','data_center.Handler',
+    )
 
 app = web.application(urls, globals(), autoreload=True)
 #app.config['debug'] = False

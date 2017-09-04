@@ -6,7 +6,7 @@ from  django.http import HttpResponse
 
 # Create your views here.
 '''
-	测试
+    测试
 '''
 def application(env, start_response):
     start_response('200 OK', [('Content-Type','text/html')])
@@ -14,10 +14,10 @@ def application(env, start_response):
 
 
 '''
-	无参函数
+    无参函数
 '''
 def hello(request):
-	return HttpResponse('这是app_welcome的首页!')
+    return HttpResponse('这是app_welcome的首页!')
 
 if __name__=="__main__":
     hello()

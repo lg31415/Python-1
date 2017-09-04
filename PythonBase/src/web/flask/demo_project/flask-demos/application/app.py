@@ -24,7 +24,7 @@ def create_app(config_name=None):
     for bp in blueprints:
         app.register_blueprint(bp)
 
-	# //该app的handle_error处理
+    # //该app的handle_error处理
     handle_errors(app)
 
     return app

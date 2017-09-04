@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:练手项目：南邮新闻标爬取
-	Ref:
-	State：
-	Date:2017/5/24
-	Author:tuling56
+    Fun:练手项目：南邮新闻标爬取
+    Ref:
+    State：
+    Date:2017/5/24
+    Author:tuling56
 '''
 
 import scrapy

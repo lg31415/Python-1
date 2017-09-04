@@ -27,20 +27,20 @@ def init_logger2(path, level=logging.NOTSET, maxBytes=50*1024*1024, backupCount=
 
 
 #def thrift_encode(pack):
-#		transport = TTransport.TMemoryBuffer()
-#		protocol = TBinaryProtocol.TBinaryProtocol(transport)
-#		pack.write(protocol)
-#		return transport.getvalue()
+#        transport = TTransport.TMemoryBuffer()
+#        protocol = TBinaryProtocol.TBinaryProtocol(transport)
+#        pack.write(protocol)
+#        return transport.getvalue()
 
 #def thrift_decode(value, pack):
-#		transport = TTransport.TMemoryBuffer( value )
-#		protocol = TBinaryProtocol.TBinaryProtocol(transport)
-#		pack.read(protocol)
-#		return pack
+#        transport = TTransport.TMemoryBuffer( value )
+#        protocol = TBinaryProtocol.TBinaryProtocol(transport)
+#        pack.read(protocol)
+#        return pack
 
 def suffix(name):
-	pos = name.rfind(".")
-	if pos>=0:
-		return name[pos+1:].lower()
-	else:
-		return ""
+    pos = name.rfind(".")
+    if pos>=0:
+        return name[pos+1:].lower()
+    else:
+        return ""

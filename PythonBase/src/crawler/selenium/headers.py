@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:http头定义
-	Ref:
-	State：
-	Date:2017/6/22
-	Author:tuling56
+    Fun:http头定义
+    Ref:
+    State：
+    Date:2017/6/22
+    Author:tuling56
 '''
 
 
@@ -20,5 +20,5 @@ headers.append(header_edge)
 
 # 设置代理
 proxy_ips=[
-	"http://10.10.1.10:3128"
+    "http://10.10.1.10:3128"
 ]

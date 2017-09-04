@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:相似性计算
-	Ref:
-	Date:2016/10/13
-	Author:tuling56
+    Fun:相似性计算
+    Ref:
+    Date:2016/10/13
+    Author:tuling56
 '''
 import os
 import sys
@@ -84,5 +84,5 @@ def calcSimlaryCosDist(user1,user2):
 
 
 if __name__ == "__main__":
-	pass
+    pass
 

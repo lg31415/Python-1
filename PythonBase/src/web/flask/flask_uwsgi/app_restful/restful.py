@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun: flask的restful接口实现
-	Ref: head-first-flask
-	State：
-	Date:2017/4/26
-	Author:tuling56
+    Fun: flask的restful接口实现
+    Ref: head-first-flask
+    State：
+    Date:2017/4/26
+    Author:tuling56
 '''
 import re, os, sys
 import hues

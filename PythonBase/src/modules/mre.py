@@ -1,7 +1,7 @@
 #-*-coding:utf-8-*-
 '''
-	正则表达式的学习：
-	详细参考网址：http://wiki.jikexueyuan.com/project/python-crawler-guide/regular-expressions.html#7907ec6cc04be6c7f8cf8ac272215946
+    正则表达式的学习：
+    详细参考网址：http://wiki.jikexueyuan.com/project/python-crawler-guide/regular-expressions.html#7907ec6cc04be6c7f8cf8ac272215946
 '''
 
 import os
@@ -96,7 +96,7 @@ if __name__=="__main__":
     mre=CRe()
     mre.rematch()
     #mre.research()
-	#mre.refindall()
-	#mre.reindex()
+    #mre.refindall()
+    #mre.reindex()
     #mre.resplit()
-	#mre.resub()
+    #mre.resub()

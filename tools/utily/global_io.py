@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:全局IO库
-	Ref:
-	State：
-	Date:2017/7/1
-	Author:tuling56
+    Fun:全局IO库
+    Ref:
+    State：
+    Date:2017/7/1
+    Author:tuling56
 '''
 import re, os, sys
 import hues
@@ -61,49 +61,49 @@ class CTxt2Xls():
 
 # txt文件转换成xls
 def txt2xls(inputfile):
-	#Excel
-	data=xlwt.Workbook()
-	table=data.add_sheet('T1')
+    #Excel
+    data=xlwt.Workbook()
+    table=data.add_sheet('T1')
 
-	f=open(inputfile,'r')
-	contents=f.read().decode('utf8').split('\n')
-	#contents=f.readlines()
-	for i,v in enumerate(contents):
-		lcontent=v.strip().split('\t')
-		for j,vv in enumerate(lcontent):
-			if isinstance(vv,float):
-				table.write(i,j,vv)
-			else:
-				table.write(i,j,vv)
-	f.close()
-	outputexcel=os.path.splitext(inputfile)[0]+'.xls'
-	data.save(outputexcel)
+    f=open(inputfile,'r')
+    contents=f.read().decode('utf8').split('\n')
+    #contents=f.readlines()
+    for i,v in enumerate(contents):
+        lcontent=v.strip().split('\t')
+        for j,vv in enumerate(lcontent):
+            if isinstance(vv,float):
+                table.write(i,j,vv)
+            else:
+                table.write(i,j,vv)
+    f.close()
+    outputexcel=os.path.splitext(inputfile)[0]+'.xls'
+    data.save(outputexcel)
 
 
 # 字典文件写入行数据
 def dict2tbl():
-	category_num={'a':1,'b':2,'c':3}
-	stat_res='outrow.log'
-	fres=open(stat_res,'a+')
+    category_num={'a':1,'b':2,'c':3}
+    stat_res='outrow.log'
+    fres=open(stat_res,'a+')
 
-	# 写头
-	if not os.path.getsize(stat_res):
-		colnames=['date']
-		colnames.extend(category_num.keys())
-		sformat="%-10s\t"*(len(colnames)-1)+"%-10s\n"
-		title=sformat %tuple(colnames)
-		fres.write(title)
+    # 写头
+    if not os.path.getsize(stat_res):
+        colnames=['date']
+        colnames.extend(category_num.keys())
+        sformat="%-10s\t"*(len(colnames)-1)+"%-10s\n"
+        title=sformat %tuple(colnames)
+        fres.write(title)
 
-	# 写数据
-	colvalues=['20170329']
-	colvalues.extend(category_num.values())
-	sformat="%-10s\t"*(len(colvalues)-1)+"%-10s\n"
-	result=sformat  %tuple(colvalues)
-	fres.write(result)
-	fres.close()
+    # 写数据
+    colvalues=['20170329']
+    colvalues.extend(category_num.values())
+    sformat="%-10s\t"*(len(colvalues)-1)+"%-10s\n"
+    result=sformat  %tuple(colvalues)
+    fres.write(result)
+    fres.close()
 
 
 # 测试入口
 if __name__ == "__main__":
-	dict2tbl()
+    dict2tbl()
 

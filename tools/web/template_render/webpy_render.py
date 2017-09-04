@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:利用web.py实现html渲染
-	Ref:
-	State：
-	Date:2017/5/17
-	Author:tuling56
+    Fun:利用web.py实现html渲染
+    Ref:
+    State：
+    Date:2017/5/17
+    Author:tuling56
 '''
 import re, os, sys
 import hues
@@ -18,7 +18,7 @@ import web
 render = web.template.render('./templates/')
 
 '''
-	字典表格化
+    字典表格化
 '''
 class WebpyTablize(object):
     def __init__(self):

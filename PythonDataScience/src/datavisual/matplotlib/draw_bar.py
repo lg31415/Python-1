@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun: matplotlib条形图的绘制（注意和柱状图的区别）
-	Ref:
-	State：
-	Date:2017/5/11
-	Author:tuling56
+    Fun: matplotlib条形图的绘制（注意和柱状图的区别）
+    Ref:
+    State：
+    Date:2017/5/11
+    Author:tuling56
 '''
 import re, os, sys
 import hues

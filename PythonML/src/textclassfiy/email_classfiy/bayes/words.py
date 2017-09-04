@@ -13,29 +13,29 @@ symbols = ('\n', 'http', 'com', 'net', 'ftp')
 cnSymbols = ('，', '。', '、', '！', '？', '“', '”', '（', '）', '¥', '～', '＋')
 
 def cleanUpWord(word):
-	word = word.lower()
-	if (len(word) < 2):
-		return None
-	elif (word.isdigit()):
-		return None
-	elif (word in commonWords):
-		return None
-	elif (word in cnSymbols):
-		return None
-	
-	return word
+    word = word.lower()
+    if (len(word) < 2):
+        return None
+    elif (word.isdigit()):
+        return None
+    elif (word in commonWords):
+        return None
+    elif (word in cnSymbols):
+        return None
+    
+    return word
 
 def list_to_dict(l):
-	d = defaultdict(int)
-	add_list_to_dict(l, d)
-	return d
+    d = defaultdict(int)
+    add_list_to_dict(l, d)
+    return d
 
 def add_list_to_dict(l, d):
-	for word in l:
-		d[word] += 1
+    for word in l:
+        d[word] += 1
 
 def text_to_list(text):
-	# cleaned_words = map(cleanUpWord, re.split('\W+', text.strip()))
-	cleaned_words = map(cleanUpWord, re.split(' ', text.strip()))
+    # cleaned_words = map(cleanUpWord, re.split('\W+', text.strip()))
+    cleaned_words = map(cleanUpWord, re.split(' ', text.strip()))
 
-	return filter(lambda word : word and (len(word) > 0), cleaned_words)
+    return filter(lambda word : word and (len(word) > 0), cleaned_words)

@@ -14,7 +14,7 @@ application.register_blueprint(movie_bp)
 # 首页
 @application.route('/', methods=['GET'])
 def index():
-	#return '<h2>Hello flask,this is flask demo</h2>'
+    #return '<h2>Hello flask,this is flask demo</h2>'
     return render_template('index.html')
 
 

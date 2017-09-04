@@ -57,7 +57,7 @@ class Test(object):
         print cls.name*x # 类的成员变量
 
 '''
-	继承类
+    继承类
 '''
 class subTest(Test):
     '''

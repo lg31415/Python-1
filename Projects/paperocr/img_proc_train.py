@@ -96,7 +96,7 @@ class Img2Vec(object):
 
 
 '''
-	数据准备
+    数据准备
 '''
 from sklearn import cross_validation # 用于训练和测试分开
 from sklearn import preprocessing    # 预处理

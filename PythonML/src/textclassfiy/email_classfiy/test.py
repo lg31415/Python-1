@@ -114,4 +114,4 @@ if __name__ == '__main__':
         t.chi(options.chi)
 
     else:
-	print "Usage: " + sys.argv[0] + ' -h'
+    print "Usage: " + sys.argv[0] + ' -h'

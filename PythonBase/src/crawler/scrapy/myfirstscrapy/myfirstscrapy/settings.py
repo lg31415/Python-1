@@ -106,12 +106,12 @@ LOG_STDOUT = True
 
 
 DEFAULT_REQUEST_HEADERS = {
-	'User-Agent':'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko',
-	'Accept':'text/html;q=0.9,*/*;q=0.8',
-	'Accept-Charset':'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
-	'Accept-Encoding':'gzip',
-	'Connection':'Keep-Alive'
-	}
+    'User-Agent':'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko',
+    'Accept':'text/html;q=0.9,*/*;q=0.8',
+    'Accept-Charset':'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
+    'Accept-Encoding':'gzip',
+    'Connection':'Keep-Alive'
+    }
 
 USER_AGENT = 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko'
 

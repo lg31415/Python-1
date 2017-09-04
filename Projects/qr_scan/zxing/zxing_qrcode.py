@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:利用zxing进行二维码定位和识别
-	Author:tuling56
-	参考：https://github.com/oostendo/python-zxing
-	     http://www.toutiao.com/a6373886387918258433/
-	Date:
+    Fun:利用zxing进行二维码定位和识别
+    Author:tuling56
+    参考：https://github.com/oostendo/python-zxing
+         http://www.toutiao.com/a6373886387918258433/
+    Date:
 '''
 
 from zxing import *

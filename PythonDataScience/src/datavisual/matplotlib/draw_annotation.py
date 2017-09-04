@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-	Fun:绘制图形标注
-	Ref:
-	State：
-	Date:2017/5/11
-	Author:tuling56
+    Fun:绘制图形标注
+    Ref:
+    State：
+    Date:2017/5/11
+    Author:tuling56
 '''
 import re, os, sys
 import hues
@@ -16,7 +16,7 @@ sys.setdefaultencoding('utf-8')
 
 
 '''
-	绘图和标注(smdata,onediff都是OrderDict)
+    绘图和标注(smdata,onediff都是OrderDict)
 '''
 def draw_annotation(view,onediff,smdata,peeks,high,cid,filesize,flag):
     smdata_x=map(lambda x:x[0],smdata.items())
@@ -96,5 +96,5 @@ def draw_annotation(view,onediff,smdata,peeks,high,cid,filesize,flag):
 
 
 if __name__ == "__main__":
-	draw_annotation()
+    draw_annotation()
 

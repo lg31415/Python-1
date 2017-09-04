@@ -13,7 +13,7 @@ import sys
 import MySQLdb
 
 '''
-	Part: xls read & write
+    Part: xls read & write
 '''
 #xls的读
 def mxlsread():
@@ -39,7 +39,7 @@ def mxlswrite():
 
 
 '''
-	Part: MySQL<->Excel
+    Part: MySQL<->Excel
 '''
 # 读取mysql的数据并保持成excel文件
 def msql2xls():
@@ -75,7 +75,7 @@ def xls2mysql():
 
 
 '''
-	Part: txt<->xls
+    Part: txt<->xls
 '''
 #从格式化txt文件读取数据转为xls
 def mtxt2xls():
@@ -111,7 +111,7 @@ def xlsaddpic():
 
 
 '''
-	Part: csv<->xls
+    Part: csv<->xls
 '''
 #csv文件的写入（生成）
 import csv

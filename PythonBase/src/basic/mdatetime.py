@@ -20,8 +20,8 @@ def datebasic():
 #最简单的日期操作
 def dataaddsub():
     if len(sys.argv) <= 1:
-	yestoday = date.today() - timedelta(days=1)
-	yestoday = yestoday.strftime("%Y%m%d")
+    yestoday = date.today() - timedelta(days=1)
+    yestoday = yestoday.strftime("%Y%m%d")
     else:
         yestoday = sys.argv[1]
 
@@ -43,6 +43,15 @@ def str2date():
     timeArray=time.strptime(time1,"%Y-%m-%d %H:%M:%S") #字符串转日期时间结构体time.struct_time
     timeStamp=int(time.mktime(timeArray))   #日期时间结构体转时间戳
     print(timeStamp)
+
+    time2="Sep 04 10:34"
+    if ':' in time2:
+        timeArray=time.strptime(time2,'%b %d %H:%M')
+    else:
+        timeArray=time.strptime(time2,'%b %d %Y')
+    timeStamp=int(time.mktime(timeArray))   #日期时间结构体转时间戳
+    print(timeStamp)
+
 
     dateC=datetime(2010,6,6,8,14,59) #2010-06-06 08:14:59  datetime类型的构造函数
     timestamp=time.mktime(dateC.timetuple())  #datetime类型转日期时间结构体datetime.timetuple()

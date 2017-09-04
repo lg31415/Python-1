@@ -15,7 +15,7 @@ from collections import OrderedDict
 # 高潮模式计算API
 class HighDurAPI:
     def __init__(self):
-        self.pthreshsize=5;	                                      # 调节峰值筛选阈值
+        self.pthreshsize=5;                                          # 调节峰值筛选阈值
         self.datapath='/usr/local/sandai/xmp_hotview/data0603'
         self.hotrespath='D:\\hha' #'/data1/xmp_hotview/highdur_test'         # 高潮模式结果信息存放位置
         self.exceptmovie='./exceptmovie'                          # 高潮异常计算记录
@@ -318,12 +318,12 @@ class HighDurAPI:
 class CalcHigh:
     def __init__(self):
         self.datapath='/usr/local/sandai/xmp_hotview/data'
-        self.top_cid_filesize='toplist'			# 待添加高潮模式的影片信息文件列表
+        self.top_cid_filesize='toplist'            # 待添加高潮模式的影片信息文件列表
         self.updateTop=False                    # 是否从数据库读取最新更新
         self.viewlimit=2000
         self.durlimit=600
 
-	# 从mysql数据库获取top1000
+    # 从mysql数据库获取top1000
     '''
         首先利用update_top_cidfilesize函数获取播放最多的影片的cid和filesize信息到本地的toplist文件
         或者toplist列表,然后根据cid和filesize查找本地文件得到view数据

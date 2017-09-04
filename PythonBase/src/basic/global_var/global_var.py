@@ -21,16 +21,16 @@ print u'this is the global fun:globalf1(5) ',globalf1(5)
 
 
 def mfun1(varin):
-	print "来自参数变量：",varin
-	print "来自main变量：",var_main
-	print "来自global变量：",var_global
+    print "来自参数变量：",varin
+    print "来自main变量：",var_main
+    print "来自global变量：",var_global
 
 def privatevar():
-	__pass="1234556"
+    __pass="1234556"
 
 
 if __name__ == "__main__":
-	var_main='zhangxiao'
-	var_in='var_in'
-	mfun1(var_in)
-	print u'here we call globalf1(6):',globalf1(6)
+    var_main='zhangxiao'
+    var_in='var_in'
+    mfun1(var_in)
+    print u'here we call globalf1(6):',globalf1(6)

@@ -24,49 +24,49 @@ xmp_day_play_file="%s/xmp_day_play_file.txt" %(file_path)
   初始化工作，打开连接，创建相关表ll
 '''
 def initTable():
-	#建立连接
-	conn = MySQLdb.connect(host="localhost", user="root", passwd="hive")
-	cur = conn.cursor(MySQLdb.cursors.DictCursor)
-	cur.execute("use pgv_stat")
-	cur.execute('set names utf8')
+    #建立连接
+    conn = MySQLdb.connect(host="localhost", user="root", passwd="hive")
+    cur = conn.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("use pgv_stat")
+    cur.execute('set names utf8')
 
-	#创建结果表
-	'''
-	日期   影片id   影片类型  影片名   日用户访问  日浏览访问
-	date | movieid | type |  title |  uv     |    pv
-	'''
+    #创建结果表
+    '''
+    日期   影片id   影片类型  影片名   日用户访问  日浏览访问
+    date | movieid | type |  title |  uv     |    pv
+    '''
 
-	sql='create table if not exists xmp_day_play_all(date char(8),movieid varchar(11),type varchar(10),title varchar(30),uv int(10),pv int(10)) character set utf8'
-	cur.execute(sql)
-	conn.commit()
+    sql='create table if not exists xmp_day_play_all(date char(8),movieid varchar(11),type varchar(10),title varchar(30),uv int(10),pv int(10)) character set utf8'
+    cur.execute(sql)
+    conn.commit()
 
-	cur.execute("use pgv_stat_mid")
-	
-	#创建原始表(src_table):存储原始数据
-	'''
-	fpeerid | fmovieid | ftitle
-	'''
-	sql='create table if not exists src_table(fpeerid varchar(20),fmovieid varchar(11),ftitle varchar(30)) character set utf8'
-	cur.execute(sql)
-	conn.commit()
+    cur.execute("use pgv_stat_mid")
+    
+    #创建原始表(src_table):存储原始数据
+    '''
+    fpeerid | fmovieid | ftitle
+    '''
+    sql='create table if not exists src_table(fpeerid varchar(20),fmovieid varchar(11),ftitle varchar(30)) character set utf8'
+    cur.execute(sql)
+    conn.commit()
 
-	#创建中间表mid_table1：完成指标uv.pv等指标的统计
-	'''
-	movieid | title  |  uv |  pv
-	'''
-	sql='create table if not exists mid_table1(movieid varchar(11),title varchar(30),uv int(10),pv int(10)) character set utf8'
-	cur.execute(sql)
-	conn.commit()
+    #创建中间表mid_table1：完成指标uv.pv等指标的统计
+    '''
+    movieid | title  |  uv |  pv
+    '''
+    sql='create table if not exists mid_table1(movieid varchar(11),title varchar(30),uv int(10),pv int(10)) character set utf8'
+    cur.execute(sql)
+    conn.commit()
 
-	#创建中间表mid_table2：将相同movieid的uv和pv数据进行合并
-	'''
-	movieid |  title | uv | pv
-	'''
-	sql='create table if not exists mid_table2(movieid varchar(11),title varchar(30),uv int(10),pv int(10)) character set utf8'
-	cur.execute(sql)
-	conn.commit()
+    #创建中间表mid_table2：将相同movieid的uv和pv数据进行合并
+    '''
+    movieid |  title | uv | pv
+    '''
+    sql='create table if not exists mid_table2(movieid varchar(11),title varchar(30),uv int(10),pv int(10)) character set utf8'
+    cur.execute(sql)
+    conn.commit()
 
-	return conn,cur
+    return conn,cur
 
 '''
    数据准备：数据文件的导出和数据文件加入到数据库src_table表中
@@ -75,11 +75,11 @@ def readData(conn,cur,stadate):
     #数据准备(hive数据到本地文件)
     hivecmd="hive -e \"use kankan_odl;select fpeerid, fmovieid, ftitle from t_stat_play where ds='%s' and fplay_type=2 and length(fmovieid)>4\"> %s" %(stadate,xmp_day_play_file)
     if os.system(hivecmd) != 0:
-	print "error:get data from t_stat_play failed! "
+    print "error:get data from t_stat_play failed! "
     hivecmd="hive -e \"use kankan_odl;select fu1, fu4, '' from xmpconv where ds='%s' and fu3='XMP-JingPin' and length(fu4)>4\" >>%s" %(stadate,xmp_day_play_file)
     os.system(hivecmd)
     if os.system(hivecmd) != 0:
-	print "error:get data from t_stat_play failed! "
+    print "error:get data from t_stat_play failed! "
 
     #导入数据(本地文件导入到MySQL数据库中)
     load_sql="load data local infile '%s' into table src_table" %(xmp_day_play_file) #20150817当天数据载入,如何避免重复导入？？？？
@@ -110,10 +110,10 @@ def urlParase(url):
 def getTypeTitle(movieid):
     url='http://media.v.xunlei.com/pc/info?movieid='+movieid
     headers ={
-    	"Host":"media.v.xunlei.com",
-    	"Referer": "http://media.v.xunlei.com",
-		"cookie":"client=pc;version=5.1.0.3054"
-	}
+        "Host":"media.v.xunlei.com",
+        "Referer": "http://media.v.xunlei.com",
+        "cookie":"client=pc;version=5.1.0.3054"
+    }
     request=urllib2.Request(url,None,headers)
     resonse=urllib2.urlopen(request)
     content=resonse.read().decode('utf8')
@@ -233,40 +233,40 @@ def mergeResult(conn,cur,stadate):
             conn.commit()
     else:
         print('=============xmp_mid_table is empty==============')
-	
+    
 '''
   后续处理：删除中间表，关闭连接等
 '''
 def closePro(conn,cur):
-	cur.execute("use pgv_stat_mid")
-	cur.execute('drop table src_table')
-	cur.execute('drop table mid_table1')
-	cur.execute('drop table mid_table2')
-	conn.commit()
-	cur.close()
-	conn.close()
+    cur.execute("use pgv_stat_mid")
+    cur.execute('drop table src_table')
+    cur.execute('drop table mid_table1')
+    cur.execute('drop table mid_table2')
+    conn.commit()
+    cur.close()
+    conn.close()
 
 ###########################  Process Flow ##########################
 if __name__ == "__main__":
-	if len(sys.argv)<2:
-		yesterday = date.today() - timedelta(days=1)
-		stadate = yesterday.strftime("%Y%m%d")
-	else:
-		stadate=sys.argv[1]
+    if len(sys.argv)<2:
+        yesterday = date.today() - timedelta(days=1)
+        stadate = yesterday.strftime("%Y%m%d")
+    else:
+        stadate=sys.argv[1]
 
-	## 初始化
-	conn,cur=initTable()
+    ## 初始化
+    conn,cur=initTable()
 
-	## 数据准备
-	readData(conn,cur,stadate)
+    ## 数据准备
+    readData(conn,cur,stadate)
 
-	## 中间数据处理
-	dataMidPro(conn,cur)
+    ## 中间数据处理
+    dataMidPro(conn,cur)
 
-	## 查询结果组装
-	mergeResult(conn,cur,stadate)
+    ## 查询结果组装
+    mergeResult(conn,cur,stadate)
 
-	## 后续处理,删除中间表和关闭连接
-	closePro(conn,cur)
+    ## 后续处理,删除中间表和关闭连接
+    closePro(conn,cur)
 
 
