@@ -9,6 +9,8 @@
 '''
 import re, os, sys
 import hues
+import time
+from datetime import date,datetime
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -16,57 +18,130 @@ sys.setdefaultencoding('utf-8')
 from ftplib import FTP
 
 class CFTP():
-    def __init__(self,host='127.0.0.1'):
+    def __init__(self,host='bxu2713660548.my3w.com'):
         self.bufsize=1024                   # 设置的缓冲区大小
         timeout = 30
         port =21
         self.ftp = FTP()
         try:
             #self.ftp.set_debuglevel(2)          # 打开调试级别2，显示详细信息
-            self.ftp.set_pasv(0)                 # 0是主动模式，1是被动模式
+            self.ftp.set_pasv(1)                 # 0是主动模式，1是被动模式
             self.ftp.connect(host,port,timeout)  # 连接FTP服务器
-            self.ftp.login('xl','a112233')       # 登录
+            self.ftp.login('bxu2713660548','yunosa112233')       # 登录
+            self.ftp.cwd('/htdocs')
+            self.ftp.dir()
             print self.ftp.getwelcome()          # 获得欢迎信息
         except Exception,e:
-            print "登录失败:",str(e)
+            hues.error("登录失败:",str(e))
             sys.exit(1)
+        else:
+            hues.success("登录成功")
 
     def __del__(self):
-        #self.ftp.set_debuglevel(0)          # 关闭调试模式
-        self.ftp.close()
-        self.ftp.quit()                     # 退出FTP服务器
+        try:
+            #self.ftp.set_debuglevel(0)          # 关闭调试模式
+            #self.ftp.close()
+            self.ftp.quit()                     # 退出FTP服务器
+        except Exception,e:
+            hues.warn("关闭连接时候出错:",str(e))
 
-    def getlist(self):
-        self.ftp.cwd(r'/C:/Users/xl/Downloads/Compressed/12306Bypass/')    # 设置FTP路径
-        list=self.ftp.retrlines('LIST')      # 获得目录列表(直接在控制台输出了。。。)
-        list=self.ftp.sendcmd('DIR')        # 获得目录列表
-        for name in list:
-            print(name)             # 打印文件名字
+    # 判断是否是目录
+    def __show( self, list ):
+        result = list.lower().split( " " )
+        if self.path in result and result[0].startswith('d'):
+           self.bIsDir = True
 
-    # 下载的这个已经完成
-    def download(self,filename='xxx.out',remote_path='/D:/'):
+    def _isDir( self, path ):
+        self.bIsDir = False
+        self.path = path
+        #this ues callback function ,that will change bIsDir value
+        self.ftp.retrlines( 'LIST', self.__show )
+        return self.bIsDir
+
+
+    #_ 处理时间
+    def __proc_time(self,tstr):
+        if ':' in tstr:
+            tstr=str(date.today().year)+" "+tstr
+            timeArray=time.strptime(tstr,'%Y %b %d %H:%M')
+        else:
+            timeArray=time.strptime(tstr,'%b %d %Y')
+        timeStamp=int(time.mktime(timeArray))   #日期时间结构体转时间戳
+        return timeStamp
+
+    # _处理每一行的信息
+    def __line_proc( self, line):
+        infolist=line.split()
+        fdir=infolist[0]
+        fsize=infolist[-5]
+        ffile=infolist[-1]
+        if fdir.startswith('d'):
+            print "目录:",ffile
+        else:
+            print "文件:",ffile
+            ftime_str=' '.join(infolist[-4:-1]) #这里需要个转换操作
+            ftime_stamp=self.__proc_time(ftime_str)
+
+
+    # 获取文件列表
+    def getlist(self,remote_path='./'):
         self.ftp.cwd(remote_path)
+        self.ftp.retrlines('LIST',self.__line_proc)  # 获得目录列表(直接在控制台输出了。。。)
+
+
+    # 下载文件
+    def download_file(self,filename,local_path='./',remote_path='./'):
+        self.ftp.cwd(remote_path)
+        print "remote_curdir:",self.ftp.pwd()
+        filename=os.path.join(local_path,filename)
         with open(filename,'wb') as f:
-            cmd = 'RETR ' + filename                                  # 保存FTP文件(其中的RETR命令是关键字，不可改变)
-            self.ftp.retrbinary(cmd,f.write,self.bufsize,rest=None)   # 保存FTP上的文件
+            cmd = 'RETR %s' %(os.path.basename(filename))             # 保存FTP文件(其中的RETR命令是关键字，不可改变)
+            self.ftp.retrbinary(cmd,f.write)                          # 保存FTP文件
 
 
-
-    # 上传还待测试
-    def upload(self,filename,remote_path='/D:/'):
+    # 上传文件
+    def upload_file(self,filename,local_path='./',remote_path='./'):
         self.ftp.cwd(remote_path)
-        filename='README.md'
+        try:
+            remote_size=self.ftp.size(filename) #获取文件大小可能失败
+        except Exception,e:
+            remote_size=0
+        filename=os.path.join(local_path,filename)
+        local_size=os.path.getsize(filename)
+        if int(local_size)<=int(remote_size):
+            isoverlap=raw_input("本地文件大小>远程ftp文件，确认覆盖Y/N")
+            if isoverlap=='Y':
+                hues.warn("覆盖远程文件")
+            else:
+                return
         with open(filename, 'rb') as f:
-            cmd='STOR '+filename
+            cmd='STOR %s ' %(os.path.basename(filename))
             self.ftp.storbinary(cmd,f,self.bufsize,rest=None) # 上传FTP文件（其中的STOR是关键字，不可改变）
 
+
+    # 下载文件夹
+    def download_dir(self,local_dir, remote_dir):
+        if not os.path.isdir(local_dir):
+           os.makedirs(local_dir)
+        self.ftp.cwd(remote_dir)
+        RemoteNames = self.ftp.nlst()
+        for file in RemoteNames:
+            Local = os.path.join(local_dir, file )
+            if self._isDir(file):
+                local_dir=os.path.join(local_dir,file)
+                remote_dir='/'.join([remote_dir,file])  #远程均使用‘/’路径
+                self.download_dir(local_dir,remote_dir)
+            else:
+                self.download_file(file,local_dir,remote_dir )
+        self.ftp.cwd( ".." )
+        return
 
 
 # 测试入口
 if __name__ == "__main__":
     cftp=CFTP()
-    cftp.getlist()
-    #cftp.download()
-    #cftp.upload("README.md")
-
+    #cftp.getlist()
+    #cftp.download_file('zhuye.html')
+    #cftp.upload_file("README.md")
+    cftp.download_dir(".","/htdocs")
 
