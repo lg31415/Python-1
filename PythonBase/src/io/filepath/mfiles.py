@@ -133,15 +133,20 @@ def fileReadWriteCN():
 '''
 def fileProperty():
     filep='../data/write1.txt'
+
     # 文件大小
     if os.path.isfile(filep):
         fsize=os.path.getsize(filep)
         print fsize
     else:
         print "\033[1;31mError:%s import error!\033[0m"  %filep
+
     # 文件的创建日期
     t=os.stat(filep)[8]
     fmkdate=time.strftime('%Y%m%d',time.localtime(t))
+
+    mtime = time.ctime(os.path.getmtime(filep))  # 文件的修改时间戳
+    ctime = time.ctime(os.path.getctime(filep))  # 文件的创建时间戳
 
 
 '''

@@ -42,9 +42,8 @@ def mdoc():
         row_cells[2].text = item.desc
 
     document.add_page_break()
-
     document.save('demo.docx')
 
-
+# 测试入口
 if __name__ == "__main__":
     mdoc()
