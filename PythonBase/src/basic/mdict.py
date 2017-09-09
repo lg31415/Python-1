@@ -145,13 +145,23 @@ class CDictMedium(CDict):
     # 字符串、元组及列表中也有比较方法cmp()，其基本原理相同
     def cmp(self):
         d1={'a':1,'b':2}
-        d2={'a':2,'b':3}
+        d2={'a':22,'b':3}
         cmpres=cmp(d1,d2)
-        print cmpres
-        if not cmpres:
+        if cmpres==0:
             print "d1==d2"
+        elif cmpres>0:
+            print "d1>d2"
         else:
-            print "d1!=d2"
+            print "d1<d2"
+        # 返回布尔字典
+        if len(set(d1.keys())-set(d2.keys()))!=0:
+            hues.error("待比较的字典的键值必须完全相同")
+            return 
+        res={k:v-d2.get(k) for k,v in d1.iteritems()}
+        print res
+
+
+
 
 
 # 测试入口
