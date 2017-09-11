@@ -1,6 +1,8 @@
 ##资源聚合
 [TOC]
 
+前端实现参考：C:\Users\xl\PHPStorm\Projects\proc_aliyun
+
 ### 数据库设计
 
 collection_resource_info
@@ -63,6 +65,8 @@ update collection_base_info set site=substring_index(substring_index(pageurl,'/'
 ```
 
 > MySQL触发器的使用
+>
+> 在插入之后更新插入数据的一条字段的值，死循环？
 
 ### 方案设计
 
