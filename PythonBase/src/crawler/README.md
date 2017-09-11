@@ -448,6 +448,35 @@ pycurl是功能强大的python的url包，是用c语言写的，速度很快，�
 
 [Requests设置和保存Cookies](http://www.coofly.com/index.php/archives/23/)
 
+##### 权限认证
+
+###### http基本认证
+
+是请求受保护的的资源的时候添加用户名和密码来获取授权认证，直接在资源的后面加auth=(username,passwd)
+
+###### oauth2认证
+
+- github生成token,然后在请求的时候使用
+
+```python
+def basic_oauth():
+    headers={'Authorization','token xxxxxxxxxxxxxxxxxxxxx'}
+    # users/emails
+    response=requests.get(construct_url('user/emails',headers=headers)
+    print resonse.request.headers
+    print response.text
+    print response.status_code
+```
+
+##### Proxy代理
+
+正向代理
+
+- 构建代理服务器
+- 在主机端口开启1080端口
+- 将请求转发到1080端口
+- 代理服务返回结果
+
 #### selenium
 
 web自动化测试工具，的Webdriver操作浏览器。Selenium可以操作大多数主流浏览器（可能需要相应的驱动），当然也可以操作无界面的浏览器PhantomJS

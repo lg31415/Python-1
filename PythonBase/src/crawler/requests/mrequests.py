@@ -75,7 +75,6 @@ class MCRequest():
         print 'response_headers:',r.headers
         print 'response_cookies:',r.cookies
 
-
     # 会话处理
     def session(self):
         ms=requests.Session()
@@ -95,6 +94,11 @@ class MCRequest():
 
         ms.close() #关闭会话
 
+    # 代理
+    def proxy(self):
+        url='http://www.google.com'
+        proxies={'http':'socks5://127.0.0.1:1080','https':'socks5://127.0.0.1:1080'}
+        r=requests.get(url,proxies=proxies,timeout=30)
 
 
 # 测试入口
