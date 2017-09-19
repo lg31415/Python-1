@@ -4,6 +4,7 @@ __author__ = 'yjm'
   功能注释：字典的学习
 '''
 
+import hues
 from collections import Counter,defaultdict,OrderedDict
 from random import randrange
 import pprint
@@ -111,7 +112,8 @@ class CDict(object):
 '''
 class CDictMedium(CDict):
     def __init__(self):
-        pass
+        self.d1={'a':1,'b':2}
+        self.d2={'a':22,'b':1}
     def sort(self):
         # method 1 (按value排序)
         mdict={'zhang':1,'wang':2,'yin':8}
@@ -143,22 +145,22 @@ class CDictMedium(CDict):
 
     # 比较两个字典(参考：http://blog.csdn.net/b_11111/article/details/52830590)
     # 字符串、元组及列表中也有比较方法cmp()，其基本原理相同
-    def cmp(self):
-        d1={'a':1,'b':2}
-        d2={'a':22,'b':3}
-        cmpres=cmp(d1,d2)
+    def base_dict_cmp(self):
+        cmpres=cmp(self.d1,self.d2)
         if cmpres==0:
             print "d1==d2"
         elif cmpres>0:
             print "d1>d2"
         else:
             print "d1<d2"
-        # 返回布尔字典
-        if len(set(d1.keys())-set(d2.keys()))!=0:
+
+    # 返回布尔字典(同时给出详细的比较结果)
+    def high_dict_cmp(self):
+        if len(set(self.d1.keys())-set(self.d2.keys()))!=0:
             hues.error("待比较的字典的键值必须完全相同")
             return 
-        res={k:v-d2.get(k) for k,v in d1.iteritems()}
-        print res
+        cmpres={k:(False if v-self.d2.get(k)>0 else True,v,self.d2.get(k),v-self.d2.get(k)) for k,v in self.d1.iteritems()}
+        print cmpres
 
 
 
@@ -168,5 +170,5 @@ class CDictMedium(CDict):
 if __name__ == "__main__":
     #mdbase=CDict()
     mdmedium=CDictMedium()
-    mdmedium.cmp()
+    mdmedium.high_dict_cmp()
 
