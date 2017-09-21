@@ -2,7 +2,7 @@
 
 [TOC]
 
-### 基础数据类型
+### 数据类型
 
 #### 基础类型
 
@@ -216,6 +216,24 @@ mutiprocessing.Queue()
 os、re、base64、hashlib、argpase、datetime
 
 - os
+
+
+### 常见问题
+
+#### 编码
+
+```python
+#coding = utf-8
+
+
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import sys
+
+#print sys.getdefaultencoding()
+reload(sys)
+sys.setdefaultencoding('utf-8')
+```
 
 
 
