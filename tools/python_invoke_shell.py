@@ -57,6 +57,17 @@ def execute_command(cmdstring, cwd=None, timeout=None, isshell=False):
 
     return str(sub.returncode)
 
+
+'''
+    python调用shell并获取返回结果和状态
+    http://www.jb51.net/article/55327.htm
+'''
+import commands
+def python_invoke_comm():
+    (status,output)=commands.getstatusoutput('wc -l auto_ssh.py')
+    print status,output.split()[0]
+
+
 '''
     python调用其它程序
 '''
@@ -71,8 +82,13 @@ def python_invoke():
     #subprocess.Popen(['start','README.md'],shell=True)
     webbrowser.open('http://www.baidu.com',new=1)
 
+
+
+
+
 # 测试入口
 if __name__ == "__main__":
+    python_invoke_comm()
     #python_invoke_shell()
     #print execute_command("ls")
-    python_invoke()
+    #python_invoke()

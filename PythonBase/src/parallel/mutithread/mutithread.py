@@ -3,6 +3,7 @@
 '''
     Fun:多线程
     Ref:http://www.toutiao.com/i6458744258382807565/
+        http://www.toutiao.com/i6466753983980503565/
     State：
     Date:2017/9/6
     Author:tuling56
@@ -16,23 +17,24 @@ sys.setdefaultencoding('utf-8')
 import time
 import threading,random
 
-t_v=0
 
+# 多线程在使用全局变量的时候一定要加锁
+t_v=0
+lock=threading.Lock()  # 锁初始化
 
 # 其它线程
-lock=threading.Lock()
 def run_thread():
     try:
         lock.acquire()
         global t_v
-        t_v+=1
-        time.sleep(random.random()) # 每个线程都对t_v的值进行了+1
+        t_v+=1      # 每个线程都对全局变量t_v的值进行了+1
+        time.sleep(random.random())
         hues.info("current thread %s is running.....,value is %s" %(threading.current_thread().name,t_v))
         hues.info("current thread %s end" %(threading.current_thread().name))
     except Exception,e:
         print str(e)
     finally:
-        lock.release()  #保证锁一定会释放
+        lock.release()  # 保证锁一定会释放
 
 # 主线程
 def main_thread():

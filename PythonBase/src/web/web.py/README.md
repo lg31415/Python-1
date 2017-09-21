@@ -61,7 +61,7 @@ else:
     application = app.wsgifunc()
 ```
 
-> 在命令行运行的指定iP和端口`python demo.py 127.0.0.1:8080`
+> 在命令行运行的指定iP和端口`python demo.py 127.0.0.1:8080`，这种方式指定的只能本地访问，如需要外网访问，则需要使用python demo.py 80
 
 #### 配置
 
