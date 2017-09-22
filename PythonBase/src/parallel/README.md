@@ -61,3 +61,5 @@ Pool的概念如何理解
 
 [今日头条:Python多进程学习（系列）](http://www.toutiao.com/i6457730350452834829/)
 
+[Python多进程并发实例讲解（推荐）](http://www.jb51.net/article/67116.htm)
+

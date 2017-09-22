@@ -9,6 +9,7 @@
 '''
 import re, os, sys
 import hues
+import random
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -18,7 +19,6 @@ sys.setdefaultencoding('utf-8')
     进程通信:Pipe实现
 '''
 from multiprocessing import Pipe, Process
-
 class MutiProcTalkByPipe(object):
     def __init__(self):
         pass
@@ -58,7 +58,6 @@ class MutiProcTalkByPipe(object):
 '''
 from multiprocessing import Queue, Process
 from Queue import Empty as QueueEmpty
-import random
 class MutiProcTalkByQueue(object):
     def __init__(self):
         pass
