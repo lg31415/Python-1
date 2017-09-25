@@ -10,7 +10,7 @@ import hues
 import time
 import multiprocessing
 
-'''
+''' 当调用pool.apply...方法的时候需要添加以下代码
 import types
 import copy_reg
 def _pickle_method(m):
@@ -22,6 +22,9 @@ def _pickle_method(m):
 copy_reg.pickle(types.MethodType, _pickle_method)
 '''
 
+
+
+# 多进程方法中，在每一个进程中修改主进程的全局变量会出现不同步的情况
 count=0
 
 # 子进程要执行的代码

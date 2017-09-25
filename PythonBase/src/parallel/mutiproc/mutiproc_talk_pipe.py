@@ -3,7 +3,7 @@
 '''
     Fun:进程间通信2-pipe
     Ref:http://www.toutiao.com/i6458130329298272782/
-    State：
+    State：存在的问题是无法保存结果
     Date:2017/9/22
     Author:tuling56
 '''
@@ -16,6 +16,8 @@ sys.setdefaultencoding('utf-8')
 
 from multiprocessing import Pipe,Process
 
+#f=open('vvv.log','w+')
+
 def proc_send(pipe,what):
     print 'proc_send process %s ...' % (os.getpid())
     s1='hello,I am proc_one,%s' %what
@@ -23,29 +25,34 @@ def proc_send(pipe,what):
     #hues.log('proc_send data is:%s' %s1)
 
 
-def proc_recv(pipe,f):
+def proc_recv(pipe):#,f):
+    #global f
     print 'proc_recv process %s ...' % (os.getpid())
     while True:
-        hues.log('proc_recv data is:%s' %pipe.recv())
-        f.write(pipe.recv())
+        try:
+            hues.log('proc_recv data is:%s' %pipe.recv())
+            #f.write(pipe.recv())
+        except EOFError:
+            # 当out_pipe接受不到输出的时候且输入被关闭的时候，会抛出EORFError，可以捕获并且退出子进程
+            print u"子进程退出"
+            break
 
 
 # 测试入口
 if __name__ == "__main__":
     hues.info('Parent process start %s.' % os.getpid())
-    f=open('vvv.log','w+')
-
-    pipe=Pipe()
-    precv=Process(target=proc_recv,args=(pipe[1],f))
+    in_pipe,out_pipe=Pipe()
+    precv=Process(target=proc_recv,args=(out_pipe,))
     precv.start()
+
     for x in xrange(3):
-        psend=Process(target=proc_send,args=(pipe[0],str(x)))
+        psend=Process(target=proc_send,args=(in_pipe,str(x)))
         psend.start()
-        #psend.join()
+        psend.join()
     precv.join(6)
 
     # 关闭接收
-    f.close()
+    #f.close()
     hues.info('Parent process end.')
 
 

@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 '''
-    Fun:进程通信(Pipe和Queue实现)
+    Fun:进程通信(Queue实现)
     Ref:https://segmentfault.com/a/1190000008122273
-    State：
+    State：存在的问题是无法保存结果
     Date:2017/8/29
     Author:tuling56
 '''
@@ -16,50 +16,17 @@ sys.setdefaultencoding('utf-8')
 
 
 '''
-    进程通信:Pipe实现
-'''
-from multiprocessing import Pipe, Process
-class MutiProcTalkByPipe(object):
-    def __init__(self):
-        pass
-
-    def _son_process(self,x, pipe):
-        _out_pipe, _in_pipe = pipe
-        print u"子进程被创建"
-
-        # 关闭fork过来的输入端，这样子进程的输入端连接这主进程的输入端
-        _in_pipe.close()
-        while True:
-            try:
-                msg = _out_pipe.recv()
-                print msg
-            except EOFError:
-                # 当out_pipe接受不到输出的时候且输入被关闭的时候，会抛出EORFError，可以捕获并且退出子进程
-                print u"子进程退出"
-                break
-
-    def proc_talk_pipe(self):
-        out_pipe, in_pipe = Pipe(True)
-        son_p = Process(target=self._son_process, args=(100, (out_pipe, in_pipe)))
-        son_p.start()
-
-        # 等pipe被fork 后，关闭主进程的输出端，这样，创建的Pipe一端连接着主进程的输入，一端连接着子进程的输出口
-        out_pipe.close()
-        for x in range(5):
-            in_pipe.send(x)
-        in_pipe.close()
-        son_p.join()
-        print u"主进程也结束了"
-
-
-'''
     进程通信：Queue实现
 '''
 from multiprocessing import Queue, Process
 from Queue import Empty as QueueEmpty
 class MutiProcTalkByQueue(object):
     def __init__(self):
-        pass
+        self.f=open('vvv.log','w')
+
+    def __del__(self):
+        print "析构了哦"
+        self.f.close()
 
     def _getter(self,name, queue):
         print 'Son process %s' % name
@@ -71,6 +38,7 @@ class MutiProcTalkByQueue(object):
                 #   |—————— 若timeout设置了时间，那么会等待timeout秒后才会抛出QueueEmpty异常
                 # block 为False，如果队列中无数据，就抛出QueueEmpty异常
                 print "getter get: %f" % value
+                self.f.write(str(value)+"\n")
             except QueueEmpty:
                 break
 
@@ -90,20 +58,17 @@ class MutiProcTalkByQueue(object):
         queue = Queue()
         getter_process = Process(target=self._getter, args=("Getter", queue))
         putter_process = Process(target=self._putter, args=("Putter", queue))
-        getter_process.start()
-        putter_process.start()
 
-        #putter_process.join()
-        #getter_process.join()
+        putter_process.join()
+        putter_process.start()
+        getter_process.start()
+        getter_process.join()
 
 
 
 
 # 测试入口
 if __name__ == "__main__":
-    mbtp=MutiProcTalkByPipe()
-    mbtp.proc_talk_pipe()
-
-    #mbtq=MutiProcTalkByQueue()
-    #mbtq.proc_talk_queue()
+    mbtq=MutiProcTalkByQueue()
+    mbtq.proc_talk_queue()
 

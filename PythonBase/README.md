@@ -195,9 +195,13 @@ arr = func(lambda x: x + 1, [1, 2, 3, 4])
 
 ##### 多进程通信
 
+##### Pipe
+
 mutiprocessing.Pipe()单双工通信
 
 ![单双工通信](https://segmentfault.com/img/bVIeWr?w=960&h=540)
+
+##### Queue
 
 mutiprocessing.Queue()
 
